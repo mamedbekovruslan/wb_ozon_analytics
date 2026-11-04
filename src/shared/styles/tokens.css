@@ -1,0 +1,136 @@
+/* Дизайн-токены «Аналитика продавца WB + Ozon».
+   Источник правды — этот файл. Компоненты (CSS Modules) используют только var(--…).
+   Тема переключается атрибутом data-theme="light" | "dark" на <html>. */
+
+:root {
+  /* типографика */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --fs-11: 11px;  --lh-11: 16px;   /* подписи осей */
+  --fs-12: 12px;  --lh-12: 16px;   /* вторичные подписи, бейджи, тултип */
+  --fs-13: 13px;  --lh-13: 18px;   /* ячейки таблиц, подписи KPI */
+  --fs-14: 14px;  --lh-14: 20px;   /* основной текст, кнопки, поля */
+  --fs-16: 16px;  --lh-16: 24px;   /* заголовок блока */
+  --fs-20: 20px;  --lh-20: 28px;   /* KPI на 375, h1 на 375 */
+  --fs-22: 22px;  --lh-22: 30px;   /* KPI на 768 */
+  --fs-24: 24px;  --lh-24: 32px;   /* h1 экрана */
+  --fs-28: 28px;  --lh-28: 36px;   /* KPI на 1440 */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  /* отступы, шаг 4 px */
+  --sp-1: 4px;   --sp-2: 8px;
+  --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;
+  --sp-8: 32px;  --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* радиусы */
+  --r-xs: 4px;   /* бейджи, чекбоксы */
+  --r-sm: 6px;   /* кнопки, поля */
+  --r-md: 8px;   /* тултип, меню, превью товара */
+  --r-lg: 12px;  /* карточки, блоки */
+  --r-xl: 16px;  /* bottom sheet, модалки */
+  --r-full: 999px;
+
+  /* движение: не дольше 200 мс */
+  --dur: 120ms;
+  --dur-slow: 200ms;
+  --ease: cubic-bezier(.2, 0, 0, 1);
+
+  /* размеры */
+  --control-h: 36px;
+  --tap: 44px;
+  --header-h: 56px;
+  --tabbar-h: 64px;
+}
+
+:root, [data-theme="light"] {
+  color-scheme: light;
+  --bg: #F6F7F9;
+  --surface: #FFFFFF;
+  --surface-2: #F1F3F6;
+  --surface-3: #E7EAEF;
+  --border: #E3E6EB;
+  --border-strong: #CBD1D9;
+  --text: #12151A;
+  --text-2: #4A5260;
+  --text-3: #646E7E;
+  --text-on-accent: #FFFFFF;
+  --accent: #3553D1;
+  --accent-hover: #2C47BC;
+  --accent-press: #253DA3;
+  --accent-soft: #EDF1FF;
+  --focus: #3553D1;
+  --success: #1B7A4A;  --success-soft: #E6F4EC;
+  --warning: #985600;  --warning-soft: #FFF2DC;
+  --danger: #C02A2A;   --danger-soft: #FDECEC;
+  --neutral: #4A5260;  --neutral-soft: #EEF0F3;
+  --wb: #0E8A7A;   --wb-soft: #E2F4F1;   --wb-text: #0A6B5F;
+  --ozon: #E07A12; --ozon-soft: #FFF0E0; --ozon-text: #9A4C00;
+  --prev: #8A93A2;
+  --grid: #EDEFF2;
+  --axis: #646E7E;
+  --cat-1: #3553D1; --cat-2: #0E8A7A;
+  --cat-3: #E07A12; --cat-4: #C7417A;
+  --cat-5: #7A5AF0; --cat-6: #2F9E44;
+  --cat-7: #A88200; --cat-8: #5C6B7F;
+  --skeleton: #ECEEF2;
+  --overlay: rgba(18, 21, 26, .40);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, .05);
+  --shadow-md: 0 4px 12px rgba(16, 24, 40, .08), 0 1px 2px rgba(16, 24, 40, .04);
+  --shadow-lg: 0 16px 40px rgba(16, 24, 40, .16), 0 2px 6px rgba(16, 24, 40, .06);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0D0F13;
+  --surface: #15181E;
+  --surface-2: #1C2027;
+  --surface-3: #252A33;
+  --border: #252A33;
+  --border-strong: #363D49;
+  --text: #E8EBF0;
+  --text-2: #A9B1BE;
+  --text-3: #8792A2;
+  --text-on-accent: #0D0F13;
+  --accent: #8098FF;
+  --accent-hover: #97ABFF;
+  --accent-press: #6D86F2;
+  --accent-soft: #1D2442;
+  --focus: #97ABFF;
+  --success: #4CC38A;  --success-soft: #11261B;
+  --warning: #F0B04A;  --warning-soft: #2B2112;
+  --danger: #FF7A7A;   --danger-soft: #301617;
+  --neutral: #A9B1BE;  --neutral-soft: #22262E;
+  --wb: #2EC4AE;   --wb-soft: #0F2B27;   --wb-text: #5ED6C3;
+  --ozon: #FFA552; --ozon-soft: #33230F; --ozon-text: #FFB774;
+  --prev: #6B7484;
+  --grid: #1F232A;
+  --axis: #8792A2;
+  --cat-1: #8098FF; --cat-2: #2EC4AE;
+  --cat-3: #FFA552; --cat-4: #F27BAE;
+  --cat-5: #A994FF; --cat-6: #5FCF73;
+  --cat-7: #E3C04D; --cat-8: #93A1B5;
+  --skeleton: #21252D;
+  --overlay: rgba(0, 0, 0, .60);
+  /* в тёмной теме глубину дают поверхности, тени — только у всплывающих слоёв */
+  --shadow-sm: 0 0 0 1px rgba(255, 255, 255, .02);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, .40);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, .60), 0 0 0 1px #2A2F38;
+}
+
+/* база */
+html { font-family: var(--font-sans); font-size: var(--fs-14); line-height: var(--lh-14);
+       color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+body { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden;
+           clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}
