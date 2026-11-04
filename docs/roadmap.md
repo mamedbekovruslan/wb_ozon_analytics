@@ -3,7 +3,7 @@
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
 **Текущий этап:** 1 — инфраструктура.
-**Следующий шаг:** порция `chore/fsd-skeleton` — папки слоёв FSD и steiger. Дальше `chore/data-layer` (Router, zod, Query, каркас MSW), `chore/e2e` (Testing Library, jsdom, Playwright). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
+**Следующий шаг:** порция `chore/data-layer` (Router, zod, Query, каркас MSW; запрет импортов из `mocks/` в oxlint, кроме `app/`; проверить, что steiger игнорирует `mocks/`). Дальше `chore/e2e` (Testing Library, jsdom, Playwright). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
@@ -20,7 +20,9 @@
 - [x] шрифт Inter локально через `@fontsource/inter` ([ADR-0013](adr/0013-шрифт-inter-локально.md)); отличия от исходников — [design/deviations.md](design/deviations.md)
 - [x] Vitest, `npm test`
 - [ ] TanStack Router + zod, TanStack Query, MSW, TanStack Table/Virtual
-- [ ] steiger, Vitest + Testing Library, Playwright
+- [x] папки слоёв FSD, steiger (`npm run lint:fsd`)
+- [x] правило 7: проверки агент запускает сам, при падении — стоп и вопрос пользователю
+- [ ] Vitest + Testing Library, Playwright
 - [ ] с объяснением и согласием: GitHub-репозиторий, GitHub Actions, gitleaks, Dependabot, Vercel
 
 ## Этап 2. Фичи
