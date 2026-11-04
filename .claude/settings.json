@@ -11,7 +11,11 @@
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git show:*)",
-      "Bash(git branch --show-current)"
+      "Bash(git branch --show-current)",
+      "Bash(npm test)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:fsd)",
+      "Bash(npm run build)"
     ],
     "ask": [
       "Bash(git commit:*)",
@@ -26,7 +30,10 @@
       "Bash(npx:*)",
       "Bash(gh:*)",
       "Bash(vercel:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Edit(**/*.test.ts)",
+      "Edit(**/*.test.tsx)",
+      "Edit(e2e/**)"
     ],
     "deny": [
       "Read(./.env*)",
