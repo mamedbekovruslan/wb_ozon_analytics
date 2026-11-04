@@ -13,6 +13,7 @@
       "Bash(git show:*)",
       "Bash(git branch --show-current)",
       "Bash(npm test)",
+      "Bash(npm run test:e2e)",
       "Bash(npm run lint)",
       "Bash(npm run lint:fsd)",
       "Bash(npm run build)"
@@ -33,7 +34,10 @@
       "Bash(rm:*)",
       "Edit(**/*.test.ts)",
       "Edit(**/*.test.tsx)",
-      "Edit(e2e/**)"
+      "Edit(e2e/**)",
+      "Write(**/*.test.ts)",
+      "Write(**/*.test.tsx)",
+      "Write(e2e/**)"
     ],
     "deny": [
       "Read(./.env*)",

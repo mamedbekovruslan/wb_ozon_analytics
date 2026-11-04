@@ -3,7 +3,7 @@
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
 **Текущий этап:** 1 — инфраструктура.
-**Следующий шаг:** порция `chore/e2e` (Testing Library, jsdom, Playwright). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
+**Следующий шаг:** с объяснением и согласием — GitHub-репозиторий, затем GitHub Actions, gitleaks, Dependabot, Vercel (правило 1). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
@@ -23,7 +23,7 @@
 - [ ] TanStack Table/Virtual — вместе с фичей «Страница заказов»
 - [x] папки слоёв FSD, steiger (`npm run lint:fsd`)
 - [x] правило 7: проверки агент запускает сам, при падении — стоп и вопрос пользователю
-- [ ] Vitest + Testing Library, Playwright
+- [x] Vitest + Testing Library + jsdom, Playwright (`npm run test:e2e`, Chromium, 1440 и 375 px), дымовые тесты; `@axe-core/playwright` — вместе с пунктом 9 (a11y)
 - [ ] с объяснением и согласием: GitHub-репозиторий, GitHub Actions, gitleaks, Dependabot, Vercel
 
 ## Этап 2. Фичи
@@ -41,7 +41,7 @@
 ## Открытые вопросы
 - ~~Дизайн: ждём макеты и токены от ИИ-дизайнера.~~ Получены — [docs/design/source/saldo-design-handoff/](design/source/saldo-design-handoff/DESIGN_SPEC.md).
 - Название продукта: «Сальдо» — заглушка дизайнера, оставить или заменить.
-- Временные `/api/health` (`mocks/handlers.ts`, `shared/api/health.ts`) и проверка на странице dashboard — удалить вместе с появлением генератора и настоящих эндпоинтов (фича 1).
+- Временные `/api/health` (`mocks/handlers.ts`, `shared/api/health.ts`), проверка на странице dashboard и дымовые тесты на них (`DashboardPage.test.tsx`, `e2e/smoke.spec.ts` — переписать под настоящий дашборд) — удалить вместе с появлением генератора и настоящих эндпоинтов (фича 1).
 - Страница 404: макет есть (`reference/NotFound.dc.html`), но нужны шапка и данные для подсказок — делается фичей 7a; пока стандартная английская от TanStack Router. Нужен email поддержки вместо `[EMAIL ПОДДЕРЖКИ]` или решение убрать строку. Страницы ошибки роутера в макетах нет — решить там же.
 - Редирект `/` → `/dashboard` теряет search-параметры — учесть в фиче «Фильтры в URL».
 - `apiGet`: сетевая ошибка (`TypeError: Failed to fetch`) сейчас пробрасывается как есть, а не как `ApiError` — решить при первой фиче с данными (вопрос qa от 2026-11-04).
