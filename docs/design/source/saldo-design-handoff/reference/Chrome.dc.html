@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Шапка и фильтры</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:20px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;--r-xs:4px;--r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-full:999px;--dur:120ms;--ease:cubic-bezier(.2,0,0,1);--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ds[data-theme=light]{color-scheme:light;--bg:#F6F7F9;--surface:#FFFFFF;--surface-2:#F1F3F6;--surface-3:#E7EAEF;--border:#E3E6EB;--border-strong:#CBD1D9;--text:#12151A;--text-2:#4A5260;--text-3:#646E7E;--text-on-accent:#FFFFFF;--accent:#3553D1;--accent-hover:#2C47BC;--accent-press:#253DA3;--accent-soft:#EDF1FF;--focus:#3553D1;--success:#1B7A4A;--success-soft:#E6F4EC;--warning:#985600;--warning-soft:#FFF2DC;--danger:#C02A2A;--danger-soft:#FDECEC;--neutral:#4A5260;--neutral-soft:#EEF0F3;--wb:#0E8A7A;--wb-soft:#E2F4F1;--wb-text:#0A6B5F;--ozon:#E07A12;--ozon-soft:#FFF0E0;--ozon-text:#9A4C00;--prev:#8A93A2;--grid:#EDEFF2;--axis:#646E7E;--cat-1:#3553D1;--cat-2:#0E8A7A;--cat-3:#E07A12;--cat-4:#C7417A;--cat-5:#7A5AF0;--cat-6:#2F9E44;--cat-7:#A88200;--cat-8:#5C6B7F;--skeleton:#ECEEF2;--overlay:rgba(18,21,26,.40);--shadow-sm:0 1px 2px rgba(16,24,40,.05);--shadow-md:0 4px 12px rgba(16,24,40,.08),0 1px 2px rgba(16,24,40,.04);--shadow-lg:0 16px 40px rgba(16,24,40,.16),0 2px 6px rgba(16,24,40,.06)}
+.ds[data-theme=dark]{color-scheme:dark;--bg:#0D0F13;--surface:#15181E;--surface-2:#1C2027;--surface-3:#252A33;--border:#252A33;--border-strong:#363D49;--text:#E8EBF0;--text-2:#A9B1BE;--text-3:#8792A2;--text-on-accent:#0D0F13;--accent:#8098FF;--accent-hover:#97ABFF;--accent-press:#6D86F2;--accent-soft:#1D2442;--focus:#97ABFF;--success:#4CC38A;--success-soft:#11261B;--warning:#F0B04A;--warning-soft:#2B2112;--danger:#FF7A7A;--danger-soft:#301617;--neutral:#A9B1BE;--neutral-soft:#22262E;--wb:#2EC4AE;--wb-soft:#0F2B27;--wb-text:#5ED6C3;--ozon:#FFA552;--ozon-soft:#33230F;--ozon-text:#FFB774;--prev:#6B7484;--grid:#1F232A;--axis:#8792A2;--cat-1:#8098FF;--cat-2:#2EC4AE;--cat-3:#FFA552;--cat-4:#F27BAE;--cat-5:#A994FF;--cat-6:#5FCF73;--cat-7:#E3C04D;--cat-8:#93A1B5;--skeleton:#21252D;--overlay:rgba(0,0,0,.60);--shadow-sm:0 0 0 1px rgba(255,255,255,.02);--shadow-md:0 6px 16px rgba(0,0,0,.40);--shadow-lg:0 20px 48px rgba(0,0,0,.60),0 0 0 1px #2A2F38}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ds button{font:inherit;cursor:pointer}.ds input{font:inherit;color:inherit}
+.ds :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn{transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.btn-p:hover{background:var(--accent-hover)!important}.btn-p:active{background:var(--accent-press)!important}
+.btn-s:hover{background:var(--surface-2)!important;border-color:var(--border-strong)!important}.btn-s:active{background:var(--surface-3)!important}
+.btn-g:hover{background:var(--surface-2)!important;color:var(--text)!important}.btn-g:active{background:var(--surface-3)!important}
+.hov:hover{background:var(--surface-2)!important}
+.lnk{color:var(--accent);text-decoration:none}.lnk:hover{text-decoration:underline;text-underline-offset:3px}
+.scroll::-webkit-scrollbar{width:10px;height:10px}.scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:2px solid var(--surface)}.scroll::-webkit-scrollbar-track{background:transparent}
+</style>
+</helmet>
+<div class="ds" data-theme="{{theme}}" style="position: relative; width: 100%; background: transparent">
+
+<sc-if value="{{isTop}}" hint-placeholder-val="{{ true }}">
+<header style="height: 56px; box-sizing: border-box; padding: 0 {{padX}}px; display: flex; align-items: center; gap: 24px; background: var(--surface); border-bottom: 1px solid var(--border)">
+<a href="{{hrefDash}}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex-shrink: 0" aria-label="Сальдо — на дашборд">
+<svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" style="fill: var(--accent)"></rect><rect x="7" y="13" width="4" height="8" rx="1" style="fill: var(--text-on-accent)"></rect><rect x="13" y="9" width="4" height="12" rx="1" style="fill: var(--text-on-accent)"></rect><rect x="19" y="6" width="3" height="15" rx="1" style="fill: var(--text-on-accent); opacity: .7"></rect></svg>
+<span style="font-size: 15px; font-weight: 600; letter-spacing: -0.01em">Сальдо</span>
+</a>
+<sc-if value="{{notMobile}}" hint-placeholder-val="{{ true }}">
+<nav aria-label="Разделы" style="display: flex; align-items: center; gap: 4px">
+<a href="{{hrefDash}}" class="btn btn-g" aria-current="{{curDash}}" style="height: 32px; padding: 0 12px; border-radius: var(--r-sm); display: inline-flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 500; color: {{navDash.c}}; background: {{navDash.bg}}">Дашборд</a>
+<a href="{{hrefOrders}}" class="btn btn-g" aria-current="{{curOrders}}" style="height: 32px; padding: 0 12px; border-radius: var(--r-sm); display: inline-flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 500; color: {{navOrders.c}}; background: {{navOrders.bg}}">Заказы</a>
+<a href="{{hrefStock}}" class="btn btn-g" aria-current="{{curStock}}" style="height: 32px; padding: 0 12px; border-radius: var(--r-sm); display: inline-flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 500; color: {{navStock.c}}; background: {{navStock.bg}}">Остатки</a>
+</nav>
+</sc-if>
+<div style="flex: 1"></div>
+<a href="{{themeHref}}" class="btn btn-g" aria-label="{{themeLabel}}" title="{{themeLabel}}" style="width: {{iconBtn}}px; height: {{iconBtn}}px; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--text-2)">
+<sc-if value="{{isLight}}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.5A6 6 0 016.5 2.5a6 6 0 107 7z"></path></svg></sc-if>
+<sc-if value="{{isDark}}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3 3l1 1M12 12l1 1M3 13l1-1M12 4l1-1"></path></svg></sc-if>
+</a>
+<sc-if value="{{notMobile}}" hint-placeholder-val="{{ true }}">
+<button type="button" class="btn btn-s" onClick="{{startExport}}" aria-busy="{{expBusy}}" disabled="{{expBusy}}" style="position: relative; overflow: hidden; height: 36px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; min-width: {{expMinW}}px; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5L8 11l3.5-3.5M3 13.5h10"></path></svg>
+<span>{{expLabel}}</span>
+<sc-if value="{{expBusy}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: 0; bottom: 0; height: 2px; width: 62%; background: var(--accent)"></span></sc-if>
+</button>
+</sc-if>
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<button type="button" class="btn btn-g" onClick="{{startExport}}" aria-busy="{{expBusy}}" aria-label="Экспорт в Excel" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--text-2); margin-right: -8px">
+<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5L8 11l3.5-3.5M3 13.5h10"></path></svg>
+</button>
+</sc-if>
+</header>
+<sc-if value="{{mobileBusy}}" hint-placeholder-val="{{ false }}">
+<div role="progressbar" aria-label="Готовим файл Excel" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="height: 2px; background: var(--accent-soft)"><div style="height: 2px; width: 62%; background: var(--accent)"></div></div>
+</sc-if>
+
+<sc-if value="{{notMobile}}" hint-placeholder-val="{{ true }}">
+<div role="search" aria-label="Фильтры" style="box-sizing: border-box; padding: 12px {{padX}}px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border)">
+<div style="display: flex; align-items: center; gap: 8px">
+<div role="group" aria-label="Период" style="display: inline-flex; padding: 2px; gap: 2px; background: var(--surface-2); border-radius: var(--r-sm); border: 1px solid var(--border)">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="5">
+<button type="button" class="btn" aria-pressed="{{p.on}}" onClick="{{p.pick}}" style="height: 30px; padding: 0 10px; border: 0; border-radius: 4px; font-size: 13px; font-weight: 500; background: {{p.bg}}; color: {{p.c}}; box-shadow: {{p.sh}}">{{p.label}}</button>
+</sc-for>
+</div>
+<button type="button" class="btn btn-s" aria-label="Произвольный период: {{range}}" style="height: 36px; padding: 0 12px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--text-3)"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"></path></svg>
+<span class="num">{{range}}</span>
+</button>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" role="switch" aria-checked="{{compare}}" aria-label="Сравнить с прошлым периодом" onClick="{{toggleCompare}}" class="btn" style="width: 36px; height: 20px; border-radius: 999px; border: 0; padding: 2px; background: {{sw.bg}}; display: inline-flex; justify-content: {{sw.j}}">
+<span aria-hidden="true" style="width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(0,0,0,.25)"></span>
+</button>
+<span style="display: flex; flex-direction: column; line-height: 16px">
+<span style="font-size: 13px; font-weight: 500; color: var(--text)">Сравнить с прошлым</span>
+<span class="num" style="font-size: 12px; color: var(--text-3)">{{prevRange}}</span>
+</span>
+</div>
+<div role="group" aria-label="Маркетплейс" style="display: inline-flex; padding: 2px; gap: 2px; background: var(--surface-2); border-radius: var(--r-sm); border: 1px solid var(--border)">
+<sc-for list="{{mps}}" as="m" hint-placeholder-count="3">
+<button type="button" class="btn" aria-pressed="{{m.on}}" onClick="{{m.pick}}" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; font-size: 13px; font-weight: 500; background: {{m.bg}}; color: {{m.c}}; box-shadow: {{m.sh}}; display: inline-flex; align-items: center; gap: 6px">
+<sc-if value="{{m.dot}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: {{m.dotC}}"></span></sc-if>{{m.label}}</button>
+</sc-for>
+</div>
+<div style="position: relative">
+<button type="button" class="btn btn-s" aria-haspopup="listbox" aria-expanded="{{catsOpen}}" onClick="{{toggleCats}}" style="height: 36px; padding: 0 10px 0 12px; border-radius: var(--r-sm); border: 1px solid {{catsBorder}}; background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500">
+<span>Категории</span>
+<span style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-2); font-weight: 400">{{catsSummary}}</span>
+<span class="num" style="min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center">{{catsCount}}</span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--text-3)"><path d="M4 6l4 4 4-4"></path></svg>
+</button>
+<sc-if value="{{catsOpen}}" hint-placeholder-val="{{ false }}">
+<div role="listbox" aria-multiselectable="true" aria-label="Категории" style="position: absolute; top: 42px; left: 0; z-index: 40; width: 260px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-lg); padding: 6px">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="8">
+<label class="hov" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 6px; font-size: 13px; cursor: pointer">
+<input type="checkbox" checked="{{c.on}}" onChange="{{c.toggle}}" style="width: 16px; height: 16px; margin: 0; accent-color: var(--accent)">
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: {{c.color}}"></span>
+<span style="flex: 1">{{c.label}}</span>
+<span class="num" style="font-size: 12px; color: var(--text-3)">{{c.n}}</span>
+</label>
+</sc-for>
+<div style="display: flex; justify-content: space-between; gap: 8px; padding: 8px 4px 2px; border-top: 1px solid var(--border); margin-top: 6px">
+<button type="button" class="btn btn-g" onClick="{{clearCats}}" style="height: 32px; padding: 0 10px; border: 0; background: transparent; border-radius: var(--r-sm); color: var(--text-2); font-size: 13px; font-weight: 500">Очистить</button>
+<button type="button" class="btn btn-p" onClick="{{toggleCats}}" style="height: 32px; padding: 0 12px; border: 0; background: var(--accent); color: var(--text-on-accent); border-radius: var(--r-sm); font-size: 13px; font-weight: 500">Применить</button>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="flex: 1"></div>
+<button type="button" class="btn btn-g" onClick="{{reset}}" style="height: 36px; padding: 0 10px; border: 0; background: transparent; border-radius: var(--r-sm); color: var(--text-2); font-size: 13px; font-weight: 500">Сбросить фильтры</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 8px 16px 12px; display: flex; align-items: center; gap: 12px; background: var(--surface); border-bottom: 1px solid var(--border)">
+<button type="button" class="btn btn-s" onClick="{{openSheet}}" aria-haspopup="dialog" style="height: 44px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; flex-shrink: 0">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"></path></svg>
+Фильтры ({{activeCount}})</button>
+<span style="display: flex; flex-direction: column; min-width: 0; line-height: 16px">
+<span class="num" style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{presetLabel}} · {{rangeShort}}</span>
+<span style="font-size: 12px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{mpLabel}} · {{catsCount}} категории · сравнение</span>
+</span>
+</div>
+</sc-if>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" aria-live="polite" style="position: absolute; z-index: 70; top: {{toastTop}}px; right: {{toastRight}}px; left: {{toastLeft}}; width: {{toastW}}; box-sizing: border-box; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); padding: 14px 12px 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<span aria-hidden="true" style="width: 28px; height: 28px; flex-shrink: 0; border-radius: 999px; background: var(--success-soft); color: var(--success); display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; font-weight: 600">Файл готов</span>
+<span class="num" style="font-size: 12px; line-height: 16px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{fileName}} · 2,4 МБ</span>
+<a href="#" class="lnk" style="font-size: 13px; font-weight: 500; margin-top: 6px; align-self: flex-start">Скачать</a>
+</div>
+<button type="button" class="btn btn-g" onClick="{{closeToast}}" aria-label="Закрыть уведомление" style="width: 32px; height: 32px; border: 0; background: transparent; border-radius: var(--r-sm); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center; margin: -6px -4px 0 0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"></path></svg></button>
+</div>
+</sc-if>
+
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; z-index: 80; left: 0; top: 0; width: 100%; height: {{sheetH}}px; background: var(--overlay)">
+<div role="dialog" aria-modal="true" aria-labelledby="sheet-title" style="position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-radius: 16px 16px 0 0; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; max-height: 90%">
+<div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 8px"><span style="width: 36px; height: 4px; border-radius: 999px; background: var(--border-strong)"></span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px 4px 16px">
+<h2 id="sheet-title" style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600">Фильтры</h2>
+<button type="button" class="btn btn-g" onClick="{{closeSheet}}" aria-label="Закрыть фильтры" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: var(--r-sm); color: var(--text-2); display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"></path></svg></button>
+</div>
+<div style="padding: 4px 16px 16px; display: flex; flex-direction: column; gap: 20px; overflow: auto">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3)">Период</span>
+<div role="group" aria-label="Период" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="5">
+<button type="button" class="btn" aria-pressed="{{p.on}}" onClick="{{p.pick}}" style="height: 44px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 500; border: 1px solid {{p.chipB}}; background: {{p.chipBg}}; color: {{p.chipC}}">{{p.label}}</button>
+</sc-for>
+<button type="button" class="btn btn-s" style="height: 44px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 500; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"></path></svg>Свой период</button>
+</div>
+<span class="num" style="font-size: 13px; color: var(--text-2)">{{range}}</span>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px">
+<span style="display: flex; flex-direction: column; line-height: 18px">
+<span style="font-size: 14px; font-weight: 500">Сравнить с прошлым периодом</span>
+<span class="num" style="font-size: 12px; color: var(--text-3)">{{prevRange}}</span>
+</span>
+<button type="button" role="switch" aria-checked="{{compare}}" aria-label="Сравнить с прошлым периодом" onClick="{{toggleCompare}}" class="btn" style="width: 44px; height: 26px; border-radius: 999px; border: 0; padding: 3px; background: {{sw.bg}}; display: inline-flex; justify-content: {{sw.j}}; flex-shrink: 0">
+<span aria-hidden="true" style="width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(0,0,0,.25)"></span>
+</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3)">Маркетплейс</span>
+<div role="group" aria-label="Маркетплейс" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 2px; gap: 2px; background: var(--surface-2); border-radius: var(--r-sm); border: 1px solid var(--border)">
+<sc-for list="{{mps}}" as="m" hint-placeholder-count="3">
+<button type="button" class="btn" aria-pressed="{{m.on}}" onClick="{{m.pick}}" style="height: 40px; border: 0; border-radius: 4px; font-size: 14px; font-weight: 500; background: {{m.bg}}; color: {{m.c}}; box-shadow: {{m.sh}}">{{m.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3)">Категории · выбрано {{catsCount}}</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="8">
+<button type="button" class="btn" aria-pressed="{{c.on}}" onClick="{{c.toggle}}" style="height: 44px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 500; border: 1px solid {{c.chipB}}; background: {{c.chipBg}}; color: {{c.chipC}}; display: inline-flex; align-items: center; gap: 6px">
+<sc-if value="{{c.on}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"></path></svg></sc-if>{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 8px; padding: 12px 16px 16px; border-top: 1px solid var(--border)">
+<button type="button" class="btn btn-s" onClick="{{reset}}" style="height: 44px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500">Сбросить</button>
+<button type="button" class="btn btn-p" onClick="{{closeSheet}}" style="height: 44px; border-radius: var(--r-sm); border: 0; background: var(--accent); color: var(--text-on-accent); font-size: 14px; font-weight: 600">Показать результаты</button>
+</div>
+</div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{isTabs}}" hint-placeholder-val="{{ false }}">
+<nav aria-label="Разделы" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: 64px; background: var(--surface); border-top: 1px solid var(--border)">
+<a href="{{hrefDash}}" aria-current="{{curDash}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; font-size: 11px; line-height: 14px; font-weight: 500; color: {{tabDash}}; box-shadow: inset 0 2px 0 {{tabDashBar}}">
+<svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="5" height="5" rx="1"></rect><rect x="9" y="2" width="5" height="5" rx="1"></rect><rect x="2" y="9" width="5" height="5" rx="1"></rect><rect x="9" y="9" width="5" height="5" rx="1"></rect></svg>Дашборд</a>
+<a href="{{hrefOrders}}" aria-current="{{curOrders}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; font-size: 11px; line-height: 14px; font-weight: 500; color: {{tabOrders}}; box-shadow: inset 0 2px 0 {{tabOrdersBar}}">
+<svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2h8v12l-2-1-2 1-2-1-2 1V2z"></path><path d="M6 5.5h4M6 8h4"></path></svg>Заказы</a>
+<a href="{{hrefStock}}" aria-current="{{curStock}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; font-size: 11px; line-height: 14px; font-weight: 500; color: {{tabStock}}; box-shadow: inset 0 2px 0 {{tabStockBar}}">
+<svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5L8 2l5.5 3v6L8 14l-5.5-3V5z"></path><path d="M2.5 5L8 8l5.5-3M8 8v6"></path></svg>Остатки</a>
+</nav>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"layout":{"editor":"enum","options":["desktop","tablet","mobile"],"default":"desktop"},"active":{"editor":"enum","options":["dashboard","orders","stock"],"default":"dashboard"},"part":{"editor":"enum","options":["top","tabs"],"default":"top"},"exportState":{"editor":"enum","options":["idle","progress","done"],"default":"idle"},"sheet":{"editor":"boolean","default":false},"sheetH":{"editor":null},"$preview":{"width":1440,"height":128}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { preset: '30', mp: 'all', compare: true, catsOpen: false, cats: ['Обувь', 'Одежда', 'Спорт'], exp: null, sheet: null, toastClosed: false };
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+  renderVals() {
+    const theme = this.props.theme === 'dark' ? 'dark' : 'light';
+    const layout = ['desktop', 'tablet', 'mobile'].includes(this.props.layout) ? this.props.layout : 'desktop';
+    const active = this.props.active ?? 'dashboard';
+    const part = this.props.part === 'tabs' ? 'tabs' : 'top';
+    const exp = this.state.exp ?? (this.props.exportState ?? 'idle');
+    const sheetOpen = this.state.sheet ?? (this.props.sheet === true || this.props.sheet === 'true');
+    const isMobile = layout === 'mobile';
+    const w = { desktop: 1440, tablet: 768, mobile: 375 }[layout];
+    const sfx = (t) => (w === 1440 && t === 'light') ? '' : '-' + w + '-' + t;
+    const other = theme === 'light' ? 'dark' : 'light';
+    const page = { dashboard: 'Dashboard', orders: 'Orders', stock: 'Stock' }[active] || 'Dashboard';
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const fmt = (d) => pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
+    const fmtS = (d) => pad(d.getDate()) + '.' + pad(d.getMonth() + 1);
+    const end = new Date(2026, 10, 3);
+    const startOf = (p) => {
+      if (p === '7') return new Date(2026, 9, 28);
+      if (p === '30') return new Date(2026, 9, 5);
+      if (p === '90') return new Date(2026, 7, 6);
+      if (p === 'q') return new Date(2026, 9, 1);
+      return new Date(2026, 0, 1);
+    };
+    const start = startOf(this.state.preset);
+    const days = Math.round((end - start) / 86400000) + 1;
+    const pEnd = new Date(start); pEnd.setDate(pEnd.getDate() - 1);
+    const pStart = new Date(pEnd); pStart.setDate(pStart.getDate() - days + 1);
+    const presetDefs = [['7', '7 дней'], ['30', '30 дней'], ['90', '90 дней'], ['q', 'Квартал'], ['y', 'Год']];
+    const seg = (on) => ({
+      bg: on ? 'var(--surface)' : 'transparent',
+      c: on ? 'var(--text)' : 'var(--text-2)',
+      sh: on ? '0 1px 2px rgba(16,24,40,.10), 0 0 0 1px var(--border)' : 'none',
+      chipB: on ? 'var(--accent)' : 'var(--border-strong)',
+      chipBg: on ? 'var(--accent-soft)' : 'var(--surface)',
+      chipC: on ? 'var(--accent)' : 'var(--text)'
+    });
+    const presets = presetDefs.map(([id, label]) => ({ id, label, on: this.state.preset === id, ...seg(this.state.preset === id), pick: () => this.setState({ preset: id }) }));
+    const mpDefs = [['all', 'Все', null], ['wb', 'WB', 'var(--wb)'], ['ozon', 'Ozon', 'var(--ozon)']];
+    const mps = mpDefs.map(([id, label, dotC]) => ({ id, label, dot: !!dotC, dotC, on: this.state.mp === id, ...seg(this.state.mp === id), pick: () => this.setState({ mp: id }) }));
+    const catDefs = [['Обувь', 48, 'var(--cat-1)'], ['Одежда', 112, 'var(--cat-2)'], ['Электроника', 37, 'var(--cat-3)'], ['Красота', 29, 'var(--cat-4)'], ['Дом и кухня', 54, 'var(--cat-5)'], ['Спорт', 31, 'var(--cat-6)'], ['Детские товары', 22, 'var(--cat-7)'], ['Аксессуары', 26, 'var(--cat-8)']];
+    const sel = this.state.cats;
+    const cats = catDefs.map(([label, n, color]) => {
+      const on = sel.includes(label);
+      return { label, n, color, on, ...seg(on), toggle: () => this.setState({ cats: on ? sel.filter((x) => x !== label) : [...sel, label] }) };
+    });
+    const catsCount = sel.length;
+    const catsSummary = catsCount === 0 ? 'все' : (catsCount <= 2 ? sel.join(', ') : sel.slice(0, 2).join(', ') + ' +' + (catsCount - 2));
+    const activeCount = 1 + (this.state.compare ? 1 : 0) + (this.state.mp !== 'all' ? 1 : 0) + (catsCount ? 1 : 0);
+    const nav = (on) => ({ c: on ? 'var(--text)' : 'var(--text-2)', bg: on ? 'var(--surface-2)' : 'transparent' });
+    const fileBase = { dashboard: 'dashboard', orders: 'orders', stock: 'stock' }[active] || 'dashboard';
+
+    return {
+      theme, isLight: theme === 'light', isDark: theme === 'dark',
+      isTop: part === 'top', isTabs: part === 'tabs',
+      isMobile, notMobile: !isMobile,
+      padX: layout === 'desktop' ? 32 : (layout === 'tablet' ? 24 : 16),
+      iconBtn: isMobile ? 44 : 36,
+      hrefDash: 'Dashboard' + sfx(theme) + '.dc.html',
+      hrefOrders: 'Orders' + sfx(theme) + '.dc.html',
+      hrefStock: 'Stock' + sfx(theme) + '.dc.html',
+      themeHref: page + sfx(other) + '.dc.html',
+      themeLabel: theme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему',
+      curDash: active === 'dashboard' ? 'page' : undefined,
+      curOrders: active === 'orders' ? 'page' : undefined,
+      curStock: active === 'stock' ? 'page' : undefined,
+      navDash: nav(active === 'dashboard'), navOrders: nav(active === 'orders'), navStock: nav(active === 'stock'),
+      tabDash: active === 'dashboard' ? 'var(--accent)' : 'var(--text-2)', tabDashBar: active === 'dashboard' ? 'var(--accent)' : 'transparent',
+      tabOrders: active === 'orders' ? 'var(--accent)' : 'var(--text-2)', tabOrdersBar: active === 'orders' ? 'var(--accent)' : 'transparent',
+      tabStock: active === 'stock' ? 'var(--accent)' : 'var(--text-2)', tabStockBar: active === 'stock' ? 'var(--accent)' : 'transparent',
+      expBusy: exp === 'progress',
+      mobileBusy: isMobile && exp === 'progress',
+      expLabel: exp === 'progress' ? 'Готовим файл…' : (layout === 'desktop' ? 'Экспорт в Excel' : 'Экспорт'),
+      expMinW: layout === 'desktop' ? 168 : 0,
+      startExport: () => {
+        if (exp === 'progress') return;
+        this.setState({ exp: 'progress', toastClosed: false });
+        clearTimeout(this.t);
+        this.t = setTimeout(() => this.setState({ exp: 'done' }), 1400);
+      },
+      toast: exp === 'done' && !this.state.toastClosed,
+      closeToast: () => this.setState({ toastClosed: true, exp: 'idle' }),
+      toastTop: isMobile ? 64 : 128,
+      toastRight: isMobile ? 16 : (layout === 'desktop' ? 32 : 24),
+      toastLeft: isMobile ? '16px' : 'auto',
+      toastW: isMobile ? 'auto' : '360px',
+      fileName: fileBase + '_' + fmt(start) + '–' + fmt(end) + '.xlsx',
+      presets, mps, cats,
+      range: fmt(start) + ' – ' + fmt(end),
+      rangeShort: fmtS(start) + '–' + fmtS(end),
+      prevRange: fmt(pStart) + ' – ' + fmt(pEnd),
+      presetLabel: (presetDefs.find((p) => p[0] === this.state.preset) || presetDefs[1])[1],
+      mpLabel: { all: 'Все площадки', wb: 'WB', ozon: 'Ozon' }[this.state.mp],
+      compare: this.state.compare,
+      sw: this.state.compare ? { bg: 'var(--accent)', j: 'flex-end' } : { bg: 'var(--border-strong)', j: 'flex-start' },
+      toggleCompare: () => this.setState({ compare: !this.state.compare }),
+      catsOpen: this.state.catsOpen,
+      catsBorder: this.state.catsOpen ? 'var(--accent)' : 'var(--border-strong)',
+      toggleCats: () => this.setState({ catsOpen: !this.state.catsOpen }),
+      clearCats: () => this.setState({ cats: [] }),
+      catsCount, catsSummary, activeCount,
+      reset: () => this.setState({ preset: '30', mp: 'all', compare: true, cats: [], catsOpen: false }),
+      sheetOpen,
+      sheetH: Number(this.props.sheetH ?? 812),
+      openSheet: () => this.setState({ sheet: true }),
+      closeSheet: () => this.setState({ sheet: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

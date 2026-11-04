@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Дашборд</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:20px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;--r-xs:4px;--r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-full:999px;--dur:120ms;--ease:cubic-bezier(.2,0,0,1);--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ds[data-theme=light]{color-scheme:light;--bg:#F6F7F9;--surface:#FFFFFF;--surface-2:#F1F3F6;--surface-3:#E7EAEF;--border:#E3E6EB;--border-strong:#CBD1D9;--text:#12151A;--text-2:#4A5260;--text-3:#646E7E;--text-on-accent:#FFFFFF;--accent:#3553D1;--accent-hover:#2C47BC;--accent-press:#253DA3;--accent-soft:#EDF1FF;--focus:#3553D1;--success:#1B7A4A;--success-soft:#E6F4EC;--warning:#985600;--warning-soft:#FFF2DC;--danger:#C02A2A;--danger-soft:#FDECEC;--neutral:#4A5260;--neutral-soft:#EEF0F3;--wb:#0E8A7A;--wb-soft:#E2F4F1;--wb-text:#0A6B5F;--ozon:#E07A12;--ozon-soft:#FFF0E0;--ozon-text:#9A4C00;--prev:#8A93A2;--grid:#EDEFF2;--axis:#646E7E;--cat-1:#3553D1;--cat-2:#0E8A7A;--cat-3:#E07A12;--cat-4:#C7417A;--cat-5:#7A5AF0;--cat-6:#2F9E44;--cat-7:#A88200;--cat-8:#5C6B7F;--skeleton:#ECEEF2;--overlay:rgba(18,21,26,.40);--shadow-sm:0 1px 2px rgba(16,24,40,.05);--shadow-md:0 4px 12px rgba(16,24,40,.08),0 1px 2px rgba(16,24,40,.04);--shadow-lg:0 16px 40px rgba(16,24,40,.16),0 2px 6px rgba(16,24,40,.06)}
+.ds[data-theme=dark]{color-scheme:dark;--bg:#0D0F13;--surface:#15181E;--surface-2:#1C2027;--surface-3:#252A33;--border:#252A33;--border-strong:#363D49;--text:#E8EBF0;--text-2:#A9B1BE;--text-3:#8792A2;--text-on-accent:#0D0F13;--accent:#8098FF;--accent-hover:#97ABFF;--accent-press:#6D86F2;--accent-soft:#1D2442;--focus:#97ABFF;--success:#4CC38A;--success-soft:#11261B;--warning:#F0B04A;--warning-soft:#2B2112;--danger:#FF7A7A;--danger-soft:#301617;--neutral:#A9B1BE;--neutral-soft:#22262E;--wb:#2EC4AE;--wb-soft:#0F2B27;--wb-text:#5ED6C3;--ozon:#FFA552;--ozon-soft:#33230F;--ozon-text:#FFB774;--prev:#6B7484;--grid:#1F232A;--axis:#8792A2;--cat-1:#8098FF;--cat-2:#2EC4AE;--cat-3:#FFA552;--cat-4:#F27BAE;--cat-5:#A994FF;--cat-6:#5FCF73;--cat-7:#E3C04D;--cat-8:#93A1B5;--skeleton:#21252D;--overlay:rgba(0,0,0,.60);--shadow-sm:0 0 0 1px rgba(255,255,255,.02);--shadow-md:0 6px 16px rgba(0,0,0,.40);--shadow-lg:0 20px 48px rgba(0,0,0,.60),0 0 0 1px #2A2F38}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ds button{font:inherit;cursor:pointer}.ds input{font:inherit;color:inherit}
+.ds :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn{transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.btn-p:hover{background:var(--accent-hover)!important}.btn-p:active{background:var(--accent-press)!important}
+.btn-s:hover{background:var(--surface-2)!important;border-color:var(--border-strong)!important}.btn-s:active{background:var(--surface-3)!important}
+.btn-g:hover{background:var(--surface-2)!important;color:var(--text)!important}.btn-g:active{background:var(--surface-3)!important}
+.hov:hover{background:var(--surface-2)!important}
+.lnk{color:var(--accent);text-decoration:none}.lnk:hover{text-decoration:underline;text-underline-offset:3px}
+.scroll::-webkit-scrollbar{width:10px;height:10px}.scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:2px solid var(--surface)}.scroll::-webkit-scrollbar-track{background:transparent}
+</style>
+</helmet>
+<div class="ds" data-theme="{{theme}}" style="position: relative; width: 100%; min-height: {{minH}}px; display: flex; flex-direction: column; background: var(--bg)">
+<dc-import name="Chrome" theme="{{theme}}" layout="{{layout}}" active="dashboard" export-state="{{exportState}}" sheet="{{sheet}}" sheet-h="{{minH}}" hint-size="100%,{{chromeH}}px"></dc-import>
+
+<main style="flex: 1; width: 100%; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: {{L.pad}}; display: flex; flex-direction: column; gap: {{L.gap}}px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<h1 style="margin: 0; font-size: {{L.h1}}px; line-height: {{L.h1lh}}px; font-weight: 600; letter-spacing: -0.015em">Дашборд</h1>
+<span class="num" style="font-size: 13px; line-height: 18px; color: var(--text-2)">05.10.2026 – 03.11.2026 <span style="color: var(--text-3)">· сравнение с 05.09.2026 – 04.10.2026</span></span>
+</div>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3)"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 999px; background: var(--success)"></span>Данные WB и Ozon обновлены сегодня в 07:40</span>
+</div>
+
+<sc-if value="{{showInsight}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; padding: 12px 16px; border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--border); font-size: 14px; line-height: 20px; color: var(--text-2)">
+<span style="color: var(--text); font-weight: 600">Зарабатываете больше:</span> выручка <span class="num" style="color: var(--success); font-weight: 600">↑ +12,4 %</span>, прибыль <span class="num" style="color: var(--success); font-weight: 600">↑ +6,2 %</span>, но маржа снизилась <span class="num" style="color: var(--danger); font-weight: 600">↓ −5,5 %</span>. <span style="color: var(--text); font-weight: 600">3 позиции</span> закончатся в ближайшие 7 дней.</p>
+</sc-if>
+
+<section aria-labelledby="kpi-h">
+<h2 id="kpi-h" class="sr">Ключевые показатели</h2>
+<sc-if value="{{B.kpi.data}}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat({{L.kpiCols}}, minmax(0, 1fr)); gap: {{L.kpiGap}}px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="8">
+<article style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: {{L.kpiPad}}px; display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<h3 style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{k.label}}</h3>
+<div class="num" style="font-size: {{L.kpiFs}}px; line-height: {{L.kpiLh}}px; font-weight: 600; letter-spacing: -0.02em; white-space: nowrap">{{k.value}}</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px">
+<div style="display: flex; align-items: center; gap: 8px; min-width: 0">
+<span class="num" style="display: inline-flex; align-items: center; gap: 2px; height: 22px; padding: 0 6px 0 4px; border-radius: var(--r-xs); font-size: 12px; font-weight: 600; color: {{k.dc}}; background: {{k.dbg}}; white-space: nowrap; flex-shrink: 0">
+<sc-if value="{{k.up}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"></path></svg></sc-if>
+<sc-if value="{{k.down}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"></path></svg></sc-if>
+{{k.delta}}<span class="sr">{{k.sr}}</span></span>
+<sc-if value="{{L.kpiPrev}}" hint-placeholder-val="{{ true }}"><span class="num" style="font-size: 12px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">было {{k.prev}}</span></sc-if>
+</div>
+<svg width="{{L.spark}}" height="28" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true" style="flex-shrink: 0; overflow: visible"><path d="{{k.area}}" style="fill: {{k.sc}}; opacity: .10"></path><path d="{{k.spark}}" fill="none" vector-effect="non-scaling-stroke" style="stroke: {{k.sc}}; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round"></path></svg>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{B.kpi.load}}" hint-placeholder-val="{{ false }}">
+<div aria-busy="true" aria-label="Загружаем показатели" style="display: grid; grid-template-columns: repeat({{L.kpiCols}}, minmax(0, 1fr)); gap: {{L.kpiGap}}px">
+<sc-for list="{{eight}}" as="x" hint-placeholder-count="8">
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: {{L.kpiPad}}px; display: flex; flex-direction: column; gap: 10px">
+<div style="height: 12px; width: 45%; border-radius: 4px; background: var(--skeleton); margin: 3px 0"></div>
+<div style="height: {{L.kpiSk}}px; width: 65%; border-radius: 6px; background: var(--skeleton)"></div>
+<div style="display: flex; justify-content: space-between; align-items: center"><div style="height: 20px; width: 56px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 24px; width: {{L.spark}}px; border-radius: 4px; background: var(--skeleton)"></div></div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{B.kpi.empty}}" hint-placeholder-val="{{ false }}">
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--surface-2); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l2-6h8l2 6v4H2V9z"></path><path d="M2 9h3.5l1 1.5h3l1-1.5H14"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Нет данных за период</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 420px">За 05.10–03.11.2026 по выбранным фильтрам не было ни заказов, ни выкупов.</span>
+<button type="button" class="btn btn-s" onClick="{{resetAll}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500">Сбросить фильтры</button>
+</div>
+</sc-if>
+<sc-if value="{{B.kpi.err}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5l6 11H2l6-11z"></path><path d="M8 6.5v3M8 11.5v.01"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Не удалось загрузить показатели</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 420px">API Wildberries не ответил за 30 секунд. Данные Ozon получены — попробуйте ещё раз.</span>
+<button type="button" class="btn btn-s" onClick="{{retry}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 11-1.5-3.5M13 2.5v3h-3"></path></svg>Повторить</button>
+</div>
+</sc-if>
+</section>
+
+<div style="display: grid; grid-template-columns: {{L.row2}}; gap: {{L.gap}}px; align-items: stretch">
+
+<section aria-labelledby="chart-h" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: {{L.cardPad}}px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h2 id="chart-h" style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600">Продажи по дням</h2>
+<span class="num" style="font-size: 13px; color: var(--text-2)">{{chart.total}} за период <span style="color: var(--text-3)">· было {{chart.prevTotal}}</span></span>
+</div>
+<div role="group" aria-label="Метрика графика" style="display: {{L.segDisplay}}; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 2px; gap: 2px; background: var(--surface-2); border-radius: var(--r-sm); border: 1px solid var(--border); width: {{L.segW}}">
+<sc-for list="{{metrics}}" as="m" hint-placeholder-count="3">
+<button type="button" class="btn" aria-pressed="{{m.on}}" onClick="{{m.pick}}" style="height: {{L.segH}}px; padding: 0 12px; border: 0; border-radius: 4px; font-size: 13px; font-weight: 500; background: {{m.bg}}; color: {{m.c}}; box-shadow: {{m.sh}}">{{m.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{B.chart.data}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 12px; line-height: 16px; color: var(--text-2)">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--wb)"></span>WB <span class="num" style="color: var(--text); font-weight: 500">{{chart.wbTotal}}</span></span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--ozon)"></span>Ozon <span class="num" style="color: var(--text); font-weight: 500">{{chart.ozTotal}}</span></span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="18" height="10" aria-hidden="true"><line x1="0" y1="5" x2="18" y2="5" style="stroke: var(--prev); stroke-width: 1.5; stroke-dasharray: 4 3"></line></svg>Прошлый период</span>
+</div>
+<div style="display: flex; gap: 8px">
+<div aria-hidden="true" style="position: relative; width: {{L.yW}}px; height: {{L.chartH}}px; flex-shrink: 0">
+<sc-for list="{{chart.yTicks}}" as="t" hint-placeholder-count="5">
+<span class="num" style="position: absolute; right: 0; top: {{t.top}}%; transform: translateY(-50%); font-size: 11px; line-height: 16px; color: var(--axis); white-space: nowrap">{{t.label}}</span>
+</sc-for>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="position: relative; height: {{L.chartH}}px">
+<svg width="100%" height="100%" viewBox="0 0 300 100" preserveAspectRatio="none" role="img" aria-label="{{chart.aria}}" style="display: block; overflow: visible">
+<rect x="{{chart.hx}}" y="0" width="10" height="100" style="fill: var(--surface-2)"></rect>
+<sc-for list="{{chart.grid}}" as="g" hint-placeholder-count="5">
+<line x1="0" x2="300" y1="{{g.y}}" y2="{{g.y}}" vector-effect="non-scaling-stroke" style="stroke: {{g.c}}; stroke-width: 1"></line>
+</sc-for>
+<sc-for list="{{chart.bars}}" as="b" hint-placeholder-count="30">
+<rect x="{{b.x}}" y="{{b.wy}}" width="6" height="{{b.wh}}" style="fill: var(--wb); opacity: {{b.op}}"></rect>
+<rect x="{{b.x}}" y="{{b.oy}}" width="6" height="{{b.oh}}" style="fill: var(--ozon); opacity: {{b.op}}"></rect>
+</sc-for>
+<sc-if value="{{chart.showPrev}}" hint-placeholder-val="{{ true }}">
+<polyline points="{{chart.prevPts}}" fill="none" vector-effect="non-scaling-stroke" style="stroke: var(--prev); stroke-width: 1.5; stroke-dasharray: 4 3; stroke-linejoin: round"></polyline>
+</sc-if>
+<sc-for list="{{chart.bars}}" as="b" hint-placeholder-count="30">
+<rect x="{{b.hx}}" y="0" width="10" height="100" fill="transparent" onMouseEnter="{{b.hover}}" onClick="{{b.hover}}"></rect>
+</sc-for>
+</svg>
+<div role="tooltip" style="position: absolute; top: 4px; left: {{tip.left}}%; transform: translateX({{tip.tx}}); z-index: 5; pointer-events: none; min-width: 208px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-lg); padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; line-height: 16px">
+<span style="font-weight: 600; color: var(--text)">{{tip.date}}</span>
+<span style="display: flex; justify-content: space-between; gap: 16px; color: var(--text-2)"><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: var(--wb)"></span>WB</span><span class="num" style="color: var(--text); font-weight: 500">{{tip.wb}}</span></span>
+<span style="display: flex; justify-content: space-between; gap: 16px; color: var(--text-2)"><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: var(--ozon)"></span>Ozon</span><span class="num" style="color: var(--text); font-weight: 500">{{tip.oz}}</span></span>
+<span style="display: flex; justify-content: space-between; gap: 16px; padding-top: 6px; border-top: 1px solid var(--border); font-weight: 600"><span>Итого</span><span class="num">{{tip.total}}</span></span>
+<span style="display: flex; justify-content: space-between; gap: 16px; color: var(--text-3)"><span>{{tip.prevDate}}</span><span class="num">{{tip.prev}}</span></span>
+<span class="num" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px 1px 4px; border-radius: 4px; font-weight: 600; color: {{tip.dc}}; background: {{tip.dbg}}">{{tip.arrow}} {{tip.delta}}</span>
+</div>
+</div>
+<div aria-hidden="true" style="position: relative; height: 16px">
+<sc-for list="{{chart.xTicks}}" as="t" hint-placeholder-count="6">
+<span style="position: absolute; left: {{t.left}}%; transform: translateX(-50%); font-size: 11px; line-height: 16px; color: var(--axis); white-space: nowrap">{{t.label}}</span>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{B.chart.load}}" hint-placeholder-val="{{ false }}">
+<div aria-busy="true" aria-label="Загружаем график" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 20px"><div style="height: 12px; width: 110px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 12px; width: 110px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 12px; width: 110px; border-radius: 4px; background: var(--skeleton)"></div></div>
+<div style="height: {{L.chartH}}px; display: flex; align-items: flex-end; gap: {{L.skGap}}px; padding-left: {{L.yW}}px; border-bottom: 1px solid var(--border)">
+<sc-for list="{{skBars}}" as="h" hint-placeholder-count="30">
+<div style="flex: 1; height: {{h}}%; border-radius: 3px 3px 0 0; background: var(--skeleton)"></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{B.chart.empty}}" hint-placeholder-val="{{ false }}">
+<div style="height: {{L.chartEmptyH}}px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border: 1px dashed var(--border-strong); border-radius: var(--r-md)">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--surface-2); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l2-6h8l2 6v4H2V9z"></path><path d="M2 9h3.5l1 1.5h3l1-1.5H14"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Нет продаж за период</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 340px; padding: 0 16px">Попробуйте расширить период или выбрать все категории.</span>
+<button type="button" class="btn btn-s" onClick="{{resetAll}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500">Сбросить фильтры</button>
+</div>
+</sc-if>
+<sc-if value="{{B.chart.err}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="height: {{L.chartEmptyH}}px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border: 1px dashed var(--border-strong); border-radius: var(--r-md)">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5l6 11H2l6-11z"></path><path d="M8 6.5v3M8 11.5v.01"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">График не загрузился</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 340px; padding: 0 16px">Ошибка 502 при запросе продаж Ozon. Остальные блоки работают.</span>
+<button type="button" class="btn btn-s" onClick="{{retry}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 11-1.5-3.5M13 2.5v3h-3"></path></svg>Повторить</button>
+</div>
+</sc-if>
+</section>
+
+<section aria-labelledby="low-h" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: {{L.cardPad}}px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding-bottom: 8px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h2 id="low-h" style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600">Скоро закончится</h2>
+<span style="font-size: 13px; color: var(--text-2)">5 позиций с наименьшим запасом</span>
+</div>
+<a href="{{stockHref}}" class="lnk" style="font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; min-height: {{L.linkH}}px; white-space: nowrap">Все остатки<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+</div>
+<sc-if value="{{B.low.data}}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{low}}" as="s" hint-placeholder-count="5">
+<li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border)">
+<span aria-hidden="true" style="width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--r-md); background: var(--surface-2); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"></rect><circle cx="6" cy="6.5" r="1.2"></circle><path d="M2.5 12l3.5-3.5 2.5 2.5 2-2 3 3"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.name}}</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--text-3); white-space: nowrap; overflow: hidden">
+<span style="height: 18px; padding: 0 5px; border-radius: 4px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; background: {{s.mpBg}}; color: {{s.mpC}}">{{s.mp}}</span>
+<sc-if value="{{s.type}}" hint-placeholder-val="{{ false }}"><span style="height: 18px; padding: 0 5px; border-radius: 4px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; border: 1px solid var(--border-strong); color: var(--text-2)">{{s.type}}</span></sc-if>
+<span style="overflow: hidden; text-overflow: ellipsis">{{s.wh}}</span>
+<span class="num">· {{s.qty}} шт · {{s.speed}}/день</span>
+</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0">
+<span class="num" style="font-size: 16px; line-height: 20px; font-weight: 600; color: {{s.c}}">{{s.days}}</span>
+<span style="display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 6px; border-radius: 4px; font-size: 11px; font-weight: 600; background: {{s.bg}}; color: {{s.c}}">
+<sc-if value="{{s.crit}}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5l6 11H2l6-11z"></path><path d="M8 6.5v3M8 11.5v.01"></path></svg></sc-if>
+<sc-if value="{{s.soon}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3l2 1.5"></path></svg></sc-if>
+{{s.status}}</span>
+</div>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{B.low.load}}" hint-placeholder-val="{{ false }}">
+<div aria-busy="true" aria-label="Загружаем остатки" style="display: flex; flex-direction: column">
+<sc-for list="{{five}}" as="x" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border)">
+<div style="width: 40px; height: 40px; border-radius: var(--r-md); background: var(--skeleton); flex-shrink: 0"></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px"><div style="height: 12px; width: 80%; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 10px; width: 55%; border-radius: 4px; background: var(--skeleton)"></div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="height: 14px; width: 40px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 16px; width: 64px; border-radius: 4px; background: var(--skeleton)"></div></div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{B.low.empty}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1; min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border-top: 1px solid var(--border)">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--success-soft); color: var(--success); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Ничего не заканчивается</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 300px">У всех товаров запас больше 14 дней по выбранным фильтрам.</span>
+<button type="button" class="btn btn-s" onClick="{{resetAll}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500">Сбросить фильтры</button>
+</div>
+</sc-if>
+<sc-if value="{{B.low.err}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="flex: 1; min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border-top: 1px solid var(--border)">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5l6 11H2l6-11z"></path><path d="M8 6.5v3M8 11.5v.01"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Не удалось получить остатки</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 300px">Проверьте соединение и повторите.</span>
+<button type="button" class="btn btn-s" onClick="{{retry}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 11-1.5-3.5M13 2.5v3h-3"></path></svg>Повторить</button>
+</div>
+</sc-if>
+</section>
+</div>
+
+<section aria-labelledby="top-h" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; min-width: 0; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: {{L.cardPad}}px {{L.cardPad}}px 12px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h2 id="top-h" style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600">Топ-10 товаров</h2>
+<span style="font-size: 13px; color: var(--text-2)">{{sortCaption}}</span>
+</div>
+<sc-if value="{{L.cards}}" hint-placeholder-val="{{ false }}">
+<button type="button" class="btn btn-s" onClick="{{cycleSort}}" aria-label="Сменить сортировку, сейчас: {{sortLabel}}" style="height: 44px; padding: 0 12px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6l3-3 3 3M5 10l3 3 3-3"></path></svg>{{sortLabel}}</button>
+</sc-if>
+</div>
+
+<sc-if value="{{B.top.data}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{L.table}}" hint-placeholder-val="{{ true }}">
+<div class="scroll" style="overflow-x: auto">
+<table style="width: 100%; min-width: {{L.tableMin}}px; border-collapse: collapse; font-size: 13px; line-height: 18px">
+<thead>
+<tr style="background: var(--surface-2)">
+<th scope="col" style="width: 40px; padding: 0 0 0 {{L.cardPad}}px; height: 36px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-3)">#</th>
+<th scope="col" style="padding: 0 12px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-3)">Товар</th>
+<th scope="col" style="width: 84px; padding: 0 12px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-3)">Площадка</th>
+<sc-for list="{{cols}}" as="c" hint-placeholder-count="4">
+<th scope="col" aria-sort="{{c.aria}}" style="width: {{c.w}}px; padding: 0 {{c.pr}}px 0 8px; text-align: right">
+<button type="button" class="btn btn-g" onClick="{{c.sort}}" style="height: 28px; padding: 0 6px; margin-right: -6px; border: 0; border-radius: 4px; background: transparent; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: {{c.color}}">{{c.label}}
+<sc-if value="{{c.none}}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity: .55"><path d="M5 6l3-3 3 3M5 10l3 3 3-3"></path></svg></sc-if>
+<sc-if value="{{c.desc}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"></path></svg></sc-if>
+<sc-if value="{{c.asc}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"></path></svg></sc-if>
+</button>
+</th>
+</sc-for>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{top}}" as="p" hint-placeholder-count="10">
+<tr class="hov" style="border-top: 1px solid var(--border)">
+<td class="num" style="padding: 0 0 0 {{L.cardPad}}px; height: 56px; color: var(--text-3)">{{p.rank}}</td>
+<td style="padding: 8px 12px">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+<span aria-hidden="true" style="width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--r-md); background: var(--surface-2); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"></rect><circle cx="6" cy="6.5" r="1.2"></circle><path d="M2.5 12l3.5-3.5 2.5 2.5 2-2 3 3"></path></svg></span>
+<div style="display: flex; flex-direction: column; min-width: 0">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: {{L.nameMax}}px">{{p.name}}</span>
+<span class="num" style="font-size: 12px; line-height: 16px; color: var(--text-3)">Арт. {{p.art}} · {{p.cat}}</span>
+</div>
+</div>
+</td>
+<td style="padding: 0 12px"><span style="height: 20px; padding: 0 6px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; background: {{p.mpBg}}; color: {{p.mpC}}">{{p.mp}}</span></td>
+<td class="num" style="padding: 0 8px; text-align: right; font-weight: 500">{{p.revF}}</td>
+<td class="num" style="padding: 0 8px; text-align: right">{{p.ordF}}</td>
+<td class="num" style="padding: 0 8px; text-align: right">{{p.boF}}</td>
+<td class="num" style="padding: 0 {{L.cardPad}}px 0 8px; text-align: right; font-weight: 500">{{p.profF}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+<sc-if value="{{L.cards}}" hint-placeholder-val="{{ false }}">
+<ol style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{top}}" as="p" hint-placeholder-count="10">
+<li style="display: flex; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--border)">
+<span aria-hidden="true" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: var(--r-md); background: var(--surface-2); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"></rect><circle cx="6" cy="6.5" r="1.2"></circle><path d="M2.5 12l3.5-3.5 2.5 2.5 2-2 3 3"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+<div style="display: flex; flex-direction: column; min-width: 0">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{p.name}}</span>
+<span class="num" style="font-size: 12px; line-height: 16px; color: var(--text-3)">№{{p.rank}} · Арт. {{p.art}}</span>
+</div>
+<span style="height: 20px; padding: 0 6px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; background: {{p.mpBg}}; color: {{p.mpC}}; flex-shrink: 0">{{p.mp}}</span>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; font-size: 12px; line-height: 16px">
+<div style="display: flex; flex-direction: column"><dt style="color: var(--text-3)">Выручка</dt><dd class="num" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600">{{p.revF}}</dd></div>
+<div style="display: flex; flex-direction: column"><dt style="color: var(--text-3)">Прибыль</dt><dd class="num" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600">{{p.profF}}</dd></div>
+<div style="display: flex; flex-direction: column"><dt style="color: var(--text-3)">Заказы</dt><dd class="num" style="margin: 0; font-size: 13px; line-height: 18px">{{p.ordF}}</dd></div>
+<div style="display: flex; flex-direction: column"><dt style="color: var(--text-3)">% выкупа</dt><dd class="num" style="margin: 0; font-size: 13px; line-height: 18px">{{p.boF}}</dd></div>
+</dl>
+</div>
+</li>
+</sc-for>
+</ol>
+</sc-if>
+</sc-if>
+<sc-if value="{{B.top.load}}" hint-placeholder-val="{{ false }}">
+<div aria-busy="true" aria-label="Загружаем топ товаров" style="display: flex; flex-direction: column">
+<div style="height: 36px; background: var(--surface-2)"></div>
+<sc-for list="{{ten}}" as="x" hint-placeholder-count="10">
+<div style="display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 {{L.cardPad}}px; border-top: 1px solid var(--border)">
+<div style="width: 36px; height: 36px; border-radius: var(--r-md); background: var(--skeleton); flex-shrink: 0"></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px"><div style="height: 12px; width: 50%; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 10px; width: 30%; border-radius: 4px; background: var(--skeleton)"></div></div>
+<sc-if value="{{L.table}}" hint-placeholder-val="{{ true }}"><div style="display: flex; gap: 40px"><div style="height: 12px; width: 72px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 12px; width: 40px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 12px; width: 48px; border-radius: 4px; background: var(--skeleton)"></div><div style="height: 12px; width: 72px; border-radius: 4px; background: var(--skeleton)"></div></div></sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{B.top.empty}}" hint-placeholder-val="{{ false }}">
+<div style="min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border-top: 1px solid var(--border); padding: 24px">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--surface-2); color: var(--text-3); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l2-6h8l2 6v4H2V9z"></path><path d="M2 9h3.5l1 1.5h3l1-1.5H14"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Нет продаж за период</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 380px">Топ появится, когда будет хотя бы один выкуп.</span>
+<button type="button" class="btn btn-s" onClick="{{resetAll}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500">Сбросить фильтры</button>
+</div>
+</sc-if>
+<sc-if value="{{B.top.err}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border-top: 1px solid var(--border); padding: 24px">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5l6 11H2l6-11z"></path><path d="M8 6.5v3M8 11.5v.01"></path></svg></span>
+<span style="font-size: 14px; font-weight: 600">Не удалось загрузить товары</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--text-2); max-width: 380px">Сервер вернул ошибку 500. Мы уже повторяем запрос.</span>
+<button type="button" class="btn btn-s" onClick="{{retry}}" style="margin-top: 8px; height: {{L.btnH}}px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 11-1.5-3.5M13 2.5v3h-3"></path></svg>Повторить</button>
+</div>
+</sc-if>
+</section>
+
+</main>
+
+<sc-if value="{{L.cards}}" hint-placeholder-val="{{ false }}">
+<div style="position: sticky; bottom: 0; z-index: 20">
+<dc-import name="Chrome" theme="{{theme}}" layout="mobile" active="dashboard" part="tabs" hint-size="100%,64px"></dc-import>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"layout":{"editor":"enum","options":["desktop","tablet","mobile"],"default":"desktop"},"state":{"editor":"enum","options":["data","loading","empty","error","mixed"],"default":"data"},"exportState":{"editor":"enum","options":["idle","progress","done"],"default":"idle"},"sheet":{"editor":"boolean","default":false},"minH":{"editor":null},"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { metric: 'rev', hover: null, sortKey: 'rev', sortDir: 'desc', forced: null };
+    this.data = this.build();
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+  build() {
+    let s = 7;
+    const rnd = () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    const N = 30;
+    const wk = [1.12, 1.10, 1.0, 0.96, 0.95, 0.92, 1.03];
+    const days = [];
+    for (let i = 0; i < N; i++) days.push(new Date(2026, 9, 5 + i));
+    const prevDays = days.map((d) => { const x = new Date(d); x.setDate(x.getDate() - 30); return x; });
+    const series = (dates, trendA, trendB, total, jitter) => {
+      const raw = dates.map((d, i) => wk[d.getDay()] * (trendA + (trendB - trendA) * i / (N - 1)) * (1 - jitter + 2 * jitter * rnd()));
+      const sum = raw.reduce((a, b) => a + b, 0);
+      const out = raw.map((v) => Math.round(v * total / sum));
+      const diff = total - out.reduce((a, b) => a + b, 0); out[N - 1] += diff;
+      return out;
+    };
+    const split = (arr, share) => arr.map((v) => { const w = Math.round(v * (share - 0.04 + 0.08 * rnd())); return [w, v - w]; });
+    const rev = series(days, 0.88, 1.12, 7284560, 0.14);
+    const revP = series(prevDays, 0.92, 1.06, 6480925, 0.14);
+    const ord = series(days, 0.9, 1.1, 5476, 0.12);
+    const ordP = series(prevDays, 0.92, 1.05, 5066, 0.12);
+    const prof = rev.map((v) => v * (0.21 + 0.05 * rnd()));
+    const profSum = prof.reduce((a, b) => a + b, 0);
+    const profit = prof.map((v) => Math.round(v * 1704587 / profSum)); profit[N - 1] += 1704587 - profit.reduce((a, b) => a + b, 0);
+    const profPr = revP.map((v) => v * (0.22 + 0.05 * rnd()));
+    const ppSum = profPr.reduce((a, b) => a + b, 0);
+    const profitP = profPr.map((v) => Math.round(v * 1605073 / ppSum));
+    return {
+      days, prevDays,
+      rev: { cur: split(rev, 0.62), prev: revP },
+      ord: { cur: split(ord, 0.64), prev: ordP },
+      prof: { cur: split(profit, 0.6), prev: profitP }
+    };
+  }
+  renderVals() {
+    const theme = this.props.theme === 'dark' ? 'dark' : 'light';
+    const layout = ['desktop', 'tablet', 'mobile'].includes(this.props.layout) ? this.props.layout : 'desktop';
+    const nb = ' ';
+    const int = (n) => Math.round(n).toLocaleString('ru-RU').replace(/\s/g, nb);
+    const rub = (n) => int(n) + nb + '₽';
+    const pct = (x) => x.toFixed(1).replace('.', ',') + nb + '%';
+    const shortRub = (n) => n >= 1e6 ? (n / 1e6).toFixed(1).replace('.', ',') + nb + 'млн' + nb + '₽' : (n >= 1e4 ? Math.round(n / 1e3) + nb + 'тыс.' + nb + '₽' : rub(n));
+    const months = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
+    const wd = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+    const dShort = (d) => d.getDate() + nb + months[d.getMonth()];
+
+    const L = {
+      desktop: { pad: '24px 32px 48px', gap: 24, h1: 24, h1lh: 32, kpiCols: 4, kpiGap: 16, kpiPad: 16, kpiFs: 28, kpiLh: 36, kpiSk: 28, kpiPrev: true, spark: 96, row2: 'minmax(0, 2fr) minmax(0, 1fr)', cardPad: 20, chartH: 260, chartEmptyH: 300, yW: 52, segDisplay: 'inline-grid', segW: 'auto', segH: 30, skGap: 8, table: true, cards: false, tableMin: 0, nameMax: 520, btnH: 36, linkH: 24 },
+      tablet: { pad: '20px 24px 40px', gap: 16, h1: 24, h1lh: 32, kpiCols: 4, kpiGap: 12, kpiPad: 14, kpiFs: 22, kpiLh: 30, kpiSk: 24, kpiPrev: false, spark: 56, row2: 'minmax(0, 1fr)', cardPad: 16, chartH: 220, chartEmptyH: 260, yW: 52, segDisplay: 'inline-grid', segW: 'auto', segH: 30, skGap: 6, table: true, cards: false, tableMin: 680, nameMax: 260, btnH: 36, linkH: 24 },
+      mobile: { pad: '16px 16px 24px', gap: 12, h1: 20, h1lh: 28, kpiCols: 2, kpiGap: 8, kpiPad: 12, kpiFs: 20, kpiLh: 28, kpiSk: 22, kpiPrev: false, spark: 52, row2: 'minmax(0, 1fr)', cardPad: 16, chartH: 180, chartEmptyH: 240, yW: 44, segDisplay: 'grid', segW: '100%', segH: 40, skGap: 3, table: false, cards: true, tableMin: 0, nameMax: 0, btnH: 44, linkH: 44 }
+    }[layout];
+
+    // block states
+    const st = this.state.forced ?? (this.props.state ?? 'data');
+    const one = (v) => ({ data: v === 'data', load: v === 'loading', empty: v === 'empty', err: v === 'error' });
+    const mixed = { kpi: 'data', chart: 'error', low: 'empty', top: 'loading' };
+    const B = {};
+    ['kpi', 'chart', 'low', 'top'].forEach((k) => { B[k] = one(st === 'mixed' ? mixed[k] : st); });
+
+    // KPI
+    const K = [
+      ['Выручка', shortRub(7284560), 12.4, '6,5' + nb + 'млн' + nb + '₽', false, [62, 58, 66, 61, 70, 68, 72, 69, 75, 73, 78, 74, 82, 86]],
+      ['Заказы', int(5476), 8.1, int(5066), false, [40, 44, 41, 47, 45, 50, 48, 52, 49, 55, 53, 56, 58, 61]],
+      ['Выкупы', int(4182), 9.7, int(3812), false, [30, 33, 31, 36, 34, 38, 37, 40, 39, 43, 41, 45, 44, 48]],
+      ['% выкупа', pct(78.3), 1.6, pct(77.1), false, [76, 77, 76.5, 77.4, 77, 77.8, 77.2, 78, 77.6, 78.4, 78, 78.6, 78.1, 78.3]],
+      ['Возвраты', int(312), 18.3, int(264), true, [8, 9, 8, 10, 9, 11, 10, 12, 11, 12, 13, 12, 14, 15]],
+      ['Средний чек', rub(1742), 2.5, rub(1700), false, [1690, 1702, 1695, 1710, 1705, 1718, 1712, 1725, 1720, 1731, 1728, 1736, 1739, 1742]],
+      ['Прибыль', shortRub(1704587), 6.2, '1,6' + nb + 'млн' + nb + '₽', false, [50, 47, 53, 49, 55, 52, 56, 54, 57, 55, 59, 56, 60, 61]],
+      ['Маржа', pct(23.4), -5.5, pct(24.8), false, [25.1, 24.9, 25, 24.6, 24.7, 24.3, 24.4, 24.1, 24, 23.8, 23.9, 23.6, 23.5, 23.4]]
+    ];
+    const spark = (arr) => {
+      const mn = Math.min(...arr), mx = Math.max(...arr), r = mx - mn || 1;
+      const pts = arr.map((v, i) => [(i / (arr.length - 1)) * 100, 25 - ((v - mn) / r) * 22]);
+      const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+      return { line, area: line + ' L100 28 L0 28 Z' };
+    };
+    const kpis = K.map(([label, value, d, prev, inverted, arr]) => {
+      const up = d >= 0;
+      const good = inverted ? !up : up;
+      const sp = spark(arr);
+      return {
+        label, value, prev, up, down: !up,
+        delta: (up ? '+' : '−') + Math.abs(d).toFixed(1).replace('.', ',') + nb + '%',
+        sr: (up ? ' рост' : ' снижение') + ' к прошлому периоду, ' + (good ? 'хорошо' : 'плохо'),
+        dc: good ? 'var(--success)' : 'var(--danger)',
+        dbg: good ? 'var(--success-soft)' : 'var(--danger-soft)',
+        sc: good ? 'var(--success)' : 'var(--danger)',
+        spark: sp.line, area: sp.area
+      };
+    });
+
+    // chart
+    const metric = this.state.metric;
+    const D = this.data[metric];
+    const isMoney = metric !== 'ord';
+    const fmtV = (n) => isMoney ? rub(n) : int(n) + nb + 'шт';
+    const totals = D.cur.map(([w, o]) => w + o);
+    const maxV = Math.max(...totals, ...D.prev);
+    const niceStep = (v) => { const e = Math.pow(10, Math.floor(Math.log10(v))); const f = v / e; const m = f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10; return m * e; };
+    const step = niceStep(maxV / 4);
+    const yMax = step * 4;
+    const axisLabel = (v) => {
+      if (v === 0) return '0';
+      if (!isMoney) return int(v);
+      if (v >= 1e6) return (v / 1e6).toFixed(1).replace('.', ',').replace(',0', '') + nb + 'млн';
+      return Math.round(v / 1e3) + nb + 'тыс.';
+    };
+    const yTicks = [0, 1, 2, 3, 4].map((k) => ({ top: 100 - k * 25, label: axisLabel(step * k) }));
+    const grid = [0, 1, 2, 3, 4].map((k) => ({ y: 100 - k * 25, c: k === 0 ? 'var(--border-strong)' : 'var(--grid)' }));
+    const sum = (a) => a.reduce((x, y) => x + y, 0);
+    const defHover = totals.indexOf(Math.max(...totals));
+    const hi = this.state.hover ?? defHover;
+    const bars = D.cur.map(([w, o], i) => {
+      const wh = w / yMax * 100, oh = o / yMax * 100;
+      return {
+        x: i * 10 + 2, hx: i * 10,
+        wy: 100 - wh, wh: Math.max(wh, 0),
+        oy: 100 - wh - oh - 0.6, oh: Math.max(oh, 0),
+        op: i === hi ? 1 : 0.92,
+        hover: () => { if (this.state.hover !== i) this.setState({ hover: i }); }
+      };
+    });
+    const prevPts = D.prev.map((v, i) => (i * 10 + 5) + ',' + (100 - v / yMax * 100).toFixed(2)).join(' ');
+    const xIdx = layout === 'mobile' ? [0, 9, 19, 29] : (layout === 'tablet' ? [0, 6, 12, 18, 24, 29] : [0, 5, 10, 15, 20, 25, 29]);
+    const xTicks = xIdx.map((i) => ({ left: (i * 10 + 5) / 3, label: dShort(this.data.days[i]) }));
+    const cd = this.data.days[hi], pd = this.data.prevDays[hi];
+    const tot = totals[hi], pv = D.prev[hi];
+    const dd = (tot - pv) / pv * 100;
+    const left = (hi * 10 + 5) / 3;
+    const tip = {
+      left, tx: left > 55 ? 'calc(-100% - 14px)' : '14px',
+      date: wd[cd.getDay()] + ', ' + cd.getDate() + nb + months[cd.getMonth()] + ' 2026',
+      wb: fmtV(D.cur[hi][0]), oz: fmtV(D.cur[hi][1]), total: fmtV(tot),
+      prevDate: 'Прошлый период, ' + dShort(pd), prev: fmtV(pv),
+      arrow: dd >= 0 ? '↑' : '↓',
+      delta: (dd >= 0 ? '+' : '−') + Math.abs(dd).toFixed(1).replace('.', ',') + nb + '%',
+      dc: dd >= 0 ? 'var(--success)' : 'var(--danger)', dbg: dd >= 0 ? 'var(--success-soft)' : 'var(--danger-soft)'
+    };
+    const mDefs = [['rev', 'Выручка'], ['ord', 'Заказы'], ['prof', 'Прибыль']];
+    const metrics = mDefs.map(([id, label]) => {
+      const on = metric === id;
+      return { id, label, on, bg: on ? 'var(--surface)' : 'transparent', c: on ? 'var(--text)' : 'var(--text-2)', sh: on ? '0 1px 2px rgba(16,24,40,.10), 0 0 0 1px var(--border)' : 'none', pick: () => this.setState({ metric: id }) };
+    });
+    const wbT = sum(D.cur.map((x) => x[0])), ozT = sum(D.cur.map((x) => x[1]));
+    const chart = {
+      total: fmtV(wbT + ozT), prevTotal: fmtV(sum(D.prev)), wbTotal: fmtV(wbT), ozTotal: fmtV(ozT),
+      yTicks, grid, bars, prevPts, xTicks, showPrev: true, hx: hi * 10,
+      aria: 'Столбцы по дням с 5 октября по 3 ноября 2026: WB и Ozon стопкой, пунктир — прошлый период. Итого ' + fmtV(wbT + ozT) + '.'
+    };
+
+    // low stock
+    const status = (days) => days < 7 ? { status: 'Критично', crit: true, soon: false, c: 'var(--danger)', bg: 'var(--danger-soft)' } : { status: 'Скоро закончится', crit: false, soon: true, c: 'var(--warning)', bg: 'var(--warning-soft)' };
+    const mpStyle = (mp) => mp === 'WB' ? { mpBg: 'var(--wb-soft)', mpC: 'var(--wb-text)' } : { mpBg: 'var(--ozon-soft)', mpC: 'var(--ozon-text)' };
+    const lowRaw = [
+      ['Кроссовки мужские беговые, р. 42', 'WB', '', 'Коледино', 20, 6.1],
+      ['Пауэрбанк 20 000 мА·ч с быстрой зарядкой', 'Ozon', 'FBO', 'Хоругвино', 46, 9.4],
+      ['Наушники беспроводные TWS с шумоподавлением', 'Ozon', 'FBS', 'Склад продавца, Москва', 31, 5.2],
+      ['Футболка оверсайз, хлопок 100 %', 'WB', '', 'Электросталь', 118, 11.8],
+      ['Термокружка 450 мл, нержавеющая сталь', 'Ozon', 'FBO', 'Казань', 96, 7.9]
+    ];
+    const low = lowRaw.map(([name, mp, type, wh, qty, speed]) => {
+      const d = Math.floor(qty / speed);
+      return { name, mp, type, wh, qty: int(qty), speed: speed.toFixed(1).replace('.', ','), days: d + nb + 'дн.', ...status(d), ...mpStyle(mp) };
+    });
+
+    // top-10
+    const P = [
+      ['Кроссовки мужские беговые', '184523671', 'WB', 'Обувь', 612480, 290, 71.2, 148300],
+      ['Наушники беспроводные TWS с шумоподавлением', '1124593302', 'Ozon', 'Электроника', 534900, 268, 92.1, 131700],
+      ['Пуховик женский удлинённый с капюшоном', '201348877', 'WB', 'Одежда', 468750, 160, 48.6, 96400],
+      ['Пауэрбанк 20 000 мА·ч с быстрой зарядкой', '987412560', 'Ozon', 'Электроника', 352240, 301, 94.3, 88100],
+      ['Футболка оверсайз, хлопок 100 %', '156902334', 'WB', 'Одежда', 301680, 655, 62.4, 79900],
+      ['Термокружка 450 мл, нержавеющая сталь', '1043278815', 'Ozon', 'Дом и кухня', 248310, 389, 89.7, 71250],
+      ['Сыворотка для лица с ниацинамидом, 30 мл', '173455019', 'WB', 'Красота', 226900, 512, 84.5, 68300],
+      ['Коврик для йоги 6 мм, нескользящий', '190277346', 'WB', 'Спорт', 198450, 233, 87.9, 47600],
+      ['Набор контейнеров для еды, 5 шт', '1098834127', 'Ozon', 'Дом и кухня', 176820, 297, 90.2, 39800],
+      ['Рюкзак городской 25 л, водоотталкивающий', '168004512', 'WB', 'Аксессуары', 164330, 141, 76.8, 35200]
+    ].map(([name, art, mp, cat, rev, ord, bo, prof], i) => ({ rank0: i + 1, name, art, mp, cat, rev, ord, bo, prof, ...mpStyle(mp) }));
+    const sk = this.state.sortKey, dir = this.state.sortDir;
+    const sorted = [...P].sort((a, b) => (dir === 'desc' ? b[sk] - a[sk] : a[sk] - b[sk]));
+    const top = sorted.map((p, i) => ({ ...p, rank: i + 1, revF: rub(p.rev), ordF: int(p.ord), boF: pct(p.bo), profF: rub(p.prof) }));
+    const colDefs = [['rev', 'Выручка', 128], ['ord', 'Заказы', 92], ['bo', '% выкупа', 104], ['prof', 'Прибыль', 128]];
+    const cols = colDefs.map(([key, label, w], i) => {
+      const on = sk === key;
+      return {
+        key, label, w: w + (i === colDefs.length - 1 ? L.cardPad : 0), pr: i === colDefs.length - 1 ? L.cardPad : 8,
+        none: !on, desc: on && dir === 'desc', asc: on && dir === 'asc',
+        aria: on ? (dir === 'desc' ? 'descending' : 'ascending') : 'none',
+        color: on ? 'var(--text)' : 'var(--text-3)',
+        sort: () => this.setState(on ? { sortDir: dir === 'desc' ? 'asc' : 'desc' } : { sortKey: key, sortDir: 'desc' })
+      };
+    });
+    const sortNames = { rev: 'по выручке', ord: 'по заказам', bo: 'по % выкупа', prof: 'по прибыли' };
+    const order = ['rev', 'prof', 'ord', 'bo'];
+    const w = { desktop: 1440, tablet: 768, mobile: 375 }[layout];
+    const sfx = (w === 1440 && theme === 'light') ? '' : '-' + w + '-' + theme;
+    const restore = () => {
+      this.setState({ forced: 'loading' });
+      clearTimeout(this.t);
+      this.t = setTimeout(() => this.setState({ forced: 'data' }), 900);
+    };
+    return {
+      theme, layout, L, B,
+      minH: Number(this.props.minH ?? 1560),
+      chromeH: layout === 'mobile' ? 120 : (layout === 'tablet' ? 160 : 118),
+      exportState: this.props.exportState ?? 'idle',
+      sheet: this.props.sheet === true || this.props.sheet === 'true',
+      showInsight: B.kpi.data,
+      kpis, chart, tip, metrics, low, top, cols,
+      sortCaption: sortNames[sk] + (dir === 'asc' ? ', по возрастанию' : '') + ' за период',
+      sortLabel: (sortNames[sk].charAt(0).toUpperCase() + sortNames[sk].slice(1)),
+      cycleSort: () => { const n = order[(order.indexOf(sk) + 1) % order.length]; this.setState({ sortKey: n, sortDir: 'desc' }); },
+      stockHref: 'Stock' + sfx + '.dc.html',
+      eight: [1, 2, 3, 4, 5, 6, 7, 8], five: [1, 2, 3, 4, 5], ten: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      skBars: [42, 55, 48, 62, 58, 70, 52, 45, 60, 66, 72, 58, 50, 63, 68, 75, 61, 54, 66, 70, 78, 64, 57, 69, 74, 80, 67, 60, 72, 76],
+      retry: restore, resetAll: restore
+    };
+  }
+}
+</script>
+</body>
+</html>
