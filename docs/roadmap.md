@@ -3,7 +3,7 @@
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
 **Текущий этап:** 1 — инфраструктура.
-**Следующий шаг:** этап 1 в новом чате. Начать с объяснения пользователю, какие пакеты ставим и зачем (правило 1 и skill `new-adr`).
+**Следующий шаг:** порция `chore/fsd-skeleton` — папки слоёв FSD и steiger. Дальше `chore/data-layer` (Router, zod, Query, каркас MSW), `chore/e2e` (Testing Library, jsdom, Playwright). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
@@ -16,8 +16,9 @@
 
 ## Этап 1. Инфраструктура
 - [x] дизайн получен и сохранён в `docs/design/source/` (правило 6)
-- [ ] перенести токены и форматтеры дизайна в `src/shared/` (+ тесты форматтеров), темы light/dark
-- [ ] решить, как подключать шрифт Inter: Google Fonts или локально (ADR)
+- [x] перенести токены и форматтеры дизайна в `src/shared/` (+ тесты форматтеров), темы light/dark (начальная тема из `localStorage` / системы; переключатель — фича theme-toggle)
+- [x] шрифт Inter локально через `@fontsource/inter` ([ADR-0013](adr/0013-шрифт-inter-локально.md)); отличия от исходников — [design/deviations.md](design/deviations.md)
+- [x] Vitest, `npm test`
 - [ ] TanStack Router + zod, TanStack Query, MSW, TanStack Table/Virtual
 - [ ] steiger, Vitest + Testing Library, Playwright
 - [ ] с объяснением и согласием: GitHub-репозиторий, GitHub Actions, gitleaks, Dependabot, Vercel
@@ -36,3 +37,4 @@
 ## Открытые вопросы
 - ~~Дизайн: ждём макеты и токены от ИИ-дизайнера.~~ Получены — [docs/design/source/saldo-design-handoff/](design/source/saldo-design-handoff/DESIGN_SPEC.md).
 - Название продукта: «Сальдо» — заглушка дизайнера, оставить или заменить.
+- Форматтеры (решить в spec KPI-панели): `formatDelta(-0.04)` даёт «−0,0 %»; 999 500 ₽ в KPI — «1000 тыс. ₽» вместо «1,0 млн ₽»; округлять ли статус запаса по целым дням (вопросы qa от 2026-11-04).

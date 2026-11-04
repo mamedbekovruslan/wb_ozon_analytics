@@ -29,7 +29,7 @@
 
 | Заголовок | Значение (черновик) | Зачем |
 |---|---|---|
-| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'` | браузер выполняет только наши скрипты |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'` | браузер выполняет только наши скрипты |
 | `X-Content-Type-Options` | `nosniff` | браузер не «угадывает» тип файла |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` | не передавать полный URL с фильтрами на чужие сайты |
 | `X-Frame-Options` | `DENY` | защита от iframe для старых браузеров |
