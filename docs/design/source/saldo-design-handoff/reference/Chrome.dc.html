@@ -65,7 +65,7 @@ body{margin:0}
 <div role="progressbar" aria-label="Готовим файл Excel" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="height: 2px; background: var(--accent-soft)"><div style="height: 2px; width: 62%; background: var(--accent)"></div></div>
 </sc-if>
 
-<sc-if value="{{notMobile}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{showBar}}" hint-placeholder-val="{{ true }}">
 <div role="search" aria-label="Фильтры" style="box-sizing: border-box; padding: 12px {{padX}}px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border)">
 <div style="display: flex; align-items: center; gap: 8px">
 <div role="group" aria-label="Период" style="display: inline-flex; padding: 2px; gap: 2px; background: var(--surface-2); border-radius: var(--r-sm); border: 1px solid var(--border)">
@@ -122,7 +122,7 @@ body{margin:0}
 </div>
 </sc-if>
 
-<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{showMobBar}}" hint-placeholder-val="{{ false }}">
 <div style="padding: 8px 16px 12px; display: flex; align-items: center; gap: 12px; background: var(--surface); border-bottom: 1px solid var(--border)">
 <button type="button" class="btn btn-s" onClick="{{openSheet}}" aria-haspopup="dialog" style="height: 44px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; flex-shrink: 0">
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"></path></svg>
@@ -214,7 +214,7 @@ body{margin:0}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"layout":{"editor":"enum","options":["desktop","tablet","mobile"],"default":"desktop"},"active":{"editor":"enum","options":["dashboard","orders","stock"],"default":"dashboard"},"part":{"editor":"enum","options":["top","tabs"],"default":"top"},"exportState":{"editor":"enum","options":["idle","progress","done"],"default":"idle"},"sheet":{"editor":"boolean","default":false},"sheetH":{"editor":null},"$preview":{"width":1440,"height":128}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"layout":{"editor":"enum","options":["desktop","tablet","mobile"],"default":"desktop"},"active":{"editor":"enum","options":["dashboard","orders","stock"],"default":"dashboard"},"part":{"editor":"enum","options":["top","tabs"],"default":"top"},"exportState":{"editor":"enum","options":["idle","progress","done"],"default":"idle"},"sheet":{"editor":"boolean","default":false},"filters":{"editor":"boolean","default":true},"sheetH":{"editor":null},"$preview":{"width":1440,"height":128}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -232,7 +232,8 @@ class Component extends DCLogic {
     const w = { desktop: 1440, tablet: 768, mobile: 375 }[layout];
     const sfx = (t) => (w === 1440 && t === 'light') ? '' : '-' + w + '-' + t;
     const other = theme === 'light' ? 'dark' : 'light';
-    const page = { dashboard: 'Dashboard', orders: 'Orders', stock: 'Stock' }[active] || 'Dashboard';
+    const page = { dashboard: 'Dashboard', orders: 'Orders', stock: 'Stock', notfound: 'NotFound' }[active] || 'Dashboard';
+    const filters = this.props.filters !== false && this.props.filters !== 'false';
 
     const pad = (n) => String(n).padStart(2, '0');
     const fmt = (d) => pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
@@ -303,7 +304,9 @@ class Component extends DCLogic {
       },
       toast: exp === 'done' && !this.state.toastClosed,
       closeToast: () => this.setState({ toastClosed: true, exp: 'idle' }),
-      toastTop: isMobile ? 64 : 128,
+      toastTop: isMobile ? 64 : (filters ? 128 : 72),
+      showBar: !isMobile && filters,
+      showMobBar: isMobile && filters,
       toastRight: isMobile ? 16 : (layout === 'desktop' ? 32 : 24),
       toastLeft: isMobile ? '16px' : 'auto',
       toastW: isMobile ? 'auto' : '360px',
