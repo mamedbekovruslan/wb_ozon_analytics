@@ -41,11 +41,12 @@
 | `npm run dev` | dev-сервер |
 | `npm run build` | проверка типов + сборка |
 | `npm run lint` | oxlint |
+| `npm run lint:fsd` | steiger — проверка границ FSD |
 | `npm run preview` | просмотр собранной версии |
 | `npm test` | unit-тесты (Vitest), один прогон |
 | `npm run test:watch` | unit-тесты в режиме наблюдения |
 
-Команды steiger и e2e появятся дальше на этапе 1 — тогда эта таблица обновляется.
+Команда e2e появится дальше на этапе 1 — тогда эта таблица обновляется.
 
 ## 4. Архитектура — Feature-Sliced Design
 
