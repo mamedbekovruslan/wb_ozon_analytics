@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Дизайн-токены</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:20px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;--r-xs:4px;--r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-full:999px;--dur:120ms;--ease:cubic-bezier(.2,0,0,1);--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ds[data-theme=light]{color-scheme:light;--bg:#F6F7F9;--surface:#FFFFFF;--surface-2:#F1F3F6;--surface-3:#E7EAEF;--border:#E3E6EB;--border-strong:#CBD1D9;--text:#12151A;--text-2:#4A5260;--text-3:#646E7E;--text-on-accent:#FFFFFF;--accent:#3553D1;--accent-hover:#2C47BC;--accent-press:#253DA3;--accent-soft:#EDF1FF;--focus:#3553D1;--success:#1B7A4A;--success-soft:#E6F4EC;--warning:#985600;--warning-soft:#FFF2DC;--danger:#C02A2A;--danger-soft:#FDECEC;--neutral:#4A5260;--neutral-soft:#EEF0F3;--wb:#0E8A7A;--wb-soft:#E2F4F1;--wb-text:#0A6B5F;--ozon:#E07A12;--ozon-soft:#FFF0E0;--ozon-text:#9A4C00;--prev:#8A93A2;--grid:#EDEFF2;--axis:#646E7E;--cat-1:#3553D1;--cat-2:#0E8A7A;--cat-3:#E07A12;--cat-4:#C7417A;--cat-5:#7A5AF0;--cat-6:#2F9E44;--cat-7:#A88200;--cat-8:#5C6B7F;--skeleton:#ECEEF2;--overlay:rgba(18,21,26,.40);--shadow-sm:0 1px 2px rgba(16,24,40,.05);--shadow-md:0 4px 12px rgba(16,24,40,.08),0 1px 2px rgba(16,24,40,.04);--shadow-lg:0 16px 40px rgba(16,24,40,.16),0 2px 6px rgba(16,24,40,.06)}
+.ds[data-theme=dark]{color-scheme:dark;--bg:#0D0F13;--surface:#15181E;--surface-2:#1C2027;--surface-3:#252A33;--border:#252A33;--border-strong:#363D49;--text:#E8EBF0;--text-2:#A9B1BE;--text-3:#8792A2;--text-on-accent:#0D0F13;--accent:#8098FF;--accent-hover:#97ABFF;--accent-press:#6D86F2;--accent-soft:#1D2442;--focus:#97ABFF;--success:#4CC38A;--success-soft:#11261B;--warning:#F0B04A;--warning-soft:#2B2112;--danger:#FF7A7A;--danger-soft:#301617;--neutral:#A9B1BE;--neutral-soft:#22262E;--wb:#2EC4AE;--wb-soft:#0F2B27;--wb-text:#5ED6C3;--ozon:#FFA552;--ozon-soft:#33230F;--ozon-text:#FFB774;--prev:#6B7484;--grid:#1F232A;--axis:#8792A2;--cat-1:#8098FF;--cat-2:#2EC4AE;--cat-3:#FFA552;--cat-4:#F27BAE;--cat-5:#A994FF;--cat-6:#5FCF73;--cat-7:#E3C04D;--cat-8:#93A1B5;--skeleton:#21252D;--overlay:rgba(0,0,0,.60);--shadow-sm:0 0 0 1px rgba(255,255,255,.02);--shadow-md:0 6px 16px rgba(0,0,0,.40);--shadow-lg:0 20px 48px rgba(0,0,0,.60),0 0 0 1px #2A2F38}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ds button{font:inherit;cursor:pointer}.ds input{font:inherit;color:inherit}
+.ds :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn{transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.btn-p:hover{background:var(--accent-hover)!important}.btn-p:active{background:var(--accent-press)!important}
+.btn-s:hover{background:var(--surface-2)!important;border-color:var(--border-strong)!important}.btn-s:active{background:var(--surface-3)!important}
+.btn-g:hover{background:var(--surface-2)!important;color:var(--text)!important}.btn-g:active{background:var(--surface-3)!important}
+.hov:hover{background:var(--surface-2)!important}
+.lnk{color:var(--accent);text-decoration:none}.lnk:hover{text-decoration:underline;text-underline-offset:3px}
+.scroll::-webkit-scrollbar{width:10px;height:10px}.scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:2px solid var(--surface)}.scroll::-webkit-scrollbar-track{background:transparent}
+</style>
+</helmet>
+<div class="ds" data-theme="light" style="width: 1440px; min-height: 3000px; box-sizing: border-box; padding: 64px; display: flex; flex-direction: column; gap: 64px; background: var(--bg)">
+
+<header style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border)">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 760px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" style="fill: var(--accent)"></rect><rect x="7" y="13" width="4" height="8" rx="1" style="fill: var(--text-on-accent)"></rect><rect x="13" y="9" width="4" height="12" rx="1" style="fill: var(--text-on-accent)"></rect><rect x="19" y="6" width="3" height="15" rx="1" style="fill: var(--text-on-accent); opacity: .7"></rect></svg>
+<span style="font-size: 16px; font-weight: 600">Сальдо</span>
+<span style="font-size: 13px; color: var(--text-3)">аналитика продавца WB + Ozon</span>
+</div>
+<h1 style="margin: 0; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: -0.02em">Дизайн-токены</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-2)">Все цвета, размеры и тени — CSS custom properties. Компоненты в CSS Modules ссылаются только на токены, поэтому тема переключается одним атрибутом <code style="font-family: var(--mono); font-size: 14px; background: var(--surface-2); padding: 1px 6px; border-radius: 4px">data-theme</code> на корне. Тёмная тема подобрана отдельно: поверхности светлеют с уровнем вложенности, серии графиков ярче и холоднее.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px; font-size: 13px; line-height: 18px; color: var(--text-2); min-width: 380px">
+<div><div style="color: var(--text-3)">Шрифт</div><div style="font-weight: 500; color: var(--text)">Inter · 400 / 500 / 600</div></div>
+<div><div style="color: var(--text-3)">Цифры</div><div style="font-weight: 500; color: var(--text)">tabular-nums везде</div></div>
+<div><div style="color: var(--text-3)">Шаг отступов</div><div style="font-weight: 500; color: var(--text)">4 px</div></div>
+<div><div style="color: var(--text-3)">Контраст текста</div><div style="font-weight: 500; color: var(--text)">WCAG AA в обеих темах</div></div>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">Цвета</h2>
+<span style="font-size: 13px; color: var(--text-3)">Числа справа у текстовых токенов — контраст к --surface</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<sc-for list="{{panels}}" as="p" hint-placeholder-count="2">
+<div class="ds" data-theme="{{p.theme}}" style="border-radius: var(--r-xl); border: 1px solid var(--border); background: var(--bg); padding: 28px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="font-size: 16px; font-weight: 600">{{p.label}}</span>
+<code style="font-family: var(--mono); font-size: 12px; color: var(--text-3)">[data-theme="{{p.theme}}"]</code>
+</div>
+<sc-for list="{{p.groups}}" as="g" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; line-height: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3)">{{g.title}}</span>
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{g.tokens}}" as="t" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<div style="height: 44px; border-radius: var(--r-md); background: {{t.tileBg}}; box-shadow: inset 0 0 0 1px var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: {{t.sampleColor}}">{{t.sample}}</div>
+<div style="display: flex; flex-direction: column; min-width: 0">
+<span style="font-family: var(--mono); font-size: 11.5px; line-height: 16px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">--{{t.name}}</span>
+<span class="num" style="font-family: var(--mono); font-size: 11.5px; line-height: 16px; color: var(--text-3)">{{t.hex}} {{t.ratio}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 24px">
+<h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">Типографика</h2>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden">
+<div style="display: grid; grid-template-columns: 200px 140px 120px 320px minmax(0, 1fr); gap: 24px; padding: 12px 24px; font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); background: var(--surface-2)">
+<span>Токен</span><span>Размер / строка</span><span>Начертание</span><span>Где</span><span>Пример</span>
+</div>
+<sc-for list="{{type}}" as="t" hint-placeholder-count="9">
+<div style="display: grid; grid-template-columns: 200px 140px 120px 320px minmax(0, 1fr); gap: 24px; padding: 14px 24px; align-items: center; border-bottom: 1px solid var(--border)">
+<span style="font-family: var(--mono); font-size: 12px; color: var(--text)">{{t.token}}</span>
+<span class="num" style="font-size: 13px; color: var(--text-2)">{{t.size}}</span>
+<span style="font-size: 13px; color: var(--text-2)">{{t.weight}}</span>
+<span style="font-size: 13px; color: var(--text-2)">{{t.use}}</span>
+<span class="num" style="font-size: {{t.fs}}px; line-height: {{t.lh}}px; font-weight: {{t.fw}}; letter-spacing: {{t.ls}}; color: {{t.color}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: {{t.tt}}">{{t.sample}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">Отступы · шаг 4 px</h2>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{space}}" as="s" hint-placeholder-count="10">
+<div style="display: grid; grid-template-columns: 72px 48px minmax(0, 1fr); align-items: center; gap: 12px">
+<span style="font-family: var(--mono); font-size: 12px">--sp-{{s.k}}</span>
+<span class="num" style="font-size: 13px; color: var(--text-3)">{{s.v}} px</span>
+<div style="height: 12px; width: {{s.v}}px; background: var(--accent); border-radius: 2px; opacity: .85"></div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">Радиусы</h2>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{radii}}" as="r" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="height: 72px; border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: {{r.v}}"></div>
+<span style="font-family: var(--mono); font-size: 12px">--r-{{r.k}}</span>
+<span style="font-size: 12px; line-height: 16px; color: var(--text-3)">{{r.v}} · {{r.use}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">Тени</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden">
+<sc-for list="{{shadowPanels}}" as="p" hint-placeholder-count="2">
+<div class="ds" data-theme="{{p.theme}}" style="background: var(--bg); padding: 24px; display: flex; flex-direction: column; gap: 20px">
+<span style="font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em">{{p.label}}</span>
+<sc-for list="{{shadows}}" as="s" hint-placeholder-count="3">
+<div style="height: 64px; background: var(--surface); border-radius: var(--r-lg); box-shadow: {{s.css}}; border: 1px solid {{s.border}}; display: flex; flex-direction: column; justify-content: center; padding: 0 14px">
+<span style="font-family: var(--mono); font-size: 12px">--shadow-{{s.k}}</span>
+<span style="font-size: 12px; color: var(--text-3)">{{s.use}}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 600">tokens.css</h2>
+<span style="font-size: 13px; color: var(--text-3)">Готово к копированию в src/styles/tokens.css · общие токены живут на :root</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<sc-for list="{{code}}" as="c" hint-placeholder-count="3">
+<pre style="margin: 0; background: #0F1217; color: #D5DAE2; border-radius: var(--r-xl); padding: 24px; font-family: var(--mono); font-size: 12px; line-height: 19px; white-space: pre-wrap; overflow: hidden">{{c}}</pre>
+</sc-for>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = [
+      ['Поверхности', [
+        ['bg', '#F6F7F9', '#0D0F13'], ['surface', '#FFFFFF', '#15181E'], ['surface-2', '#F1F3F6', '#1C2027'],
+        ['surface-3', '#E7EAEF', '#252A33'], ['border', '#E3E6EB', '#252A33'], ['border-strong', '#CBD1D9', '#363D49'],
+        ['overlay', 'rgba(18,21,26,.40)', 'rgba(0,0,0,.60)'], ['skeleton', '#ECEEF2', '#21252D']
+      ]],
+      ['Текст', [
+        ['text', '#12151A', '#E8EBF0', '18,4', '15,1'], ['text-2', '#4A5260', '#A9B1BE', '7,9', '8,2'],
+        ['text-3', '#646E7E', '#8792A2', '5,2', '5,6'], ['text-on-accent', '#FFFFFF', '#0D0F13', '6,4', '7,2']
+      ]],
+      ['Акцент и фокус', [
+        ['accent', '#3553D1', '#8098FF', '6,4', '6,7'], ['accent-hover', '#2C47BC', '#97ABFF'], ['accent-press', '#253DA3', '#6D86F2'],
+        ['accent-soft', '#EDF1FF', '#1D2442'], ['focus', '#3553D1', '#97ABFF']
+      ]],
+      ['Статусы', [
+        ['success', '#1B7A4A', '#4CC38A', '5,3', '8,0'], ['success-soft', '#E6F4EC', '#11261B'],
+        ['warning', '#985600', '#F0B04A', '5,7', '9,3'], ['warning-soft', '#FFF2DC', '#2B2112'],
+        ['danger', '#C02A2A', '#FF7A7A', '5,8', '7,0'], ['danger-soft', '#FDECEC', '#301617'],
+        ['neutral', '#4A5260', '#A9B1BE', '7,9', '8,2'], ['neutral-soft', '#EEF0F3', '#22262E']
+      ]],
+      ['Площадки', [
+        ['wb', '#0E8A7A', '#2EC4AE'], ['wb-soft', '#E2F4F1', '#0F2B27'], ['wb-text', '#0A6B5F', '#5ED6C3', '6,1', '9,6'],
+        ['ozon', '#E07A12', '#FFA552'], ['ozon-soft', '#FFF0E0', '#33230F'], ['ozon-text', '#9A4C00', '#FFB774', '6,2', '10,1']
+      ]],
+      ['Графики', [
+        ['prev', '#8A93A2', '#6B7484'], ['grid', '#EDEFF2', '#1F232A'], ['axis', '#646E7E', '#8792A2'],
+        ['cat-1', '#3553D1', '#8098FF'], ['cat-2', '#0E8A7A', '#2EC4AE'], ['cat-3', '#E07A12', '#FFA552'],
+        ['cat-4', '#C7417A', '#F27BAE'], ['cat-5', '#7A5AF0', '#A994FF'], ['cat-6', '#2F9E44', '#5FCF73'],
+        ['cat-7', '#A88200', '#E3C04D'], ['cat-8', '#5C6B7F', '#93A1B5']
+      ]]
+    ];
+    // Text-like tokens (they carry a contrast ratio) are shown as glyphs on --surface;
+    // every other token is a solid tile of its own color.
+    const panels = ['light', 'dark'].map((theme) => {
+      const surface = theme === 'light' ? '#FFFFFF' : '#15181E';
+      return {
+        theme,
+        label: theme === 'light' ? 'Светлая тема' : 'Тёмная тема',
+        groups: T.map(([title, list]) => ({
+          title,
+          tokens: list.map((r) => {
+            const hex = theme === 'light' ? r[1] : r[2];
+            const ratio = r[3] ? (theme === 'light' ? r[3] : r[4]) + ':1' : '';
+            if (r[0] === 'text-on-accent') {
+              const acc = theme === 'light' ? '#3553D1' : '#8098FF';
+              return { name: r[0], hex, ratio, tileBg: acc, sample: 'Аа', sampleColor: hex };
+            }
+            if (r[3]) return { name: r[0], hex, ratio, tileBg: surface, sample: 'Аа 1 234', sampleColor: hex };
+            return { name: r[0], hex, ratio, tileBg: hex, sample: '', sampleColor: hex };
+          })
+        }))
+      };
+    });
+
+    const type = [
+      { token: '--fs-28 · --lh-28', size: '28 / 36', weight: '600', use: 'Значение KPI, 1440 и 768', sample: '7,3 млн ₽', fs: 28, lh: 36, fw: 600, ls: '-0.02em', color: 'var(--text)', tt: 'none' },
+      { token: '--fs-24 · --lh-24', size: '24 / 32', weight: '600', use: 'Заголовок экрана; KPI на 375 — 20 / 28', sample: 'Дашборд', fs: 24, lh: 32, fw: 600, ls: '-0.015em', color: 'var(--text)', tt: 'none' },
+      { token: '--fs-16 · --lh-16', size: '16 / 24', weight: '600', use: 'Заголовок блока, карточки', sample: 'Продажи по дням', fs: 16, lh: 24, fw: 600, ls: '-0.005em', color: 'var(--text)', tt: 'none' },
+      { token: '--fs-14 · --lh-14', size: '14 / 20', weight: '400 · 500', use: 'Основной текст, кнопки, поля', sample: 'Кроссовки мужские беговые', fs: 14, lh: 20, fw: 400, ls: '0', color: 'var(--text)', tt: 'none' },
+      { token: '--fs-13 · --lh-13', size: '13 / 18', weight: '400 · 500', use: 'Ячейки таблиц, подписи KPI, бейджи', sample: '04.11.2026 · 1 234 567 ₽ · 87,4 %', fs: 13, lh: 18, fw: 400, ls: '0', color: 'var(--text)', tt: 'none' },
+      { token: '--fs-12 · --lh-12', size: '12 / 16', weight: '400 · 500', use: 'Вторичные подписи, артикулы, тултип', sample: 'Арт. 184523671 · Коледино', fs: 12, lh: 16, fw: 400, ls: '0', color: 'var(--text-2)', tt: 'none' },
+      { token: '--fs-12 + caps', size: '12 / 16', weight: '600 · caps +6 %', use: 'Шапки таблиц, группы в фильтрах', sample: 'Выручка', fs: 12, lh: 16, fw: 600, ls: '.06em', color: 'var(--text-3)', tt: 'uppercase' },
+      { token: '--fs-11 · --lh-11', size: '11 / 16', weight: '400', use: 'Подписи осей графика', sample: '4 нояб. · 250 тыс.', fs: 11, lh: 16, fw: 400, ls: '0', color: 'var(--axis)', tt: 'none' }
+    ];
+    const space = [[1, 4], [2, 8], [3, 12], [4, 16], [5, 20], [6, 24], [8, 32], [10, 40], [12, 48], [16, 64]].map(([k, v]) => ({ k, v }));
+    const radii = [
+      { k: 'xs', v: '4px', use: 'бейджи, чекбоксы' }, { k: 'sm', v: '6px', use: 'кнопки, поля' }, { k: 'md', v: '8px', use: 'тултип, меню' },
+      { k: 'lg', v: '12px', use: 'карточки, блоки' }, { k: 'xl', v: '16px', use: 'bottom sheet, модалки' }, { k: 'full', v: '999px', use: 'переключатели, чипы' }
+    ];
+    const shadows = [
+      { k: 'sm', css: 'var(--shadow-sm)', border: 'var(--border)', use: 'карточка на фоне' },
+      { k: 'md', css: 'var(--shadow-md)', border: 'var(--border)', use: 'наведение, тост' },
+      { k: 'lg', css: 'var(--shadow-lg)', border: 'transparent', use: 'тултип, поповер, sheet' }
+    ];
+    const shared = `:root {
+  /* типографика */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --fs-11: 11px;  --lh-11: 16px;
+  --fs-12: 12px;  --lh-12: 16px;
+  --fs-13: 13px;  --lh-13: 18px;
+  --fs-14: 14px;  --lh-14: 20px;
+  --fs-16: 16px;  --lh-16: 24px;
+  --fs-20: 20px;  --lh-20: 28px;
+  --fs-24: 24px;  --lh-24: 32px;
+  --fs-28: 28px;  --lh-28: 36px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --numeric: tabular-nums;
+
+  /* отступы, шаг 4 px */
+  --sp-1: 4px;   --sp-2: 8px;
+  --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;
+  --sp-8: 32px;  --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* радиусы */
+  --r-xs: 4px;  --r-sm: 6px;
+  --r-md: 8px;  --r-lg: 12px;
+  --r-xl: 16px; --r-full: 999px;
+
+  /* движение: не дольше 200 мс */
+  --dur: 120ms;
+  --dur-slow: 200ms;
+  --ease: cubic-bezier(.2, 0, 0, 1);
+
+  /* размеры касания */
+  --tap: 44px;
+  --control-h: 36px;
+}`;
+    const light = `[data-theme="light"] {
+  --bg: #F6F7F9;
+  --surface: #FFFFFF;
+  --surface-2: #F1F3F6;
+  --surface-3: #E7EAEF;
+  --border: #E3E6EB;
+  --border-strong: #CBD1D9;
+  --text: #12151A;
+  --text-2: #4A5260;
+  --text-3: #646E7E;
+  --text-on-accent: #FFFFFF;
+  --accent: #3553D1;
+  --accent-hover: #2C47BC;
+  --accent-press: #253DA3;
+  --accent-soft: #EDF1FF;
+  --focus: #3553D1;
+  --success: #1B7A4A;  --success-soft: #E6F4EC;
+  --warning: #985600;  --warning-soft: #FFF2DC;
+  --danger: #C02A2A;   --danger-soft: #FDECEC;
+  --neutral: #4A5260;  --neutral-soft: #EEF0F3;
+  --wb: #0E8A7A;  --wb-soft: #E2F4F1;  --wb-text: #0A6B5F;
+  --ozon: #E07A12; --ozon-soft: #FFF0E0; --ozon-text: #9A4C00;
+  --prev: #8A93A2;  --grid: #EDEFF2;  --axis: #646E7E;
+  --cat-1: #3553D1; --cat-2: #0E8A7A;
+  --cat-3: #E07A12; --cat-4: #C7417A;
+  --cat-5: #7A5AF0; --cat-6: #2F9E44;
+  --cat-7: #A88200; --cat-8: #5C6B7F;
+  --skeleton: #ECEEF2;
+  --overlay: rgba(18, 21, 26, .40);
+  --shadow-sm: 0 1px 2px rgba(16,24,40,.05);
+  --shadow-md: 0 4px 12px rgba(16,24,40,.08),
+               0 1px 2px rgba(16,24,40,.04);
+  --shadow-lg: 0 16px 40px rgba(16,24,40,.16),
+               0 2px 6px rgba(16,24,40,.06);
+}`;
+    const dark = `[data-theme="dark"] {
+  --bg: #0D0F13;
+  --surface: #15181E;
+  --surface-2: #1C2027;
+  --surface-3: #252A33;
+  --border: #252A33;
+  --border-strong: #363D49;
+  --text: #E8EBF0;
+  --text-2: #A9B1BE;
+  --text-3: #8792A2;
+  --text-on-accent: #0D0F13;
+  --accent: #8098FF;
+  --accent-hover: #97ABFF;
+  --accent-press: #6D86F2;
+  --accent-soft: #1D2442;
+  --focus: #97ABFF;
+  --success: #4CC38A;  --success-soft: #11261B;
+  --warning: #F0B04A;  --warning-soft: #2B2112;
+  --danger: #FF7A7A;   --danger-soft: #301617;
+  --neutral: #A9B1BE;  --neutral-soft: #22262E;
+  --wb: #2EC4AE;  --wb-soft: #0F2B27;  --wb-text: #5ED6C3;
+  --ozon: #FFA552; --ozon-soft: #33230F; --ozon-text: #FFB774;
+  --prev: #6B7484;  --grid: #1F232A;  --axis: #8792A2;
+  --cat-1: #8098FF; --cat-2: #2EC4AE;
+  --cat-3: #FFA552; --cat-4: #F27BAE;
+  --cat-5: #A994FF; --cat-6: #5FCF73;
+  --cat-7: #E3C04D; --cat-8: #93A1B5;
+  --skeleton: #21252D;
+  --overlay: rgba(0, 0, 0, .60);
+  /* в тёмной теме глубину дают поверхности,
+     тени — только у всплывающих слоёв */
+  --shadow-sm: 0 0 0 1px rgba(255,255,255,.02);
+  --shadow-md: 0 6px 16px rgba(0,0,0,.40);
+  --shadow-lg: 0 20px 48px rgba(0,0,0,.60),
+               0 0 0 1px #2A2F38;
+}`;
+    return {
+      panels,
+      type, space, radii, shadows,
+      shadowPanels: [{ theme: 'light', label: 'Светлая' }, { theme: 'dark', label: 'Тёмная' }],
+      code: [shared, light, dark]
+    };
+  }
+}
+</script>
+</body>
+</html>

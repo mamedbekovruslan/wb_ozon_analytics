@@ -15,7 +15,9 @@
 - [x] слияние ветки `docs/ai-foundation` в `main`
 
 ## Этап 1. Инфраструктура
-- [ ] временные дизайн-токены и темы
+- [x] дизайн получен и сохранён в `docs/design/source/` (правило 6)
+- [ ] перенести токены и форматтеры дизайна в `src/shared/` (+ тесты форматтеров), темы light/dark
+- [ ] решить, как подключать шрифт Inter: Google Fonts или локально (ADR)
 - [ ] TanStack Router + zod, TanStack Query, MSW, TanStack Table/Virtual
 - [ ] steiger, Vitest + Testing Library, Playwright
 - [ ] с объяснением и согласием: GitHub-репозиторий, GitHub Actions, gitleaks, Dependabot, Vercel
@@ -32,4 +34,5 @@
 9. [ ] Применение дизайна, мобильная версия, темы, a11y
 
 ## Открытые вопросы
-- Дизайн: ТЗ готово ([docs/design/brief.md](design/brief.md)), ждём макеты и токены от ИИ-дизайнера.
+- ~~Дизайн: ждём макеты и токены от ИИ-дизайнера.~~ Получены — [docs/design/source/saldo-design-handoff/](design/source/saldo-design-handoff/DESIGN_SPEC.md).
+- Название продукта: «Сальдо» — заглушка дизайнера, оставить или заменить.

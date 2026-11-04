@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Сетка и поведение</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:20px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;--r-xs:4px;--r-sm:6px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-full:999px;--dur:120ms;--ease:cubic-bezier(.2,0,0,1);--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ds[data-theme=light]{color-scheme:light;--bg:#F6F7F9;--surface:#FFFFFF;--surface-2:#F1F3F6;--surface-3:#E7EAEF;--border:#E3E6EB;--border-strong:#CBD1D9;--text:#12151A;--text-2:#4A5260;--text-3:#646E7E;--text-on-accent:#FFFFFF;--accent:#3553D1;--accent-hover:#2C47BC;--accent-press:#253DA3;--accent-soft:#EDF1FF;--focus:#3553D1;--success:#1B7A4A;--success-soft:#E6F4EC;--warning:#985600;--warning-soft:#FFF2DC;--danger:#C02A2A;--danger-soft:#FDECEC;--neutral:#4A5260;--neutral-soft:#EEF0F3;--wb:#0E8A7A;--wb-soft:#E2F4F1;--wb-text:#0A6B5F;--ozon:#E07A12;--ozon-soft:#FFF0E0;--ozon-text:#9A4C00;--prev:#8A93A2;--grid:#EDEFF2;--axis:#646E7E;--skeleton:#ECEEF2;--shadow-sm:0 1px 2px rgba(16,24,40,.05);--shadow-md:0 4px 12px rgba(16,24,40,.08),0 1px 2px rgba(16,24,40,.04);--shadow-lg:0 16px 40px rgba(16,24,40,.16),0 2px 6px rgba(16,24,40,.06)}
+.num{font-variant-numeric:tabular-nums}
+</style>
+</helmet>
+<div class="ds" data-theme="light" style="width: 1440px; min-height: 2400px; box-sizing: border-box; padding: 56px 64px 64px; display: flex; flex-direction: column; gap: 56px; background: var(--bg)">
+
+<header style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 24px; border-bottom: 1px solid var(--border)">
+<h1 style="margin: 0; font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">Сетка, отступы, поведение</h1>
+<span style="font-size: 14px; color: var(--text-2)">Пояснения для вёрстки. Все размеры кратны 4 px. Брейкпоинты: ≥ 1200 — десктоп, 640–1199 — планшет, &lt; 640 — телефон.</span>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Колонки и раскладка дашборда</h2>
+<div style="display: grid; grid-template-columns: 640px 340px minmax(0, 1fr); gap: 32px; align-items: start">
+<sc-for list="{{grids}}" as="g" hint-placeholder-count="3">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<figcaption style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; font-weight: 600">{{g.title}}</span>
+<span class="num" style="font-size: 13px; color: var(--text-2)">{{g.spec}}</span>
+</figcaption>
+<div aria-hidden="true" style="position: relative; width: {{g.w}}px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden">
+<div style="height: {{g.head}}px; background: var(--surface-2); border-bottom: 1px solid var(--border)"></div>
+<div style="position: relative; padding: {{g.pad}}px">
+<div style="position: absolute; inset: 0 {{g.pad}}px; display: grid; grid-template-columns: repeat({{g.cols}}, minmax(0, 1fr)); column-gap: {{g.gut}}px">
+<sc-for list="{{g.colList}}" as="c" hint-placeholder-count="12"><div style="background: rgba(53, 83, 209, .07)"></div></sc-for>
+</div>
+<div style="position: relative; display: grid; grid-template-columns: repeat({{g.cols}}, minmax(0, 1fr)); column-gap: {{g.gut}}px; row-gap: {{g.gut}}px">
+<sc-for list="{{g.blocks}}" as="b" hint-placeholder-count="12">
+<div style="grid-column: span {{b.span}}; height: {{b.h}}px; border-radius: 3px; background: {{b.bg}}; border: 1px solid {{b.b}}; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 12px; font-weight: 600; color: var(--text-2); text-align: center">{{b.label}}</div>
+</sc-for>
+</div>
+</div>
+<sc-if value="{{g.tabs}}" hint-placeholder-val="{{ false }}"><div style="height: 18px; background: var(--surface-2); border-top: 1px solid var(--border)"></div></sc-if>
+</div>
+</figure>
+</sc-for>
+</div>
+</section>
+
+<section style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Отступы и размеры</h2>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 90px 90px; gap: 12px; padding: 10px 20px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; color: var(--text-3)"><span>Элемент</span><span style="text-align: right">1440</span><span style="text-align: right">768</span><span style="text-align: right">375</span></div>
+<sc-for list="{{spacing}}" as="s" hint-placeholder-count="14">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 90px 90px; gap: 12px; padding: 10px 20px; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 18px">
+<span>{{s.k}}</span><span class="num" style="text-align: right; color: var(--text-2)">{{s.d}}</span><span class="num" style="text-align: right; color: var(--text-2)">{{s.t}}</span><span class="num" style="text-align: right; color: var(--text-2)">{{s.m}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Числа и даты · ru-RU</h2>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden">
+<sc-for list="{{formats}}" as="f" hint-placeholder-count="9">
+<div style="display: grid; grid-template-columns: 170px 180px minmax(0, 1fr); gap: 12px; padding: 10px 20px; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 18px; align-items: baseline">
+<span style="color: var(--text-2)">{{f.k}}</span>
+<span class="num" style="font-weight: 600">{{f.v}}</span>
+<code style="font-family: var(--mono); font-size: 11.5px; line-height: 16px; color: var(--text-3)">{{f.code}}</code>
+</div>
+</sc-for>
+</div>
+<span style="font-size: 12px; line-height: 16px; color: var(--text-3)">Разделитель тысяч и пробел перед % и ₽ — неразрывные (U+00A0). Минус — «−» (U+2212), не дефис. Ячейки чисел: tabular-nums + выравнивание вправо.</span>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Наведение, нажатие, фокус</h2>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden">
+<div style="display: grid; grid-template-columns: 200px repeat(4, minmax(0, 1fr)); gap: 16px; padding: 10px 20px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; color: var(--text-3)"><span>Элемент</span><span>Наведение</span><span>Нажатие / касание</span><span>Фокус с клавиатуры</span><span>Отключено / прочее</span></div>
+<sc-for list="{{behaviour}}" as="b" hint-placeholder-count="9">
+<div style="display: grid; grid-template-columns: 200px repeat(4, minmax(0, 1fr)); gap: 16px; padding: 12px 20px; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 18px">
+<span style="font-weight: 500">{{b.el}}</span><span style="color: var(--text-2)">{{b.hover}}</span><span style="color: var(--text-2)">{{b.press}}</span><span style="color: var(--text-2)">{{b.focus}}</span><span style="color: var(--text-2)">{{b.other}}</span>
+</div>
+</sc-for>
+</div>
+<span style="font-size: 12px; line-height: 16px; color: var(--text-3)">Длительности: цвет и фон — 120 мс (--dur), тост и bottom sheet — 160–200 мс, cubic-bezier(.2, 0, 0, 1). При prefers-reduced-motion — без перемещений, только смена прозрачности.</span>
+</section>
+
+<section style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Графики · Recharts</h2>
+<pre style="margin: 0; background: #0F1217; color: #D5DAE2; border-radius: var(--r-lg); padding: 24px; font-family: var(--mono); font-size: 12px; line-height: 19px; white-space: pre-wrap">{{rechartsCode}}</pre>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Правила графиков</h2>
+<ul style="margin: 0; padding: 20px 24px 20px 40px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 18px; color: var(--text-2)">
+<sc-for list="{{chartRules}}" as="r" hint-placeholder-count="8"><li>{{r}}</li></sc-for>
+</ul>
+<h2 style="margin: 8px 0 0; font-size: 20px; line-height: 28px; font-weight: 600">Доступность</h2>
+<ul style="margin: 0; padding: 20px 24px 20px 40px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 18px; color: var(--text-2)">
+<sc-for list="{{a11y}}" as="r" hint-placeholder-count="6"><li>{{r}}</li></sc-for>
+</ul>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const blk = (label, span, h, kind) => ({ label, span, h, bg: kind === 'kpi' ? 'var(--accent-soft)' : (kind === 'warn' ? 'var(--warning-soft)' : (kind === 'tab' ? 'var(--surface-2)' : 'var(--surface)')), b: kind === 'kpi' ? 'rgba(53,83,209,.35)' : 'var(--border-strong)' });
+    const range = (n) => Array.from({ length: n }, (_, i) => i);
+    const grids = [
+      { title: '1440 · 12 колонок', spec: 'поля 32 · гаттер 24 · контент 1376 (max 1440)', w: 640, head: 26, pad: 14, cols: 12, gut: 10, tabs: false, colList: range(12),
+        blocks: [blk('Выручка', 3, 34, 'kpi'), blk('Заказы', 3, 34, 'kpi'), blk('Выкупы', 3, 34, 'kpi'), blk('% выкупа', 3, 34, 'kpi'), blk('Возвраты', 3, 34, 'kpi'), blk('Ср. чек', 3, 34, 'kpi'), blk('Прибыль', 3, 34, 'kpi'), blk('Маржа', 3, 34, 'kpi'), blk('График продаж · 8 кол.', 8, 130), blk('Скоро закончится · 4', 4, 130, 'warn'), blk('Топ-10 товаров · таблица 12 кол.', 12, 150)] },
+      { title: '768 · 8 колонок', spec: 'поля 24 · гаттер 16', w: 340, head: 40, pad: 10, cols: 8, gut: 6, tabs: false, colList: range(8),
+        blocks: [blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('График · 8', 8, 96), blk('Скоро закончится · 8', 8, 110, 'warn'), blk('Топ-10 · таблица, скролл по X от 680', 8, 140)] },
+      { title: '375 · 4 колонки', spec: 'поля 16 · гаттер 8 · касание ≥ 44', w: 188, head: 34, pad: 8, cols: 4, gut: 4, tabs: true, colList: range(4),
+        blocks: [blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('KPI', 2, 30, 'kpi'), blk('График', 4, 76), blk('Скоро закончится', 4, 96, 'warn'), blk('Топ-10 · карточки', 4, 150)] }
+    ];
+    const spacing = [
+      { k: 'Шапка, высота', d: '56', t: '56', m: '56' },
+      { k: 'Панель фильтров', d: '60, одна строка', t: '≈ 104, перенос', m: 'кнопка 44 + sheet' },
+      { k: 'Поля страницы', d: '32', t: '24', m: '16' },
+      { k: 'Зазор между блоками', d: '24', t: '16', m: '12' },
+      { k: 'Внутренний отступ карточки', d: '20', t: '16', m: '16' },
+      { k: 'KPI: отступ / зазор', d: '16 / 16', t: '14 / 12', m: '12 / 8' },
+      { k: 'KPI: значение', d: '28 / 36', t: '22 / 30', m: '20 / 28' },
+      { k: 'Высота графика', d: '260', t: '220', m: '180' },
+      { k: 'Строка таблицы', d: '48 · 56 с фото', t: '60 (2 строки)', m: 'карточка ≈ 104' },
+      { k: 'Контролы (кнопка, поле)', d: '36', t: '36', m: '44' },
+      { k: 'Нижние табы', d: '—', t: '—', m: '64' },
+      { k: 'Иконки', d: '16', t: '16', m: '18–20' }
+    ];
+    const nb = ' ';
+    const formats = [
+      { k: 'Деньги, полностью', v: '1' + nb + '234' + nb + '567' + nb + '₽', code: "Intl.NumberFormat('ru-RU') + ' ₽'" },
+      { k: 'Деньги в KPI', v: '1,2' + nb + 'млн' + nb + '₽', code: '≥ 1e6 → 1 знак + «млн»' },
+      { k: 'Тысячи на оси', v: '250' + nb + 'тыс.', code: '≥ 1e4 → округление + «тыс.»' },
+      { k: 'Штуки', v: '5' + nb + '476', code: 'целое, без «шт» в KPI' },
+      { k: 'Проценты', v: '87,4' + nb + '%', code: 'maximumFractionDigits: 1' },
+      { k: 'Изменение', v: '+12,4' + nb + '% · −5,5' + nb + '%', code: 'signDisplay: always, U+2212' },
+      { k: 'Дата', v: '04.11.2026', code: "dateStyle: 'short' → dd.MM.yyyy" },
+      { k: 'Дата на оси', v: '4' + nb + 'нояб.', code: "{ day: 'numeric', month: 'short' }" },
+      { k: 'Дата в тултипе', v: 'ср, 28' + nb + 'окт. 2026', code: "{ weekday: 'short', … }" },
+      { k: 'Дни запаса', v: '3' + nb + 'дн. · —', code: 'floor(остаток / скорость), 0 → «—»' }
+    ];
+    const behaviour = [
+      { el: 'Кнопка основная', hover: 'фон --accent-hover', press: 'фон --accent-press', focus: 'кольцо 2 px --focus, отступ 2 px', other: 'opacity .45, cursor not-allowed; «загрузка» — текст + полоса прогресса' },
+      { el: 'Кнопка вторичная', hover: 'фон --surface-2', press: 'фон --surface-3', focus: 'то же кольцо', other: 'рамка --border-strong всегда' },
+      { el: 'Призрачная / иконка', hover: 'фон --surface-2, текст --text', press: 'фон --surface-3', focus: 'то же кольцо', other: 'иконка-кнопка: aria-label обязателен' },
+      { el: 'Сегменты (период, площадка, метрика)', hover: 'текст --text', press: 'мгновенно выбирает', focus: 'кольцо вокруг сегмента', other: 'выбранный: --surface + тонкая тень, aria-pressed' },
+      { el: 'Поле поиска', hover: 'рамка --border-strong', press: '—', focus: 'рамка --accent + ореол 3 px --accent-soft', other: 'поиск с задержкой 250 мс, счётчик обновляется' },
+      { el: 'Строка таблицы', hover: 'фон --surface-2', press: 'открывает детали (следующая итерация)', focus: 'inset-кольцо 2 px --focus', other: 'заголовок с сортировкой — кнопка, aria-sort' },
+      { el: 'Колонка дня на графике', hover: 'подсветка --surface-2 + тултип', press: 'касание показывает тултип', focus: '←/→ переходят по дням', other: 'тултип не перекрывает курсор, переворачивается у края' },
+      { el: 'Плитка статуса (Остатки)', hover: 'тень --shadow-md', press: 'включает фильтр, рамка цвета статуса', focus: 'кольцо', other: 'повторное нажатие снимает фильтр' },
+      { el: 'Ссылка', hover: 'подчёркивание, отступ 3 px', press: '—', focus: 'кольцо', other: 'цвет --accent' }
+    ];
+    const rechartsCode = `const c = (v) => \`var(--\${v})\`; // токены прямо в props
+
+<ResponsiveContainer height={260}>
+  <ComposedChart data={days} barCategoryGap="30%">
+    <CartesianGrid vertical={false} stroke={c('grid')} />
+    <XAxis dataKey="date" tickFormatter={axisDate}
+      tick={{ fontSize: 11, fill: c('axis') }}
+      axisLine={{ stroke: c('border-strong') }}
+      tickLine={false} interval="preserveStartEnd" />
+    <YAxis width={52} tickCount={5}
+      tickFormatter={axisMoney} axisLine={false} tickLine={false}
+      tick={{ fontSize: 11, fill: c('axis') }} />
+    <Tooltip cursor={{ fill: c('surface-2') }}
+      content={<ChartTooltip />} isAnimationActive={false} />
+    <Bar dataKey="wb"   stackId="mp" fill={c('wb')}   />
+    <Bar dataKey="ozon" stackId="mp" fill={c('ozon')} />
+    <Line dataKey="prev" type="linear" dot={false}
+      stroke={c('prev')} strokeWidth={1.5}
+      strokeDasharray="4 3" />
+  </ComposedChart>
+</ResponsiveContainer>
+
+// Sparkline в KPI
+<LineChart width={96} height={28} data={last14}>
+  <Line dataKey="v" dot={false} strokeWidth={1.5}
+    stroke={good ? c('success') : c('danger')}
+    isAnimationActive={false} />
+</LineChart>`;
+    const chartRules = [
+      'Серии: WB — --wb, Ozon — --ozon, прошлый период — --prev пунктиром 4/3. Цвета отличаются и по светлоте, не только по тону.',
+      'WB и Ozon — столбцы стопкой, итог дня = высота стопки; прошлый период — линия по итогу.',
+      'Ось Y — 5 делений «круглыми» шагами (1, 2, 2,5, 5 × 10ⁿ), подписи справа выровнены.',
+      'Ось X — 4–7 подписей, первая и последняя всегда: «5 окт.», «3 нояб.».',
+      'Сетка — только горизонтальная, 1 px --grid; базовая линия --border-strong.',
+      'Легенда над графиком с суммами серий — она же ответ без наведения.',
+      'Категории (8 шт.): --cat-1…--cat-8, порядок фиксирован, чтобы цвет категории не менялся между экранами.',
+      'Анимации Recharts выключены (isAnimationActive=false): лимит 200 мс.'
+    ];
+    const a11y = [
+      'Текст: AA в обеих темах — --text-3 даёт 5,2:1 (светлая) и 5,6:1 (тёмная) к --surface.',
+      'Изменение KPI: стрелка + знак + цвет + скрытый текст «рост, хорошо» для скринридера.',
+      'Статусы: цвет + иконка + слово. Красный/зелёный никогда не единственный сигнал.',
+      'Фокус виден всегда: :focus-visible кольцо 2 px --focus с зазором 2 px.',
+      'Касание ≥ 44 × 44 px на 375: кнопки, чипы, табы, закрытие sheet.',
+      'График: role="img" + aria-label с итогом; таблица под графиком доступна как данные.'
+    ];
+    return { grids, spacing, formats, behaviour, rechartsCode, chartRules, a11y };
+  }
+}
+</script>
+</body>
+</html>
