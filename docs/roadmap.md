@@ -2,8 +2,8 @@
 
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
-**Текущий этап:** 0 — каркас AI-документации.
-**Следующий шаг:** новый `README.md`.
+**Текущий этап:** 1 — инфраструктура.
+**Следующий шаг:** этап 1 в новом чате. Начать с объяснения пользователю, какие пакеты ставим и зачем (правило 1 и skill `new-adr`).
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
@@ -11,7 +11,8 @@
 - [x] `docs/specs/_шаблон.md`, `docs/domain.md`, `docs/security.md`, `docs/design/brief.md`
 - [x] skills: `new-feature`, `new-adr`, `add-rule`, `security-check`
 - [x] субагенты: `qa`, `reviewer`
-- [ ] новый `README.md`
+- [x] новый `README.md`
+- [x] слияние ветки `docs/ai-foundation` в `main`
 
 ## Этап 1. Инфраструктура
 - [ ] временные дизайн-токены и темы

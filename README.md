@@ -1,32 +1,64 @@
-# React + TypeScript + Vite
+# Аналитика продавца WB + Ozon
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Дашборд для продавца на Wildberries и Ozon: продажи обеих площадок в одном месте — выручка, выкупы, прибыль, топ товаров и остатки на складах с предупреждением «скоро закончится».
 
-Currently, two official plugins are available:
+> **Статус:** в разработке. Текущий этап — [docs/roadmap.md](docs/roadmap.md).
+> **Данные синтетические.** Генератор воспроизводит форму данных API Wildberries и Ozon по официальной документации ([ADR-0010](docs/adr/0010-контракт-api-и-адаптеры.md)); реальные данные продавцов не используются.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Возможности
 
-## React Compiler
+- **KPI:** выручка, заказы, выкупы, % выкупа, возвраты, средний чек, прибыль, маржа — с изменением к прошлому периоду.
+- **График продаж** по дням с разбивкой по площадкам и наложением прошлого периода.
+- **Топ товаров** и **остатки по складам** с расчётом дней запаса.
+- **Заказы:** ~100 000 записей с виртуальной прокруткой.
+- **Фильтры** по периоду, маркетплейсу и категории — сохраняются в URL, ссылкой можно поделиться.
+- **Экспорт в Excel** с защитой от formula injection.
+- Светлая и тёмная тема, мобильная версия от 375 px.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Формулы метрик — в [docs/domain.md](docs/domain.md).
 
-## Expanding the Oxlint configuration
+## Стек
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+React 19 · TypeScript 7 · Vite 8 · TanStack Query / Router / Table / Virtual · Recharts · CSS Modules · MSW · Vitest · Testing Library · Playwright · Feature-Sliced Design
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+Почему именно так — [журнал архитектурных решений](docs/adr/README.md).
+
+## Запуск
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+| Команда | Что делает |
+|---|---|
+| `npm run dev` | dev-сервер |
+| `npm run build` | проверка типов и сборка |
+| `npm run lint` | линтер |
+| `npm run preview` | просмотр собранной версии |
+
+## Как устроена разработка с ИИ
+
+Проект ведётся AI-first: код пишут ИИ-агенты по зафиксированным правилам, человек согласует требования и проверяет каждое изменение.
+
+| Артефакт | Назначение |
+|---|---|
+| [AGENTS.md](AGENTS.md) | правила для любого ИИ-агента: архитектура, процесс, git, конвенции, правила проекта |
+| [docs/adr/](docs/adr/README.md) | архитектурные решения с вариантами и обоснованием |
+| [docs/specs/](docs/specs/_шаблон.md) | спецификация каждой фичи с критериями приёмки до написания кода |
+| [docs/security.md](docs/security.md) | модель угроз и чек-лист безопасности |
+| [.claude/agents/](.claude/agents/) | субагенты: `qa` пишет тесты по spec до кода, `reviewer` делает независимое ревью |
+| [.claude/skills/](.claude/skills/) | регламенты типовых задач: новая фича, ADR, правило, проверка безопасности |
+| [.claude/settings.json](.claude/settings.json) | права ИИ: чтение — свободно, коммиты, установки и удаление — только с подтверждения человека |
+
+Процесс одной фичи: **spec → согласование → тесты (`qa`) → код → ревью (`reviewer`) → проверка человеком → коммит.**
+
+## Структура
+
+```
+src/
+  app/ pages/ widgets/ features/ entities/ shared/   слои Feature-Sliced Design
+  mocks/                                             фейковый backend: генератор, адаптеры WB/Ozon, MSW
+docs/
+  adr/ specs/ design/ domain.md security.md roadmap.md
+```
