@@ -3,14 +3,14 @@
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
 **Текущий этап:** 0 — каркас AI-документации.
-**Следующий шаг:** skills и субагенты.
+**Следующий шаг:** новый `README.md`.
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
 - [x] ADR 0000–0012
 - [x] `docs/specs/_шаблон.md`, `docs/domain.md`, `docs/security.md`, `docs/design/brief.md`
-- [ ] skills: `new-feature`, `new-adr`, `add-rule`, `security-check`
-- [ ] субагенты: `qa`, `reviewer`
+- [x] skills: `new-feature`, `new-adr`, `add-rule`, `security-check`
+- [x] субагенты: `qa`, `reviewer`
 - [ ] новый `README.md`
 
 ## Этап 1. Инфраструктура
