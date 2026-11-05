@@ -47,6 +47,7 @@
 | `npm test` | unit-тесты (Vitest), один прогон |
 | `npm run test:watch` | unit-тесты в режиме наблюдения |
 | `npm run test:e2e` | e2e (Playwright, Chromium, 1440 и 375 px) по собранной версии; сам запускает `build` и `preview` |
+| `npx vitest bench --run src/mocks/perf.bench.ts` | замер скорости фейкового API (генерация, эндпоинты); вручную, в `npm test` и CI не входит |
 
 Unit- и интеграционные тесты лежат рядом с кодом (`*.test.ts(x)`), по умолчанию идут в jsdom; тест без DOM помечается `// @vitest-environment node`. Общая подготовка — `vitest.setup.ts`. E2E-сценарии — в `e2e/`. Перед первым запуском e2e на новой машине: `npx playwright install chromium`.
 

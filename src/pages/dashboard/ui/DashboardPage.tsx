@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-import { getHealth } from '../../../shared/api'
+import { getMeta } from '../../../entities/marketplace'
 import { formatDelta, formatPercent, formatRub, formatRubShort, formatTooltipDate } from '../../../shared/lib'
 import styles from './DashboardPage.module.css'
 
 // Временная страница для ручной проверки токенов, форматтеров и цепочки
 // Router → Query → MSW. Заменится дашбордом на этапе 2.
 export function DashboardPage() {
-  const health = useQuery({
-    queryKey: ['health'],
-    queryFn: ({ signal }) => getHealth(signal),
+  const meta = useQuery({
+    queryKey: ['meta'],
+    queryFn: ({ signal }) => getMeta(signal),
   })
 
   return (
@@ -17,9 +17,9 @@ export function DashboardPage() {
       <p className={styles.hint}>Каркас приложения. Дашборд появится на этапе 2.</p>
       <p className={styles.hint}>
         Фейковый API:{' '}
-        {health.isPending && 'проверяем…'}
-        {health.isError && <span className={styles.down}>недоступен</span>}
-        {health.isSuccess && <span className={styles.up}>работает</span>}
+        {meta.isPending && 'проверяем…'}
+        {meta.isError && <span className={styles.down}>недоступен</span>}
+        {meta.isSuccess && <span className={styles.up}>работает</span>}
       </p>
       <ul className={`${styles.list} num`}>
         <li>{formatRub(1234567)}</li>

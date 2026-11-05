@@ -20,6 +20,10 @@ dist
 dist-ssr
 *.local
 
+# Скачанные спецификации API WB/Ozon — материал для сверки (docs/domain/),
+# чужие документы большого объёма, в репозиторий не кладём
+docs/domain/sources/
+
 # Отчёты Playwright
 test-results
 playwright-report

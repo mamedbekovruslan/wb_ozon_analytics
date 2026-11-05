@@ -11,6 +11,7 @@ import { ApiError, apiGet } from './index'
  * K-4  200 + тело не JSON → ApiError (не SyntaxError) со status = 200.
  * K-5  AbortError из fetch или чтения тела пробрасывается как есть.
  * K-6  в fetch уходят path, signal и заголовок Accept: application/json.
+ * AC-27 (spec 001) сетевая ошибка fetch (не отмена) → ApiError со status = null.
  */
 
 const schema = z.object({ id: z.number(), name: z.string() })
@@ -120,6 +121,41 @@ describe('apiGet', () => {
 
     expect(error).not.toBeInstanceOf(ApiError)
     expect(error).toMatchObject({ name: 'AbortError' })
+  })
+
+  it('AC-27: если fetch отклонён сетевой ошибкой (TypeError), отклоняется с ApiError и status = null', async () => {
+    mockFetch(async () => {
+      throw new TypeError('Failed to fetch')
+    })
+
+    const error = await apiGet('/api/item', schema).catch((e: unknown) => e)
+
+    expect(error).toBeInstanceOf(ApiError)
+    expect(error).toBeInstanceOf(Error)
+    expect(error).not.toBeInstanceOf(TypeError)
+    expect(error).toMatchObject({ name: 'ApiError', status: null })
+  })
+
+  it('AC-27: любая другая ошибка fetch (не отмена) тоже превращается в ApiError со status = null', async () => {
+    mockFetch(async () => {
+      throw new Error('ECONNRESET')
+    })
+
+    await expect(apiGet('/api/item', schema)).rejects.toMatchObject({ name: 'ApiError', status: null })
+  })
+
+  it('AC-27: отмена (AbortError) по-прежнему пробрасывается как есть, а не оборачивается в ApiError', async () => {
+    const controller = new AbortController()
+    const abortError = new DOMException('Запрос отменён', 'AbortError')
+    mockFetch(async () => {
+      throw abortError
+    })
+    controller.abort()
+
+    const error = await apiGet('/api/item', schema, controller.signal).catch((e: unknown) => e)
+
+    expect(error).toBe(abortError)
+    expect(error).not.toBeInstanceOf(ApiError)
   })
 
   it('K-6: передаёт в fetch path, signal и заголовок Accept', async () => {
