@@ -50,7 +50,7 @@
 
 Unit- и интеграционные тесты лежат рядом с кодом (`*.test.ts(x)`), по умолчанию идут в jsdom; тест без DOM помечается `// @vitest-environment node`. Общая подготовка — `vitest.setup.ts`. E2E-сценарии — в `e2e/`. Перед первым запуском e2e на новой машине: `npx playwright install chromium`.
 
-CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint:fsd`, `test`, `build`, `test:e2e` и поиск секретов gitleaks по всей истории git (job `secrets`) на каждый push в `main` и на каждый pull request. При изменении команд проверок — обновить и workflow.
+CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint:fsd`, `test`, `build`, `test:e2e` и поиск секретов gitleaks по всей истории git (job `secrets`) на каждый push в `main` и на каждый pull request. При изменении команд проверок — обновить и workflow. При переименовании или добавлении job — обновить обязательные проверки в защите ветки `main` на GitHub (ADR-0014), с объяснением и согласием пользователя (правило 1).
 
 ## 4. Архитектура — Feature-Sliced Design
 
@@ -86,7 +86,7 @@ Skill `new-feature` проводит по этому процессу.
 
 ## 6. Git
 
-- Модель веток — **GitHub Flow** ([ADR-0012](docs/adr/0012-github-flow.md)): `main` всегда рабочая; на каждую задачу короткая ветка `feat/…`, `fix/…`, `docs/…`, `chore/…`, `test/…`; в `main` напрямую не коммитим.
+- Модель веток — **GitHub Flow** с защитой `main` ([ADR-0014](docs/adr/0014-github-flow-с-защитой-main.md)): `main` всегда рабочая; на каждую задачу короткая ветка `feat/…`, `fix/…`, `docs/…`, `chore/…`, `test/…`; в `main` — только через PR при зелёном CI (прямой push и локальное слияние GitHub отклонит).
 - Сообщения коммитов — Conventional Commits, тип на английском, описание на русском: `feat: добавить KPI-карточки`. Исключение — PR от Dependabot (`.github/dependabot.yml`): сообщение пишет бот, по-английски, с префиксом `chore(deps)`; слияние такого PR — тоже только после «ок» пользователя.
 - **Перед каждым коммитом** показать пользователю:
   1. имя ветки;
