@@ -1,0 +1,47 @@
+# Dependabot: раз в неделю предлагает обновления зависимостей обычными PR.
+# Сам ничего не сливает — каждый PR проходит CI и ручную проверку (AGENTS.md, раздел 6)
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Moscow
+    # Свежий релиз выжидаем неделю: вредоносные версии обычно успевают отозвать (docs/security.md, T8).
+    # Исправления уязвимостей (security updates) приходят без этой задержки
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      # Мелкие обновления — одним PR, чтобы не разбирать десяток однотипных
+      minor-and-patch:
+        update-types: [minor, patch]
+        # TypeScript не следует semver: минорный релиз может сломать типы — отдельным PR, чтобы было видно виновника
+        exclude-patterns: ["typescript"]
+    ignore:
+      # Типы Node держим в мажорной версии из .nvmrc (24), иначе они опишут API, которого нет в рантайме
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+    # Бот ставит пакеты без скриптов, поэтому после слияния его PR нужны локальные шаги:
+    # - msw: `npm ci` перегенерирует public/mockServiceWorker.js — закоммитить его отдельным chore;
+    # - @playwright/test: `npx playwright install chromium`, иначе локальный test:e2e упадёт (в CI браузер ставится сам)
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Moscow
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      actions:
+        patterns: ["*"]
