@@ -45,3 +45,17 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+
+  # Образ gitleaks для CI: строку `docker run` в workflow Dependabot не видит, поэтому версия — в Dockerfile
+  - package-ecosystem: docker
+    directory: /.github/gitleaks
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Moscow
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope

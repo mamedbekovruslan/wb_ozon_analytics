@@ -3,7 +3,7 @@
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
 **Текущий этап:** 1 — инфраструктура.
-**Следующий шаг:** включить Dependabot alerts и Dependabot security updates в настройках GitHub; затем закрепить версии по дайджесту и с объяснением и согласием — Vercel, защита ветки `main` (правило 1). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
+**Следующий шаг:** с объяснением и согласием — Vercel, защита ветки `main` (правило 1). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
@@ -27,8 +27,9 @@
 - [x] публичный GitHub-репозиторий: [mamedbekovruslan/wb_ozon_analytics](https://github.com/mamedbekovruslan/wb_ozon_analytics)
 - [x] GitHub Actions: `.github/workflows/ci.yml` — lint, steiger, unit-тесты, сборка, e2e на push в `main` и на каждый PR
 - [x] gitleaks в CI: job `secrets` — поиск секретов по всей истории git
-- [x] Dependabot: `.github/dependabot.yml` — npm и GitHub Actions, раз в неделю
-- [ ] закрепить actions и образ gitleaks по дайджесту (actions дальше обновляет Dependabot; образ в `docker run` он не видит — решить как)
+- [x] Dependabot: `.github/dependabot.yml` — npm, GitHub Actions и образ gitleaks (docker), раз в неделю
+- [x] Dependabot alerts и Dependabot security updates включены в настройках репозитория
+- [x] actions закреплены по SHA, образ gitleaks — по дайджесту в `.github/gitleaks/Dockerfile` (Dependabot обновляет оба)
 - [ ] с объяснением и согласием: Vercel, защита ветки `main` (слияние только при зелёном CI — ADR-0009; обязательные проверки — все job, включая `secrets`)
 
 ## Этап 2. Фичи
