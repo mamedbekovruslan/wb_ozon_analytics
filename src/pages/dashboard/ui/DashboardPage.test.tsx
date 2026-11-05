@@ -9,8 +9,11 @@ import { DashboardPage } from './DashboardPage'
 /*
  * Дымовой интеграционный тест: доказывает, что связка
  * Vitest + jsdom + Testing Library + MSW (ADR-0009) работает.
- * Уйдёт вместе с временной страницей и /api/health в фиче 1.
+ * С фичи 1 (AC-28) проверка идёт через /api/meta вместо удалённого /api/health.
  */
+
+// Первый запрос запускает генерацию данных — ждём дольше обычного
+const SLOW = 60_000
 
 const server = setupServer(...handlers)
 
@@ -30,16 +33,37 @@ function renderPage() {
 }
 
 describe('DashboardPage (временная)', () => {
-  it('показывает загрузку, затем «работает», когда фейковый API ответил', async () => {
+  it(
+    'AC-28: показывает загрузку, затем «работает», когда /api/meta ответил',
+    async () => {
+      renderPage()
+
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Аналитика продавца WB + Ozon')
+      expect(screen.getByText('проверяем…', { exact: false })).toBeInTheDocument()
+      expect(await screen.findByText('работает', {}, { timeout: SLOW })).toBeInTheDocument()
+    },
+    SLOW,
+  )
+
+  it('AC-28: показывает «недоступен», когда /api/meta вернул ошибку', async () => {
+    server.use(http.get('/api/meta', () => new HttpResponse(null, { status: 500 })))
     renderPage()
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Аналитика продавца WB + Ozon')
-    expect(screen.getByText('проверяем…', { exact: false })).toBeInTheDocument()
-    expect(await screen.findByText('работает')).toBeInTheDocument()
+    expect(await screen.findByText('недоступен')).toBeInTheDocument()
   })
 
-  it('показывает «недоступен», когда API вернул ошибку', async () => {
-    server.use(http.get('/api/health', () => new HttpResponse(null, { status: 500 })))
+  it('AC-28: источник проверки — /api/meta, а не /api/health: health «жив», meta нет → «недоступен»', async () => {
+    server.use(
+      http.get('/api/health', () => HttpResponse.json({ status: 'ok' })),
+      http.get('/api/meta', () => new HttpResponse(null, { status: 500 })),
+    )
+    renderPage()
+
+    expect(await screen.findByText('недоступен')).toBeInTheDocument()
+  })
+
+  it('AC-28: показывает «недоступен», когда /api/meta ответил не по контракту', async () => {
+    server.use(http.get('/api/meta', () => HttpResponse.json({ status: 'ok' })))
     renderPage()
 
     expect(await screen.findByText('недоступен')).toBeInTheDocument()

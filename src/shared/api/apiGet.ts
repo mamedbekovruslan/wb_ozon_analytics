@@ -11,6 +11,8 @@ export class ApiError extends Error {
   }
 }
 
+const isAbortError = (error: unknown) => error instanceof DOMException && error.name === 'AbortError'
+
 // GET к нашему BFF. Ответ проверяется zod-схемой: если форма данных
 // неожиданная, это ошибка запроса, а не тихо испорченный интерфейс.
 export async function apiGet<T extends z.ZodType>(
@@ -18,7 +20,15 @@ export async function apiGet<T extends z.ZodType>(
   schema: T,
   signal?: AbortSignal,
 ): Promise<z.infer<T>> {
-  const response = await fetch(path, { signal, headers: { Accept: 'application/json' } })
+  let response: Response
+  try {
+    response = await fetch(path, { signal, headers: { Accept: 'application/json' } })
+  } catch (error) {
+    // Отмену запроса (signal) не маскируем: TanStack Query обрабатывает её сам
+    if (isAbortError(error)) throw error
+    // Нет сети или сервер недоступен — для интерфейса это та же ошибка запроса
+    throw new ApiError(`Не удалось выполнить запрос ${path}: нет связи с сервером`)
+  }
   if (!response.ok) {
     throw new ApiError(`Запрос ${path} завершился с кодом ${response.status}`, response.status)
   }
@@ -29,8 +39,7 @@ export async function apiGet<T extends z.ZodType>(
   try {
     body = await response.json()
   } catch (error) {
-    // Отмену запроса (signal) не маскируем: TanStack Query обрабатывает её сам
-    if (error instanceof DOMException && error.name === 'AbortError') throw error
+    if (isAbortError(error)) throw error
     throw new ApiError(`Ответ ${path} — не JSON`, response.status)
   }
 
