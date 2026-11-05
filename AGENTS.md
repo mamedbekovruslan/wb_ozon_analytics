@@ -30,6 +30,7 @@
 | Фейковый backend | MSW + генератор на seed |
 | Тесты | Vitest, Testing Library, Playwright |
 | Линтеры | oxlint, steiger (границы FSD) |
+| CI | GitHub Actions |
 | Деплой | Vercel |
 
 Обоснование каждого выбора — в [docs/adr/](docs/adr/). Новая зависимость добавляется только через ADR.
@@ -48,6 +49,8 @@
 | `npm run test:e2e` | e2e (Playwright, Chromium, 1440 и 375 px) по собранной версии; сам запускает `build` и `preview` |
 
 Unit- и интеграционные тесты лежат рядом с кодом (`*.test.ts(x)`), по умолчанию идут в jsdom; тест без DOM помечается `// @vitest-environment node`. Общая подготовка — `vitest.setup.ts`. E2E-сценарии — в `e2e/`. Перед первым запуском e2e на новой машине: `npx playwright install chromium`.
+
+CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint:fsd`, `test`, `build` и `test:e2e` на каждый push в `main` и на каждый pull request. При изменении команд проверок — обновить и workflow.
 
 ## 4. Архитектура — Feature-Sliced Design
 

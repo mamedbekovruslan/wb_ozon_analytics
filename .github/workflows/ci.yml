@@ -1,0 +1,64 @@
+# CI: те же проверки, что агент запускает локально (AGENTS.md, раздел 11),
+# на каждый push в main и на каждый pull request
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# В PR новый push отменяет устаревший прогон — не тратим минуты впустую.
+# В main группа своя у каждого коммита: иначе при нескольких push подряд
+# GitHub выкинул бы из очереди промежуточный прогон и коммит остался бы без итога
+concurrency:
+  group: ci-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Минимальные права: проверкам нужно только читать код (docs/security.md)
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Линтеры, unit-тесты, сборка
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Не оставлять токен в .git/config — его не увидят скрипты npm-пакетов (T8)
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      # npm ci ставит строго по package-lock.json — та же версия пакетов, что локально
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run lint:fsd
+      - run: npm test
+      - run: npm run build
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Только Chromium — других браузеров в playwright.config.ts нет
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      # Трейсы упавших тестов (trace: retain-on-failure) — чтобы разобрать падение без локального повтора
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
