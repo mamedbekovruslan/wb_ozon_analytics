@@ -1,4 +1,4 @@
-# CI: те же проверки, что агент запускает локально (AGENTS.md, раздел 11),
+# CI: проверки из AGENTS.md (разделы 3 и 11) и поиск секретов,
 # на каждый push в main и на каждый pull request
 name: CI
 
@@ -19,6 +19,22 @@ permissions:
   contents: read
 
 jobs:
+  # Репозиторий публичный: секрет, попавший в любой коммит, виден всем,
+  # даже если его удалили следующим коммитом (docs/security.md, T1)
+  secrets:
+    name: Поиск секретов (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Вся история, а не последний коммит — секрет мог быть добавлен и удалён раньше
+          fetch-depth: 0
+          persist-credentials: false
+      # Официальный образ с зафиксированной версией: без стороннего action и без лицензионного ключа.
+      # --redact — найденное значение не печатается в публичный лог CI; :ro — инструменту незачем менять рабочую копию
+      - run: docker run --rm -v "$PWD:/repo:ro" ghcr.io/gitleaks/gitleaks:v8.30.1 git --redact --verbose /repo
+
   checks:
     name: Линтеры, unit-тесты, сборка
     runs-on: ubuntu-latest
