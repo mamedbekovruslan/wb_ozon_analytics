@@ -30,7 +30,7 @@
 - [x] Dependabot: `.github/dependabot.yml` — npm, GitHub Actions и образ gitleaks (docker), раз в неделю
 - [x] Dependabot alerts и Dependabot security updates включены в настройках репозитория
 - [x] actions закреплены по SHA, образ gitleaks — по дайджесту в `.github/gitleaks/Dockerfile` (Dependabot обновляет оба)
-- [x] защита ветки `main` (classic branch protection): только через PR, без обязательного одобрения; обязательные проверки — все три job CI (gitleaks, линтеры/unit/сборка, E2E), ветка PR должна быть актуальной; обход запрещён и для администратора; force push и удаление запрещены
+- [x] защита ветки `main` (classic branch protection, [ADR-0014](adr/0014-github-flow-с-защитой-main.md)): только через PR, без обязательного одобрения; обязательные проверки — все три job CI (gitleaks, линтеры/unit/сборка, E2E), ветка PR должна быть актуальной; обход запрещён и для администратора; force push и удаление запрещены
 - [ ] с объяснением и согласием: Vercel
 
 ## Этап 2. Фичи
