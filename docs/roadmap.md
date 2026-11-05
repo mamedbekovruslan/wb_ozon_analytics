@@ -3,7 +3,7 @@
 Статус проекта. Обновляется после каждой закрытой задачи. Новый чат начинается с чтения этого файла и [AGENTS.md](../AGENTS.md).
 
 **Текущий этап:** 1 — инфраструктура.
-**Следующий шаг:** с объяснением и согласием — gitleaks, Dependabot, Vercel, защита ветки `main` (правило 1). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
+**Следующий шаг:** с объяснением и согласием — Dependabot, Vercel, защита ветки `main` (правило 1). Recharts и TanStack Table/Virtual ставятся вместе с фичами, где нужны.
 
 ## Этап 0. Каркас AI-документации
 - [x] `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `.gitignore`, roadmap
@@ -26,7 +26,8 @@
 - [x] Vitest + Testing Library + jsdom, Playwright (`npm run test:e2e`, Chromium, 1440 и 375 px), дымовые тесты; `@axe-core/playwright` — вместе с пунктом 9 (a11y)
 - [x] публичный GitHub-репозиторий: [mamedbekovruslan/wb_ozon_analytics](https://github.com/mamedbekovruslan/wb_ozon_analytics)
 - [x] GitHub Actions: `.github/workflows/ci.yml` — lint, steiger, unit-тесты, сборка, e2e на push в `main` и на каждый PR
-- [ ] с объяснением и согласием: gitleaks, Dependabot, Vercel, защита ветки `main` (слияние только при зелёном CI — ADR-0009)
+- [x] gitleaks в CI: job `secrets` — поиск секретов по всей истории git
+- [ ] с объяснением и согласием: Dependabot (вместе с ним — закрепить actions и образ gitleaks по дайджесту), Vercel, защита ветки `main` (слияние только при зелёном CI — ADR-0009; обязательные проверки — все job, включая `secrets`)
 
 ## Этап 2. Фичи
 1. [ ] Сверка API WB/Ozon + генератор + адаптеры + MSW API

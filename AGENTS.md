@@ -50,7 +50,7 @@
 
 Unit- и интеграционные тесты лежат рядом с кодом (`*.test.ts(x)`), по умолчанию идут в jsdom; тест без DOM помечается `// @vitest-environment node`. Общая подготовка — `vitest.setup.ts`. E2E-сценарии — в `e2e/`. Перед первым запуском e2e на новой машине: `npx playwright install chromium`.
 
-CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint:fsd`, `test`, `build` и `test:e2e` на каждый push в `main` и на каждый pull request. При изменении команд проверок — обновить и workflow.
+CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint:fsd`, `test`, `build`, `test:e2e` и поиск секретов gitleaks по всей истории git (job `secrets`) на каждый push в `main` и на каждый pull request. При изменении команд проверок — обновить и workflow.
 
 ## 4. Архитектура — Feature-Sliced Design
 
