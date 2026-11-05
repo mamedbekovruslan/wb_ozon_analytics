@@ -25,15 +25,21 @@
 | T8 | **Вредоносный пакет (supply chain)** | опечатка в имени пакета, скомпрометированный пакет | установка только с разрешения пользователя (`.claude/settings.json`); проверка популярности и репозитория пакета перед добавлением; CI (`.github/workflows/ci.yml`) запускается на `pull_request`, а не `pull_request_target` (код из форков не получает секретов), с правами только на чтение (`contents: read`) и без сохранения токена в рабочей копии (`persist-credentials: false`) — скрипты пакетов при `npm ci` его не видят; actions закреплены по SHA коммита, образ gitleaks — по дайджесту (`.github/gitleaks/Dockerfile`): если автор перевесит тег на другой код, в CI он не попадёт, а обновления приходят PR от Dependabot; PR от Dependabot запускает в CI install-скрипты новой версии пакета — риск закрыт теми же мерами, отсутствием секретов Actions у таких PR и выдержкой релиза 7 дней (`cooldown`) |
 | T9 | **Данные в браузере** | персональные данные в localStorage | в localStorage только выбранная тема |
 
-## Заголовки безопасности (`vercel.json`, этап 1, с согласия пользователя)
+## Заголовки безопасности (`vercel.json`)
 
-| Заголовок | Значение (черновик) | Зачем |
+Действуют на всех путях продакшена и превью Vercel. Локальные `npm run dev` / `preview` их не отдают — проверка вручную на превью-деплое PR (DevTools → Network → заголовки ответа). `Strict-Transport-Security` Vercel ставит сам.
+
+| Заголовок | Значение | Зачем |
 |---|---|---|
-| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'` | браузер выполняет только наши скрипты |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'` | браузер выполняет только наши скрипты |
 | `X-Content-Type-Options` | `nosniff` | браузер не «угадывает» тип файла |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` | не передавать полный URL с фильтрами на чужие сайты |
 | `X-Frame-Options` | `DENY` | защита от iframe для старых браузеров |
 | `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` | запрет ненужных API браузера |
+
+Там же — перенаправление всех путей, кроме `/api/…` и `/assets/…`, на `index.html`: маршруты SPA (`/dashboard`, `/orders`) существуют только в JavaScript, без перенаправления прямой заход дал бы 404. Существующие файлы (`mockServiceWorker.js`, `favicon.svg`) отдаются как есть. `/api/…` и `/assets/…` не перенаправляются, чтобы запрос мимо MSW или устаревший чанк (вкладка открыта до нового деплоя) получили честный 404, а не HTML-страницу с кодом 200.
+
+CSP рассчитан на текущую сборку: `blob:`, `'unsafe-inline'` и чужие домены не разрешены. Если фиче понадобится больше (воркер из blob, BFF на другом домене в `connect-src`) — расширять точечно, с объяснением пользователю. Библиотеки, вставляющие тег `<style>` (CSS-in-JS), под этот CSP не работают — отсеивать на этапе ADR.
 
 ## Чек-лист для ревью
 
@@ -42,5 +48,6 @@
 - [ ] Внешние данные (URL, ответы API) проходят zod-схему.
 - [ ] Данные, попадающие в экспорт, проходят экранирование formula injection.
 - [ ] Новые зависимости обоснованы ADR; не используется `xlsx` из npm.
+- [ ] Новая зависимость или изменение `vercel.json` — на превью-деплое PR консоль браузера без ошибок `Content-Security-Policy` (автоматически CSP не проверяется: `dev` и `preview` заголовков не отдают).
 - [ ] В localStorage не пишется ничего, кроме темы.
 - [ ] Ошибки показываются пользователю без технических деталей (стек, внутренние пути).
