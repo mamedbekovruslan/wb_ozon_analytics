@@ -7,6 +7,7 @@ import { topProductsResponseSchema } from '../entities/product'
 import { kpiResponseSchema, ordersResponseSchema, salesDailyResponseSchema } from '../entities/sale'
 import { stocksResponseSchema } from '../entities/warehouse'
 import * as sharedApi from '../shared/api'
+import { generateRawData } from './generator'
 import { createHandlers } from './handlers'
 
 /*
@@ -289,21 +290,62 @@ describe('handlers', () => {
         { id: 'wb', name: 'WB' },
         { id: 'ozon', name: 'Ozon' },
       ])
+      // productCount добавлен spec 002 (AC-24), его значения проверяются ниже
       expect(meta.categories).toEqual([
-        { id: 'shoes', name: 'Обувь' },
-        { id: 'clothing', name: 'Одежда' },
-        { id: 'electronics', name: 'Электроника' },
-        { id: 'beauty', name: 'Красота' },
-        { id: 'home', name: 'Дом и кухня' },
-        { id: 'sports', name: 'Спорт' },
-        { id: 'kids', name: 'Детские товары' },
-        { id: 'accessories', name: 'Аксессуары' },
+        { id: 'shoes', name: 'Обувь', productCount: expect.any(Number) },
+        { id: 'clothing', name: 'Одежда', productCount: expect.any(Number) },
+        { id: 'electronics', name: 'Электроника', productCount: expect.any(Number) },
+        { id: 'beauty', name: 'Красота', productCount: expect.any(Number) },
+        { id: 'home', name: 'Дом и кухня', productCount: expect.any(Number) },
+        { id: 'sports', name: 'Спорт', productCount: expect.any(Number) },
+        { id: 'kids', name: 'Детские товары', productCount: expect.any(Number) },
+        { id: 'accessories', name: 'Аксессуары', productCount: expect.any(Number) },
       ])
       expect(Number.isNaN(Date.parse(meta.updatedAt))).toBe(false)
       expect(Date.parse(meta.updatedAt)).toBeLessThanOrEqual(NOW.getTime())
       // 24 месяца до 05.11.2026
       expect(meta.historyFrom).toMatch(/^\d{4}-\d{2}-\d{2}$/)
       expect(meta.historyFrom >= '2024-11-04' && meta.historyFrom <= '2024-11-06').toBe(true)
+    })
+  })
+
+  describe('spec 002, AC-24: число товаров у категорий в /api/meta', () => {
+    // Каталог продавца при тех же seed и «сейчас», что у обработчиков
+    let catalog: { sku: string; category: string }[]
+
+    beforeAll(() => {
+      catalog = generateRawData({ seed: 42, today: TODAY, now: NOW }).catalog
+    }, SLOW)
+
+    it('AC-24: ответ проходит обновлённую metaResponseSchema, productCount — целое ≥ 0 у каждой категории', async () => {
+      const { status, body } = await get('/api/meta')
+      const meta = parse(metaResponseSchema, body)
+
+      expect(status).toBe(200)
+      expect(meta.categories).toHaveLength(8)
+      for (const category of meta.categories) {
+        expect(Number.isInteger(category.productCount)).toBe(true)
+        expect(category.productCount).toBeGreaterThanOrEqual(0)
+      }
+    })
+
+    it('AC-24: productCount — число SKU каталога в категории', async () => {
+      const meta = parse(metaResponseSchema, (await get('/api/meta')).body)
+
+      for (const category of meta.categories) {
+        const skus = new Set(catalog.filter((item) => item.category === category.id).map((item) => item.sku))
+        expect({ id: category.id, productCount: category.productCount }).toEqual({
+          id: category.id,
+          productCount: skus.size,
+        })
+      }
+    })
+
+    it('AC-24: сумма productCount по категориям равна размеру каталога', async () => {
+      const meta = parse(metaResponseSchema, (await get('/api/meta')).body)
+      const sum = meta.categories.reduce((acc, category) => acc + category.productCount, 0)
+
+      expect(sum).toBe(catalog.length)
     })
   })
 
