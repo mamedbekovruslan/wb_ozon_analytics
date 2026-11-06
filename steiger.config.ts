@@ -9,8 +9,8 @@ export default defineConfig([
   },
   {
     // Временно (решение пользователя 2026-11-05, spec 001): схемы ответов API
-    // лежат в entities по ADR-0010, а использовать их начнут виджеты фич 3–7.
-    // Вернуть 'error' в фиче KPI-карточек, когда схемы появятся в коде UI.
+    // лежат в entities по ADR-0010. sale уже используется (spec 004), product и
+    // warehouse — ещё нет. Вернуть 'error' после фич «Топ товаров» и «Остатки».
     files: ['./src/entities/**'],
     rules: { 'fsd/insignificant-slice': 'warn' },
   },

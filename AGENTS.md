@@ -58,8 +58,8 @@ CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint
 ```
 src/
   app/       провайдеры (QueryClient, Router, Theme), глобальные стили, точка входа
-  pages/     страницы: dashboard, orders, stocks
-  widgets/   крупные блоки страницы: filter-bar, kpi-panel, sales-chart, top-products, stock-table, app-header
+  pages/     страницы: dashboard, orders, stocks; блоки, нужные одной странице (KPI, график, топ), — внутри неё
+  widgets/   крупные блоки, общие для нескольких страниц: filter-bar, app-header
   features/  действия пользователя: export-excel, theme-toggle (фильтры — внутри widgets/filter-bar, spec 002)
   entities/  бизнес-сущности: sale, product, warehouse, marketplace (типы, zod-схемы, api-хуки, UI)
   shared/    переиспользуемое без бизнес-логики: ui, api, lib, styles, config
@@ -69,6 +69,7 @@ src/
 Правила:
 - импорт только сверху вниз: `app → pages → widgets → features → entities → shared`; слайсы одного слоя не импортируют друг друга;
 - доступ к слайсу только через его `index.ts` (public API);
+- «сначала страница»: блок, нужный одной странице, лежит в `pages/<страница>/`; в `widgets/` — только когда его использует вторая страница (steiger `fsd/insignificant-slice`, дополнение к ADR-0003);
 - `mocks/` изображает backend: UI-слои не импортируют из `mocks/` ничего, кроме точки запуска MSW в `app/`; исключение — тесты (`*.test.ts(x)`): для интеграционных проверок им можно импортировать `mocks/handlers` и `msw` (ADR-0009);
 - клиент получает от API только агрегаты и страницы таблиц, никогда — все сырые записи.
 
