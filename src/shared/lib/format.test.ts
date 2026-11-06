@@ -16,6 +16,8 @@ import {
   formatDayMonth,
   formatCategoriesCount,
   formatPeriodShort,
+  formatPieces,
+  formatDayMonthLong,
 } from './format'
 
 /*
@@ -676,5 +678,95 @@ describe('formatCategoriesCount', () => {
 
   it('R-13: в результате нет обычных пробелов', () => {
     expect(formatCategoriesCount(3)).not.toMatch(/ /)
+  })
+})
+
+/*
+ * Spec 005 «График продаж по дням», AC-21: штуки для метрики «Заказы»
+ * и дата для aria-label графика («с 5 октября по 3 ноября 2026»).
+ * Имя форматтера даты в spec не задано — предложено formatDayMonthLong(day, withYear?).
+ */
+
+describe('formatPieces', () => {
+  it('AC-21: 5476 → «5 476 шт» (неразрывные пробелы)', () => {
+    expect(formatPieces(5476)).toBe(`5${NBSP}476${NBSP}шт`)
+  })
+
+  it('AC-21: 0 → «0 шт»', () => {
+    expect(formatPieces(0)).toBe(`0${NBSP}шт`)
+  })
+
+  it('AC-21: числа меньше тысячи — без разделителя разрядов; «шт» без склонения', () => {
+    expect(formatPieces(1)).toBe(`1${NBSP}шт`)
+    expect(formatPieces(182)).toBe(`182${NBSP}шт`)
+  })
+
+  it('AC-21: очень большие числа — с разрядами', () => {
+    expect(formatPieces(1_234_567)).toBe(`1${NBSP}234${NBSP}567${NBSP}шт`)
+  })
+
+  it('AC-21, R-13: в результате нет обычных пробелов и дефисов', () => {
+    expectTypography(formatPieces(5476))
+    expectTypography(formatPieces(0))
+  })
+})
+
+describe('formatDayMonthLong', () => {
+  /** Приводит все виды пробелов к обычному: в aria-label важны слова, а не вид пробела. */
+  // \s в JS включает U+00A0 и U+202F
+  const plain = (s: string): string => s.replace(/\s+/g, ' ')
+
+  it('AC-21: «2026-10-05» → «5 октября»', () => {
+    expect(plain(formatDayMonthLong('2026-10-05'))).toBe('5 октября')
+  })
+
+  it('AC-21: с годом — «5 октября 2026»', () => {
+    expect(plain(formatDayMonthLong('2026-10-05', true))).toBe('5 октября 2026')
+  })
+
+  it('AC-21: без года по умолчанию и при withYear = false', () => {
+    expect(plain(formatDayMonthLong('2026-11-03', false))).toBe('3 ноября')
+    expect(formatDayMonthLong('2026-11-03')).not.toContain('2026')
+  })
+
+  it('AC-21: день без ведущего нуля, двузначный — как есть', () => {
+    expect(plain(formatDayMonthLong('2026-01-01'))).toBe('1 января')
+    expect(plain(formatDayMonthLong('2025-12-28', true))).toBe('28 декабря 2025')
+  })
+
+  it('AC-21: все двенадцать месяцев — в родительном падеже', () => {
+    const months = [
+      'января',
+      'февраля',
+      'марта',
+      'апреля',
+      'мая',
+      'июня',
+      'июля',
+      'августа',
+      'сентября',
+      'октября',
+      'ноября',
+      'декабря',
+    ]
+    months.forEach((m, i) => {
+      expect(plain(formatDayMonthLong(`2026-${String(i + 1).padStart(2, '0')}-15`))).toBe(`15 ${m}`)
+    })
+  })
+
+  it('AC-21: 29 февраля високосного года', () => {
+    expect(plain(formatDayMonthLong('2024-02-29', true))).toBe('29 февраля 2024')
+  })
+
+  it('AC-21: дата берётся из строки как есть — без сдвига часового пояса на границе года', () => {
+    // new Date('2026-01-01') — это UTC: западнее Гринвича получилось бы «31 декабря 2025»
+    expect(plain(formatDayMonthLong('2026-01-01', true))).toBe('1 января 2026')
+    expect(plain(formatDayMonthLong('2025-12-31', true))).toBe('31 декабря 2025')
+  })
+
+  it('AC-21: без хвоста « г.» и без точки сокращения', () => {
+    const s = formatDayMonthLong('2026-10-05', true)
+    expect(s).not.toContain('г.')
+    expect(s).not.toContain('.')
   })
 })

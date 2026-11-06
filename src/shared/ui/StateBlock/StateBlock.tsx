@@ -9,6 +9,11 @@ type StateBlockProps = {
   text: ReactNode
   onAction: () => void
   className?: string
+  /**
+   * card — отдельная карточка (KPI); inset — внутри карточки блока: пунктирная рамка,
+   * высоту задаёт место использования (график, Dashboard.dc.html)
+   */
+  variant?: 'card' | 'inset'
 } & (
   // empty — «нет данных» с действием (обычно «Сбросить фильтры»);
   // error — «не удалось загрузить», кнопка всегда «Повторить» с иконкой обновления (DESIGN_SPEC § 5)
@@ -17,10 +22,10 @@ type StateBlockProps = {
 
 /** Состояние блока с данными: иконка в круге, заголовок, пояснение и кнопка. */
 export function StateBlock(props: StateBlockProps) {
-  const { title, text, onAction, className } = props
+  const { title, text, onAction, className, variant = 'card' } = props
   const error = props.kind === 'error'
   return (
-    <div role={error ? 'alert' : undefined} className={cx(styles.block, className)}>
+    <div role={error ? 'alert' : undefined} className={cx(styles.block, styles[variant], className)}>
       <span aria-hidden="true" className={cx(styles.icon, error ? styles.iconError : styles.iconEmpty)}>
         {error ? <WarningIcon /> : <InboxIcon />}
       </span>

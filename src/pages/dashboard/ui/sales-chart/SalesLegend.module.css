@@ -1,0 +1,40 @@
+/* Легенда графика (Dashboard.dc.html): 12/16 --text-2, суммы --text 500 */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px var(--sp-5);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-2);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.wb {
+  background: var(--wb);
+}
+
+.ozon {
+  background: var(--ozon);
+}
+
+.value {
+  color: var(--text);
+  font-weight: var(--fw-medium);
+}
+
+.previous line {
+  stroke: var(--prev);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}

@@ -7,6 +7,10 @@ const NBSP = ' ';
 const MINUS = '−';
 const MONTHS_SHORT = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
 const WEEKDAYS_SHORT = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+const MONTHS_GENITIVE = [
+  'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+  'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+];
 
 const intFmt = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 // Отличие от исходника дизайнера: Intl и toFixed дают дефис и «-0», а правило выше требует U+2212.
@@ -22,6 +26,9 @@ export const formatInt = (n: number) => minus(nb(intFmt.format(Math.round(n) || 
 
 /** 1 234 567 ₽ */
 export const formatRub = (n: number) => `${formatInt(n)}${NBSP}₽`;
+
+/** Штуки на графике продаж: 5 476 шт (без склонения, как в макете) */
+export const formatPieces = (n: number) => `${formatInt(n)}${NBSP}шт`;
 
 /** KPI: 1,2 млн ₽ · 250 тыс. ₽ · 9 870 ₽ */
 export const formatRubShort = (n: number) => {
@@ -85,6 +92,13 @@ export const formatCategoriesCount = (n: number) => {
 
 /** Ось графика: 4 нояб. */
 export const formatAxisDate = (d: Date) => `${d.getDate()}${NBSP}${MONTHS_SHORT[d.getMonth()]}`;
+
+/** Текст для скринридера из дня API `ГГГГ-ММ-ДД`: 5 октября · 5 октября 2026 */
+export const formatDayMonthLong = (day: string, withYear = false) => {
+  const d = parseDay(day);
+  const head = `${d.getDate()}${NBSP}${MONTHS_GENITIVE[d.getMonth()]}`;
+  return withYear ? `${head}${NBSP}${d.getFullYear()}` : head;
+};
 
 /** Тултип: ср, 28 окт. 2026 */
 export const formatTooltipDate = (d: Date) =>

@@ -4,11 +4,26 @@
   flex-direction: column;
   align-items: center;
   gap: var(--sp-2);
-  padding: var(--sp-8) var(--sp-6);
   text-align: center;
+}
+
+.card {
+  padding: var(--sp-8) var(--sp-6);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
+}
+
+/* Блок внутри карточки (график): пунктир --border-strong, содержимое по центру по высоте */
+.inset {
+  justify-content: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-md);
+}
+
+.inset .text {
+  max-width: 340px;
+  padding: 0 var(--sp-4);
 }
 
 .icon {

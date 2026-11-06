@@ -1,0 +1,79 @@
+/* Карточка «Продажи по дням» (Dashboard.dc.html, секция chart-h) */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+  padding: var(--sp-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-16);
+  line-height: var(--lh-16);
+  font-weight: var(--fw-semibold);
+}
+
+.subtitle {
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  color: var(--text-2);
+}
+
+.muted {
+  color: var(--text-3);
+}
+
+/* Пусто и ошибка — той же высоты, что график с подписями (L.chartEmptyH) */
+.state {
+  height: 240px;
+}
+
+/* Телефон: сегменты на всю ширину под заголовком, сетка 3 × 40 */
+@media (max-width: 639px) {
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .metrics > button {
+    height: 40px;
+  }
+}
+
+@media (min-width: 640px) {
+  .state {
+    height: 260px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card {
+    padding: var(--sp-5);
+  }
+
+  .state {
+    height: 300px;
+  }
+}

@@ -1,0 +1,71 @@
+/* Тултип дня (Dashboard.dc.html, role="tooltip") */
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-sizing: border-box;
+  min-width: 208px;
+  padding: 10px var(--sp-3);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.date {
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  color: var(--text-2);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.wb {
+  background: var(--wb);
+}
+
+.ozon {
+  background: var(--ozon);
+}
+
+.value {
+  color: var(--text);
+  font-weight: var(--fw-medium);
+}
+
+.total {
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+
+.previous {
+  color: var(--text-3);
+}
+
+.badge {
+  align-self: flex-start;
+}
