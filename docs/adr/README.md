@@ -20,3 +20,4 @@
 | [0014](0014-github-flow-с-защитой-main.md) | GitHub Flow с защитой ветки `main` | принято |
 | [0015](0015-формат-фильтров-в-url.md) | Формат фильтров в URL | принято |
 | [0016](0016-фейковый-backend-в-web-worker.md) | Фейковый backend в Web Worker | принято |
+| [0017](0017-chrome-devtools-mcp.md) | Chrome DevTools MCP для проверки в браузере | принято |
