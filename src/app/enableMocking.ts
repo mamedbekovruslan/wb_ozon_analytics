@@ -4,8 +4,9 @@ export async function enableMocking() {
   const { worker } = await import('../mocks/browser')
   await worker.start({
     serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },
-    // Шрифты, картинки и скрипты идут мимо MSW молча, а запрос к /api/ без
-    // обработчика — почти наверняка опечатка в адресе, о ней предупреждаем
+    // Шрифты, картинки и скрипты идут мимо MSW молча. GET /api/... с опечаткой
+    // в адресе получает 404 от фейкового API (ADR-0016); предупреждение
+    // остаётся для запросов /api/ другими методами — у них обработчика нет
     onUnhandledFrame: ({ frame, defaults }) => {
       if (isApiRequest(frame.data)) defaults.warn()
     },
