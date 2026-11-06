@@ -1,3 +1,5 @@
+// Первым: до создания любых zod-схем (см. комментарий в модуле)
+import './zodJitless'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@fontsource/inter/400.css'

@@ -44,7 +44,7 @@ CSP рассчитан на текущую сборку: `blob:`, `'unsafe-inlin
 ## Чек-лист для ревью
 
 - [ ] Нет секретов, токенов, паролей в коде, конфигах и тестовых данных.
-- [ ] Нет `dangerouslySetInnerHTML`, `eval`, `new Function`.
+- [ ] Нет `dangerouslySetInnerHTML`, `eval`, `new Function`. zod работает в режиме `jitless` (иначе пробует `new Function`, и CSP фиксирует нарушение): модуль `zodJitless` подключается первым импортом каждой точки входа — вкладки (`src/app/main.tsx`) и воркера фейкового API (`src/mocks/server/api.worker.ts`), spec 003.
 - [ ] Внешние данные (URL, ответы API) проходят zod-схему.
 - [ ] Данные, попадающие в экспорт, проходят экранирование formula injection.
 - [ ] Новые зависимости обоснованы ADR; не используется `xlsx` из npm.
