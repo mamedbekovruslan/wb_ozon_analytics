@@ -1,4 +1,12 @@
-import { useId, useMemo, useState, type ComponentType, type KeyboardEvent, type PointerEvent } from 'react'
+import {
+  useId,
+  useMemo,
+  useState,
+  type ComponentType,
+  type CSSProperties,
+  type KeyboardEvent,
+  type PointerEvent,
+} from 'react'
 import { useElementWidth } from '../../../../shared/lib'
 import {
   axisRange,
@@ -63,7 +71,13 @@ export function SalesChart({ rows, metric, visible, layout, ariaLabel, plot: Plo
       setActive(null)
       return
     }
-    setActive({ index: Math.min(n - 1, Math.floor(x / band)), pointerY: e.clientY - rect.top, keyboard: false })
+    const index = Math.min(n - 1, Math.floor(x / band))
+    const pointerY = e.clientY - rect.top
+    // Тот же объект — React пропускает перерисовку, если день и высота указателя не изменились
+    // (движение внутри колонки по горизонтали)
+    setActive((a) =>
+      a && !a.keyboard && a.index === index && a.pointerY === pointerY ? a : { index, pointerY, keyboard: false },
+    )
   }
 
   // Касание: тултип остаётся после того, как палец убран (pointerleave приходит сразу за касанием)
@@ -94,7 +108,9 @@ export function SalesChart({ rows, metric, visible, layout, ariaLabel, plot: Plo
         aria-describedby={active?.keyboard && activeRow ? tooltipId : undefined}
         tabIndex={0}
         className={styles.plot}
-        style={{ height }}
+        // Активный день — CSS-переменными: подсветка и затемнение меняются без перерисовки Recharts
+        data-active={activeIndex !== null || undefined}
+        style={{ height, '--day': activeIndex ?? -1, '--band': `${band}px` } as CSSProperties}
         onPointerMove={point}
         onPointerDown={point}
         onPointerLeave={leave}
@@ -112,7 +128,6 @@ export function SalesChart({ rows, metric, visible, layout, ariaLabel, plot: Plo
             yTicks={yTicks}
             xTicks={xTicks}
             formatY={def.axis}
-            activeIndex={activeIndex}
           />
         )}
       </div>
