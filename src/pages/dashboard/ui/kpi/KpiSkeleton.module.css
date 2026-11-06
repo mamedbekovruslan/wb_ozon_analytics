@@ -1,0 +1,68 @@
+/* Скелетон KPI-карточки (Dashboard.dc.html, state=loading), без шиммера */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.label {
+  display: block;
+  width: 45%;
+  height: 12px;
+  margin: 3px 0;
+}
+
+.value {
+  display: block;
+  width: 65%;
+  height: 22px;
+  border-radius: var(--r-sm);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.badge {
+  width: 56px;
+  height: 20px;
+}
+
+.sparkline {
+  width: 52px;
+  height: 24px;
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: 14px;
+  }
+
+  .value {
+    height: 24px;
+  }
+
+  .sparkline {
+    width: 56px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card {
+    padding: var(--sp-4);
+  }
+
+  .value {
+    height: 28px;
+  }
+
+  .sparkline {
+    width: 96px;
+  }
+}

@@ -1,0 +1,31 @@
+/* Ширину задаёт место использования; высота 28 — по макету */
+.sparkline {
+  flex-shrink: 0;
+  height: 28px;
+  overflow: visible;
+}
+
+.good {
+  --spark: var(--success);
+}
+
+.bad {
+  --spark: var(--danger);
+}
+
+/* Нет оценки (сравнение выключено, без изменений) — согласовано пользователем, spec 004 AC-13 */
+.neutral {
+  --spark: var(--text-3);
+}
+
+.area {
+  fill: var(--spark);
+  fill-opacity: 0.1;
+}
+
+.line {
+  stroke: var(--spark);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}

@@ -1,5 +1,5 @@
 import { Button, CalendarIcon, Skeleton } from '../../../shared/ui'
-import { formatRange } from '../model/period'
+import { formatRange } from '../../../shared/lib'
 import styles from './RangeButton.module.css'
 
 type RangeButtonProps = {

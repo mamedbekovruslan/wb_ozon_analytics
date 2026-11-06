@@ -1,6 +1,5 @@
-import { cx } from '../../../shared/lib'
+import { cx, formatRange } from '../../../shared/lib'
 import { Skeleton, Switch } from '../../../shared/ui'
-import { formatRange } from '../model/period'
 import styles from './CompareToggle.module.css'
 
 type CompareToggleProps = {

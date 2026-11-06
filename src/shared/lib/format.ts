@@ -1,6 +1,8 @@
 // Форматирование чисел и дат ru-RU — по разделу 6 ТЗ.
 // Пробелы — неразрывные (U+00A0), минус — U+2212.
 
+import { parseDay } from './day';
+
 const NBSP = ' ';
 const MINUS = '−';
 const MONTHS_SHORT = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
@@ -24,7 +26,8 @@ export const formatRub = (n: number) => `${formatInt(n)}${NBSP}₽`;
 /** KPI: 1,2 млн ₽ · 250 тыс. ₽ · 9 870 ₽ */
 export const formatRubShort = (n: number) => {
   const a = Math.abs(n);
-  if (a >= 1e6) return `${oneDigit(n / 1e6)}${NBSP}млн${NBSP}₽`;
+  // Отличие от исходника: от 999 500 ₽ тысячи округляются до 1000 — пишем «1,0 млн ₽», а не «1000 тыс. ₽» (spec 004, AC-20)
+  if (a >= 1e6 || Math.round(a / 1e3) >= 1000) return `${oneDigit(n / 1e6)}${NBSP}млн${NBSP}₽`;
   if (a >= 1e4) return `${formatInt(n / 1e3)}${NBSP}тыс.${NBSP}₽`;
   return formatRub(n);
 };
@@ -39,15 +42,33 @@ export const formatAxisMoney = (n: number) => {
 /** 87,4 % */
 export const formatPercent = (n: number) => `${oneDigit(n)}${NBSP}%`;
 
-/** +12,4 % · −5,5 % */
-export const formatDelta = (n: number) => `${n >= 0 ? '+' : MINUS}${oneDigit(Math.abs(n))}${NBSP}%`;
+/** +12,4 % · −5,5 % · 0,0 % (отличие от исходника: у округлённого нуля нет знака, spec 004, AC-19) */
+export const formatDelta = (n: number) => {
+  const digits = oneDigit(Math.abs(n));
+  if (digits === '0,0') return `0,0${NBSP}%`;
+  return `${n >= 0 ? '+' : MINUS}${digits}${NBSP}%`;
+};
 
-/** (текущее − прошлое) / прошлое × 100; null, если прошлое = 0 */
-export const changePercent = (cur: number, prev: number) => (prev === 0 ? null : ((cur - prev) / prev) * 100);
+/**
+ * (текущее − прошлое) / |прошлое| × 100; null, если прошлое = 0.
+ * Отличие от исходника — модуль: рост прибыли из минуса (−100 → 50) остаётся ростом (spec 004, AC-8).
+ */
+export const changePercent = (cur: number, prev: number) => (prev === 0 ? null : ((cur - prev) / Math.abs(prev)) * 100);
 
 /** 04.11.2026 */
 export const formatDate = (d: Date) =>
   `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+
+/** Период из дней API `ГГГГ-ММ-ДД`: 05.10.2026 – 03.11.2026 */
+export const formatRange = (from: string, to: string) => `${formatDate(parseDay(from))} – ${formatDate(parseDay(to))}`;
+
+/** Период в тексте: 05.10–03.11.2026; если годы разные — 28.12.2025–03.01.2026 */
+export const formatPeriodShort = (from: string, to: string) => {
+  const start = parseDay(from);
+  const end = parseDay(to);
+  const head = start.getFullYear() === end.getFullYear() ? formatDayMonth(start) : formatDate(start);
+  return `${head}–${formatDate(end)}`;
+};
 
 /** Короткий диапазон в мобильной сводке фильтров: 05.10 */
 export const formatDayMonth = (d: Date) =>
