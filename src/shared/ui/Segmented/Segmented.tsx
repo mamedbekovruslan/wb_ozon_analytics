@@ -17,12 +17,14 @@ type SegmentedProps<T extends string> = {
   onChange: (value: T) => void
   /** sm — сегменты периода, md — площадки, lg — сетка на всю ширину в bottom sheet */
   size: 'sm' | 'md' | 'lg'
+  /** Раскладка группы на месте использования (например, на всю ширину на телефоне) */
+  className?: string
 }
 
 /** Сегментированный переключатель: группа кнопок с aria-pressed (Chrome.dc.html). */
-export function Segmented<T extends string>({ label, items, value, onChange, size }: SegmentedProps<T>) {
+export function Segmented<T extends string>({ label, items, value, onChange, size, className }: SegmentedProps<T>) {
   return (
-    <div role="group" aria-label={label} className={cx(styles.group, styles[size])}>
+    <div role="group" aria-label={label} className={cx(styles.group, styles[size], className)}>
       {items.map((item) => (
         <button
           key={item.value}

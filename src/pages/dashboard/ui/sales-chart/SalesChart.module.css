@@ -1,0 +1,55 @@
+/* График продаж: цвета серий, сетки и осей — только токены (Guidelines, «Правила графиков»).
+   Recharts ставит свои цвета атрибутами SVG — CSS их перекрывает, поэтому темы работают без перерисовки. */
+.wrap {
+  position: relative;
+}
+
+.plot {
+  border-radius: var(--r-xs);
+  touch-action: pan-y;
+}
+
+/* Верхняя подпись оси Y выступает над областью столбцов, как в макете (overflow: visible) */
+.plot :global(.recharts-surface) {
+  overflow: visible;
+}
+
+/* Recharts 3 раскладывает сетку, линии и подписи осей по слоям z-index вне групп своих компонентов,
+   поэтому стили — по его классам внутри области графика */
+.plot :global(.recharts-cartesian-grid-horizontal line) {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.plot :global(.recharts-reference-line-line) {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.plot :global(.recharts-cartesian-axis-tick-value) {
+  font-size: var(--fs-11);
+  fill: var(--axis);
+}
+
+.highlight {
+  fill: var(--surface-2);
+}
+
+.wb {
+  fill: var(--wb);
+}
+
+.ozon {
+  fill: var(--ozon);
+}
+
+/* Наведён другой день (макет: 0,92 у остальных столбцов) */
+.dimmed {
+  opacity: 0.92;
+}
+
+.plot :global(.recharts-line-curve) {
+  fill: none;
+  stroke: var(--prev);
+  stroke-linejoin: round;
+}

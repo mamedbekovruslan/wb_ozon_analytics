@@ -1,5 +1,7 @@
 export { getKpi, type KpiParams } from './api/getKpi'
 export { useKpi } from './api/useKpi'
+export { getSalesDaily, type SalesDailyParams } from './api/getSalesDaily'
+export { useSalesDaily } from './api/useSalesDaily'
 export {
   kpiResponseSchema,
   metricsSchema,

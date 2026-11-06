@@ -1,0 +1,42 @@
+/* Скелетон графика (Dashboard.dc.html, state=loading) */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.legend {
+  display: flex;
+  gap: var(--sp-5);
+}
+
+.legendItem {
+  width: 110px;
+  height: 12px;
+}
+
+.plot {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  box-sizing: content-box;
+  border-bottom: 1px solid var(--border);
+}
+
+.bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: var(--skeleton);
+}
+
+@media (min-width: 640px) {
+  .plot {
+    gap: 6px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .plot {
+    gap: var(--sp-2);
+  }
+}
