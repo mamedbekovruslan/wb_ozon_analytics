@@ -7,7 +7,8 @@ export const metaResponseSchema = z.object({
   updatedAt: momentSchema,
   historyFrom: dateSchema,
   marketplaces: z.array(z.object({ id: marketplaceIdSchema, name: z.string() })),
-  categories: z.array(z.object({ id: categoryIdSchema, name: z.string() })),
+  // productCount — число товаров справа в списке категорий (spec 002, AC-24)
+  categories: z.array(z.object({ id: categoryIdSchema, name: z.string(), productCount: z.number().int().min(0) })),
 })
 
 export type MetaResponse = z.infer<typeof metaResponseSchema>

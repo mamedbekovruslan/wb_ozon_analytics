@@ -1,0 +1,10 @@
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* У «Свой период» иконка отстоит на 8, у остальных чипов — 6 (Chrome.dc.html) */
+.group .custom {
+  gap: var(--sp-2);
+}

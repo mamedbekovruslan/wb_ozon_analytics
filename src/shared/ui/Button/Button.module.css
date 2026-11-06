@@ -1,0 +1,67 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border: 0;
+  border-radius: var(--r-sm);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.button:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: default;
+}
+
+/* aria-disabled — видна как обычная, но действия нет (кнопка-диапазон до календаря):
+   без подсветки при наведении, курсор обычный */
+.button[aria-disabled='true'] {
+  cursor: default;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.primary:hover:enabled:not([aria-disabled='true']) {
+  background: var(--accent-hover);
+}
+
+.primary:active:enabled:not([aria-disabled='true']) {
+  background: var(--accent-press);
+}
+
+.secondary {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+}
+
+.secondary:hover:enabled:not([aria-disabled='true']) {
+  background: var(--surface-2);
+}
+
+.secondary:active:enabled:not([aria-disabled='true']) {
+  background: var(--surface-3);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text-2);
+}
+
+.ghost:hover:enabled:not([aria-disabled='true']) {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.ghost:active:enabled:not([aria-disabled='true']) {
+  background: var(--surface-3);
+}

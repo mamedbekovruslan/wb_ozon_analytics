@@ -1,0 +1,6 @@
+.skeleton {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: var(--r-xs);
+  background: var(--skeleton);
+}

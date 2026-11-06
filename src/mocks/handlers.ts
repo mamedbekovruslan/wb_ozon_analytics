@@ -13,7 +13,14 @@ import { wbAdapter } from './wb'
 /** Seed проекта: одинаковые данные в dev, демо и тестах. */
 export const PROJECT_SEED = 20_261_104
 
-type Dataset = { today: string; historyFrom: string; orders: Order[]; stockRows: StockRow[] }
+type Dataset = {
+  today: string
+  historyFrom: string
+  orders: Order[]
+  stockRows: StockRow[]
+  /** Число товаров каталога по категориям — для списка категорий в фильтрах (spec 002, AC-24) */
+  productCounts: Record<CategoryId, number>
+}
 
 // --- Проверка параметров (T4): мусор → 400 с понятным текстом, без эха ввода ---
 
@@ -70,7 +77,15 @@ export function createHandlers({ seed, now }: { seed: number; now: Date }) {
       const raw = generateRawData({ seed, today, now })
       const wb = wbAdapter(raw.wb, raw.catalog)
       const ozon = ozonAdapter(raw.ozon, raw.catalog)
-      dataset = { today, historyFrom: historyFromOf(today), orders: [...wb.orders, ...ozon.orders], stockRows: [...wb.stocks, ...ozon.stocks] }
+      const productCounts = Object.fromEntries(CATEGORY_IDS.map((id) => [id, 0])) as Record<CategoryId, number>
+      for (const item of raw.catalog) productCounts[item.category] += 1
+      dataset = {
+        today,
+        historyFrom: historyFromOf(today),
+        orders: [...wb.orders, ...ozon.orders],
+        stockRows: [...wb.stocks, ...ozon.stocks],
+        productCounts,
+      }
     }
     return dataset
   }
@@ -96,7 +111,7 @@ export function createHandlers({ seed, now }: { seed: number; now: Date }) {
       updatedAt: toMskIso(now.getTime()),
       historyFrom: d.historyFrom,
       marketplaces: MARKETPLACES.map(({ id, name }) => ({ id, name })),
-      categories: CATEGORIES.map(({ id, name }) => ({ id, name })),
+      categories: CATEGORIES.map(({ id, name }) => ({ id, name, productCount: d.productCounts[id] })),
     })),
 
     route('/api/kpi', (params, d) => kpi(d.orders, readFilters(params, d))),

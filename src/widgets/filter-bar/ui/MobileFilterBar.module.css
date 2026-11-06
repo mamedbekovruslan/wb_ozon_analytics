@@ -1,0 +1,45 @@
+/* Мобильная полоса фильтров (Chrome.dc.html) */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4) var(--sp-3);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.button {
+  flex-shrink: 0;
+  height: var(--tap);
+  padding: 0 14px;
+  font-size: var(--fs-14);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: var(--lh-12);
+}
+
+.line1,
+.line2 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.line1 {
+  font-size: var(--fs-13);
+  font-weight: var(--fw-medium);
+}
+
+.line2 {
+  font-size: var(--fs-12);
+  color: var(--text-3);
+}
+
+.skeleton {
+  width: 72px;
+  height: 10px;
+}

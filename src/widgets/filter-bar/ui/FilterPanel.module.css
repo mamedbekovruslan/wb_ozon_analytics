@@ -1,0 +1,40 @@
+/* Панель фильтров (Chrome.dc.html): на планшете с переносом, на десктопе в одну строку */
+.panel {
+  padding: var(--sp-3) var(--sp-6);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.period {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.reset {
+  height: var(--control-h);
+  padding: 0 10px;
+  font-size: var(--fs-13);
+}
+
+@media (min-width: 1200px) {
+  .panel {
+    padding: var(--sp-3) var(--sp-8);
+  }
+
+  .row {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}

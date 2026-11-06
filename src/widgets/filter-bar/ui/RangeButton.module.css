@@ -1,0 +1,16 @@
+.button {
+  height: var(--control-h);
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.icon {
+  color: var(--text-3);
+}
+
+/* Ширина текста «05.10.2026 – 03.11.2026» */
+.skeleton {
+  width: 150px;
+  height: var(--sp-3);
+}

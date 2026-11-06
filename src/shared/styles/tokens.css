@@ -121,6 +121,15 @@
   --shadow-lg: 0 20px 48px rgba(0, 0, 0, .60), 0 0 0 1px #2A2F38;
 }
 
+/* Значения компонентов из разметки макетов (Chrome.dc.html, Components.dc.html):
+   в tokens.css дизайнера их нет, у дизайнера они одинаковы в обеих темах */
+:root {
+  --shadow-segment: 0 1px 2px rgba(16, 24, 40, .10), 0 0 0 1px var(--border); /* выбранный сегмент */
+  --switch-knob: #FFFFFF;                                                      /* ручка переключателя */
+  --shadow-knob: 0 1px 2px rgba(0, 0, 0, .25);
+  --disabled-opacity: .45;                                                      /* DESIGN_SPEC § 4, кнопки */
+}
+
 /* база */
 html { font-family: var(--font-sans); font-size: var(--fs-14); line-height: var(--lh-14);
        color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
