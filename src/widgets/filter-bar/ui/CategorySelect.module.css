@@ -1,0 +1,123 @@
+/* Размеры — из Chrome.dc.html (кнопка «Категории» и выпадающий список) */
+.root {
+  position: relative;
+}
+
+.trigger {
+  height: var(--control-h);
+  padding: 0 10px 0 var(--sp-3);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.triggerOpen {
+  border-color: var(--accent);
+}
+
+.summary {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-2);
+  font-weight: var(--fw-regular);
+}
+
+.summarySkeleton {
+  width: 64px;
+  height: var(--sp-3);
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semibold);
+}
+
+.chevron {
+  color: var(--text-3);
+}
+
+.list {
+  position: absolute;
+  top: 42px;
+  left: 0;
+  z-index: 40;
+  width: 260px;
+  box-sizing: border-box;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: var(--control-h);
+  padding: 0 10px;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-13);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.option:hover {
+  background: var(--surface-2);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.name {
+  flex: 1;
+}
+
+.productCount {
+  font-size: var(--fs-12);
+  color: var(--text-3);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-top: 6px;
+  padding: var(--sp-2) var(--sp-1) 2px;
+  border-top: 1px solid var(--border);
+}
+
+.footerButton {
+  height: 32px;
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-13);
+}
+
+.cat1 { background: var(--cat-1); }
+.cat2 { background: var(--cat-2); }
+.cat3 { background: var(--cat-3); }
+.cat4 { background: var(--cat-4); }
+.cat5 { background: var(--cat-5); }
+.cat6 { background: var(--cat-6); }
+.cat7 { background: var(--cat-7); }
+.cat8 { background: var(--cat-8); }

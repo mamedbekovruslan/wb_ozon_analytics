@@ -1,0 +1,44 @@
+/* Размеры — из Chrome.dc.html */
+.switch {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  border: 0;
+  border-radius: var(--r-full);
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.switch[aria-checked='true'] {
+  justify-content: flex-end;
+  background: var(--accent);
+}
+
+.knob {
+  border-radius: var(--r-full);
+  background: var(--switch-knob);
+  box-shadow: var(--shadow-knob);
+}
+
+.md {
+  width: 36px;
+  height: 20px;
+  padding: 2px;
+}
+
+.md .knob {
+  width: 16px;
+  height: 16px;
+}
+
+.lg {
+  width: 44px;
+  height: 26px;
+  padding: 3px;
+}
+
+.lg .knob {
+  width: 20px;
+  height: 20px;
+}

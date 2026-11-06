@@ -59,8 +59,8 @@ CI (GitHub Actions, `.github/workflows/ci.yml`) запускает `lint`, `lint
 src/
   app/       провайдеры (QueryClient, Router, Theme), глобальные стили, точка входа
   pages/     страницы: dashboard, orders, stocks
-  widgets/   крупные блоки страницы: kpi-panel, sales-chart, top-products, stock-table, app-header
-  features/  действия пользователя: filter-period, filter-marketplace, filter-category, export-excel, theme-toggle
+  widgets/   крупные блоки страницы: filter-bar, kpi-panel, sales-chart, top-products, stock-table, app-header
+  features/  действия пользователя: export-excel, theme-toggle (фильтры — внутри widgets/filter-bar, spec 002)
   entities/  бизнес-сущности: sale, product, warehouse, marketplace (типы, zod-схемы, api-хуки, UI)
   shared/    переиспользуемое без бизнес-логики: ui, api, lib, styles, config
   mocks/     фейковый backend: генератор, адаптеры WB/Ozon, агрегаторы, MSW handlers

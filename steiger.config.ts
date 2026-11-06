@@ -14,4 +14,11 @@ export default defineConfig([
     files: ['./src/entities/**'],
     rules: { 'fsd/insignificant-slice': 'warn' },
   },
+  {
+    // Временно (решение пользователя 2026-11-06, spec 002): панель фильтров общая
+    // для всех страниц, но пока страница одна — дашборд. Вернуть 'error', когда
+    // filter-bar встанет на страницы «Заказы» или «Остатки».
+    files: ['./src/widgets/filter-bar/**'],
+    rules: { 'fsd/insignificant-slice': 'warn' },
+  },
 ])

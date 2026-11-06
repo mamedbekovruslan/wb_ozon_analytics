@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from '@tanstack/react-router'
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -25,9 +26,15 @@ function renderPage() {
   // Свой клиент на каждый тест: кэш не перетекает между тестами,
   // без повторов — ошибка видна сразу
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+  // С spec 002 на странице панель фильтров, а она читает и пишет URL —
+  // нужен роутер; минимальный, чтобы тест слоя pages не зависел от app
+  const router = createRouter({
+    routeTree: createRootRoute({ component: DashboardPage }),
+    history: createMemoryHistory({ initialEntries: ['/dashboard'] }),
+  })
   return render(
     <QueryClientProvider client={client}>
-      <DashboardPage />
+      <RouterProvider router={router} />
     </QueryClientProvider>,
   )
 }
@@ -38,7 +45,7 @@ describe('DashboardPage (временная)', () => {
     async () => {
       renderPage()
 
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Аналитика продавца WB + Ozon')
+      expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('Аналитика продавца WB + Ozon')
       expect(screen.getByText('проверяем…', { exact: false })).toBeInTheDocument()
       expect(await screen.findByText('работает', {}, { timeout: SLOW })).toBeInTheDocument()
     },
