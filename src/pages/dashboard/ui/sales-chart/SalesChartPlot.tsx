@@ -1,3 +1,4 @@
+import { memo, type CSSProperties } from 'react'
 import {
   Bar,
   CartesianGrid,
@@ -11,7 +12,7 @@ import {
   ZIndexLayer,
   type BarShapeProps,
 } from 'recharts'
-import { cx, formatAxisDate, parseDay } from '../../../../shared/lib'
+import { formatAxisDate, parseDay } from '../../../../shared/lib'
 import type { ChartRow, SeriesVisibility } from '../../model/salesChart'
 import { AXIS_GAP, BAR_GAP, X_AXIS_HEIGHT } from './chartGeometry'
 import styles from './SalesChart.module.css'
@@ -31,7 +32,6 @@ export type SalesChartPlotProps = {
   yTicks: number[]
   xTicks: string[]
   formatY: (n: number) => string
-  activeIndex: number | null
 }
 
 const formatTick = (date: string) => formatAxisDate(parseDay(date))
@@ -39,8 +39,11 @@ const formatTick = (date: string) => formatAxisDate(parseDay(date))
 /**
  * Отрисовка Recharts: столбцы WB + Ozon стопкой, пунктир прошлого периода, оси, сетка и подсветка дня.
  * Лежит в отдельном файле, чтобы Recharts грузился отдельным чанком после KPI и фильтров.
+ * Активного дня в пропсах нет: подсветку колонки и затемнение столбцов задают CSS-переменные
+ * обёртки (SalesChart), а memo не даёт Recharts перерисовываться при наведении — перерисовка
+ * всех столбцов на каждую смену дня заметно тормозила тултип.
  */
-export function SalesChartPlot({
+export const SalesChartPlot = memo(function SalesChartPlot({
   rows,
   visible,
   width,
@@ -50,7 +53,6 @@ export function SalesChartPlot({
   yTicks,
   xTicks,
   formatY,
-  activeIndex,
 }: SalesChartPlotProps) {
   // Recharts вызывает shape как функцию отрисовки, а не как компонент
   const renderBar =
@@ -65,17 +67,11 @@ export function SalesChartPlot({
         h = Math.max(0, h - STACK_GAP)
         if (row.ozon < 0) y += STACK_GAP
       }
+      // Номер дня — для CSS: затемнение сравнивает его с --day обёртки
       return (
-        <Rectangle
-          x={props.x}
-          y={y}
-          width={props.width}
-          height={h}
-          className={cx(
-            series === 'wb' ? styles.wb : styles.ozon,
-            activeIndex !== null && activeIndex !== props.index && styles.dimmed,
-          )}
-        />
+        <g style={{ '--i': props.index } as CSSProperties}>
+          <Rectangle x={props.x} y={y} width={props.width} height={h} className={series === 'wb' ? styles.wb : styles.ozon} />
+        </g>
       )
     }
 
@@ -115,12 +111,10 @@ export function SalesChartPlot({
         width={plotLeft}
         allowDataOverflow
       />
-      {activeIndex !== null && (
-        // Под столбцами, над сеткой — как курсор Recharts
-        <ZIndexLayer zIndex={DefaultZIndexes.cursorRectangle}>
-          <rect x={plotLeft + band * activeIndex} y={0} width={band} height={plotHeight} className={styles.highlight} />
-        </ZIndexLayer>
-      )}
+      {/* Под столбцами, над сеткой — как курсор Recharts; положение и видимость — из CSS */}
+      <ZIndexLayer zIndex={DefaultZIndexes.cursorRectangle}>
+        <rect x={plotLeft} y={0} width={band} height={plotHeight} className={styles.highlight} />
+      </ZIndexLayer>
       <ReferenceLine y={0} />
       {visible.wb && <Bar dataKey="wb" stackId="mp" isAnimationActive={false} shape={renderBar('wb')} />}
       {visible.ozon && <Bar dataKey="ozon" stackId="mp" isAnimationActive={false} shape={renderBar('ozon')} />}
@@ -137,4 +131,4 @@ export function SalesChartPlot({
       )}
     </ComposedChart>
   )
-}
+})

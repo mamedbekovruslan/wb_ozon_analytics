@@ -31,8 +31,16 @@
   fill: var(--axis);
 }
 
+/* Активный день задают переменные обёртки (SalesChart): --day — номер, --band — ширина колонки.
+   Так подсветка и затемнение меняются без перерисовки Recharts. */
 .highlight {
   fill: var(--surface-2);
+  visibility: hidden;
+  transform: translateX(calc(var(--day) * var(--band)));
+}
+
+.plot[data-active] .highlight {
+  visibility: visible;
 }
 
 .wb {
@@ -43,9 +51,11 @@
   fill: var(--ozon);
 }
 
-/* Наведён другой день (макет: 0,92 у остальных столбцов) */
-.dimmed {
-  opacity: 0.92;
+/* Наведён другой день (макет: 0,92 у остальных столбцов). --i — номер дня столбца:
+   |--i − --day| ≥ 1 у других дней и 0 у выбранного (abs() есть не во всех поддерживаемых браузерах) */
+.plot[data-active] .wb,
+.plot[data-active] .ozon {
+  opacity: calc(1 - (1 - 0.92) * min(1, max(var(--i) - var(--day), var(--day) - var(--i))));
 }
 
 .plot :global(.recharts-line-curve) {
