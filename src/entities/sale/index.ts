@@ -1,3 +1,5 @@
+export { getKpi, type KpiParams } from './api/getKpi'
+export { useKpi } from './api/useKpi'
 export {
   kpiResponseSchema,
   metricsSchema,

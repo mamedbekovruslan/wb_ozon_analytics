@@ -15,6 +15,7 @@ import {
   stockStatus,
   formatDayMonth,
   formatCategoriesCount,
+  formatPeriodShort,
 } from './format'
 
 /*
@@ -27,8 +28,10 @@ import {
  * R-3  Деньги в KPI: «1,2 млн ₽» (≥ 1e6), «250 тыс. ₽» (≥ 1e4), меньше — полная сумма.
  * R-4  Деньги на оси Y: «0», «250 тыс.», «1,5 млн», ровные миллионы — «2 млн».
  * R-5  Проценты: «87,4 %», один знак после запятой.
- * R-6  Изменение: «+12,4 %» / «−5,5 %», знак всегда, ноль — «+0,0 %».
- * R-7  Изменение к прошлому периоду: (текущее − прошлое) / прошлое × 100; прошлое = 0 → null.
+ * R-6  Изменение: «+12,4 %» / «−5,5 %», знак всегда; округлённое до 0,0 — «0,0 %» без знака
+ *      (spec 004 AC-19; было «+0,0 %»).
+ * R-7  Изменение к прошлому периоду: (текущее − прошлое) / |прошлое| × 100; прошлое = 0 → null
+ *      (spec 004 AC-8: модуль в знаменателе).
  * R-8  Дата: «04.11.2026».
  * R-9  Дата на оси: «4 нояб.».
  * R-10 Дата в тултипе: «ср, 28 окт. 2026».
@@ -164,6 +167,70 @@ describe('formatRubShort', () => {
     expectTypography(formatRubShort(250000))
     expectTypography(formatRubShort(1200000))
   })
+
+  // Spec 004 AC-20: не «1000 тыс. ₽», а «1,0 млн ₽»
+  it('AC-20: 999 500 в тысячах округляется до 1 000 — выводится как «1,0 млн ₽»', () => {
+    expect(formatRubShort(999_500)).toBe(`1,0${NBSP}млн${NBSP}₽`)
+    expect(formatRubShort(999_999)).toBe(`1,0${NBSP}млн${NBSP}₽`)
+  })
+
+  it('AC-20: −999 500 — «−1,0 млн ₽» с минусом U+2212', () => {
+    expect(formatRubShort(-999_500)).toBe(`${MINUS}1,0${NBSP}млн${NBSP}₽`)
+    expect(formatRubShort(-999_999)).toBe(`${MINUS}1,0${NBSP}млн${NBSP}₽`)
+  })
+
+  it('AC-20: 999 499 — ещё «999 тыс. ₽»', () => {
+    expect(formatRubShort(999_499)).toBe(`999${NBSP}тыс.${NBSP}₽`)
+    expect(formatRubShort(-999_499)).toBe(`${MINUS}999${NBSP}тыс.${NBSP}₽`)
+  })
+
+  it('AC-20: «1000 тыс.» не выводится ни для какой суммы у границы', () => {
+    for (const n of [999_500, 999_501, 999_900, 999_999.4, -999_500, -999_999]) {
+      expect(formatRubShort(n)).not.toMatch(/1\s?000\s?тыс\./)
+    }
+  })
+
+  it('AC-20, R-13: без обычных пробелов и дефисов', () => {
+    expectTypography(formatRubShort(999_500))
+    expectTypography(formatRubShort(-999_500))
+  })
+})
+
+describe('formatPeriodShort', () => {
+  /** Тире U+2013 — как в макете Dashboard.dc.html (блок «Нет данных за период»). */
+  const EN_DASH = '–'
+
+  it('AC-21: один год — год только в конце: 2026-10-05…2026-11-03 → «05.10–03.11.2026»', () => {
+    expect(formatPeriodShort('2026-10-05', '2026-11-03')).toBe(`05.10${EN_DASH}03.11.2026`)
+  })
+
+  it('AC-21: разные годы — год у обеих дат: 2025-12-28…2026-01-03 → «28.12.2025–03.01.2026»', () => {
+    expect(formatPeriodShort('2025-12-28', '2026-01-03')).toBe(`28.12.2025${EN_DASH}03.01.2026`)
+  })
+
+  it('AC-21: начало и конец года одного года — год один раз', () => {
+    expect(formatPeriodShort('2026-01-01', '2026-12-31')).toBe(`01.01${EN_DASH}31.12.2026`)
+  })
+
+  it('AC-21: один день — по тому же правилу', () => {
+    expect(formatPeriodShort('2026-11-03', '2026-11-03')).toBe(`03.11${EN_DASH}03.11.2026`)
+  })
+
+  it('AC-21: 29 февраля високосного года', () => {
+    expect(formatPeriodShort('2024-02-29', '2024-03-05')).toBe(`29.02${EN_DASH}05.03.2024`)
+  })
+
+  it('AC-21: дата берётся из строки как есть — без сдвига часового пояса на границе года', () => {
+    // При разборе через new Date('2026-01-01') (UTC) западнее Гринвича получилось бы 31.12.2025
+    expect(formatPeriodShort('2026-01-01', '2026-01-01')).toBe(`01.01${EN_DASH}01.01.2026`)
+    expect(formatPeriodShort('2025-12-31', '2026-01-01')).toBe(`31.12.2025${EN_DASH}01.01.2026`)
+  })
+
+  it('AC-21: тире U+2013 без пробелов вокруг, без дефисов', () => {
+    const s = formatPeriodShort('2026-10-05', '2026-11-03')
+    expect(s).not.toMatch(/\s/)
+    expect(s).not.toContain('-')
+  })
 })
 
 describe('formatAxisMoney', () => {
@@ -230,8 +297,43 @@ describe('formatDelta', () => {
     expect(formatDelta(-5.5)).toBe(`${MINUS}5,5${NBSP}%`)
   })
 
-  it('R-6: ноль — «+0,0 %»', () => {
-    expect(formatDelta(0)).toBe(`+0,0${NBSP}%`)
+  // Spec 004 AC-19 (согласовано пользователем 2026-11-06): вместо прежнего «+0,0 %»
+  it('AC-19: ноль — «0,0 %» без знака', () => {
+    expect(formatDelta(0)).toBe(`0,0${NBSP}%`)
+  })
+
+  it('AC-19: −0 — «0,0 %» без знака', () => {
+    expect(formatDelta(-0)).toBe(`0,0${NBSP}%`)
+  })
+
+  it('AC-19: значения, округлённые до 0,0, — «0,0 %» без знака', () => {
+    expect(formatDelta(-0.04)).toBe(`0,0${NBSP}%`)
+    expect(formatDelta(0.04)).toBe(`0,0${NBSP}%`)
+    expect(formatDelta(0.001)).toBe(`0,0${NBSP}%`)
+    expect(formatDelta(-0.001)).toBe(`0,0${NBSP}%`)
+  })
+
+  it('AC-19: ни «+0,0 %», ни «−0,0 %», ни «-0,0 %»', () => {
+    for (const n of [0, -0, 0.04, -0.04, 0.0499, -0.0499]) {
+      const s = formatDelta(n)
+      expect(s).not.toMatch(/^[+−-]/)
+    }
+  })
+
+  it('AC-19: наименьшее ненулевое после округления — со знаком', () => {
+    expect(formatDelta(0.06)).toBe(`+0,1${NBSP}%`)
+    expect(formatDelta(-0.06)).toBe(`${MINUS}0,1${NBSP}%`)
+  })
+
+  it('AC-19: остальные случаи — как раньше (примеры из spec)', () => {
+    expect(formatDelta(12.4)).toBe(`+12,4${NBSP}%`)
+    expect(formatDelta(-5.5)).toBe(`${MINUS}5,5${NBSP}%`)
+    expect(formatDelta(150)).toBe(`+150,0${NBSP}%`)
+  })
+
+  it('AC-19, R-13: «0,0 %» — без обычных пробелов и дефисов', () => {
+    expectTypography(formatDelta(0))
+    expectTypography(formatDelta(-0.04))
   })
 
   it('R-6: всегда один знак после запятой, в том числе для целых', () => {
@@ -283,6 +385,45 @@ describe('changePercent', () => {
   it('R-7: очень большие значения', () => {
     expect(changePercent(2e12, 1e12)).toBeCloseTo(100, 10)
     expect(changePercent(1e6, 1)).toBeCloseTo(99999900, 2)
+  })
+
+  // Spec 004 AC-8: знаменатель — модуль прошлого значения
+  it('AC-8: прибыль −100 000 → 50 000 — +150 (рост из минуса — рост)', () => {
+    expect(changePercent(50_000, -100_000)).toBeCloseTo(150, 10)
+  })
+
+  it('AC-8: убыток уменьшился (−100 000 → −50 000) — +50', () => {
+    expect(changePercent(-50_000, -100_000)).toBeCloseTo(50, 10)
+  })
+
+  it('AC-8: убыток вырос (−100 000 → −150 000) — −50', () => {
+    expect(changePercent(-150_000, -100_000)).toBeCloseTo(-50, 10)
+  })
+
+  it('AC-8: из минуса в ноль (−100 → 0) — +100', () => {
+    expect(changePercent(0, -100)).toBeCloseTo(100, 10)
+  })
+
+  it('AC-8: из плюса в минус (100 → −50) — −150', () => {
+    expect(changePercent(-50, 100)).toBeCloseTo(-150, 10)
+  })
+
+  it('AC-8: при положительном прошлом — как раньше (примеры spec 004 AC-7)', () => {
+    // (7 284 560 − 6 480 925) / 6 480 925 × 100 ≈ 12,4
+    expect(changePercent(7_284_560, 6_480_925)).toBeCloseTo(12.4, 3)
+    // (23,4 − 24,8) / 24,8 × 100 ≈ −5,645
+    expect(changePercent(23.4, 24.8)).toBeCloseTo(-5.645, 3)
+    // (312 − 264) / 264 × 100 ≈ 18,18
+    expect(changePercent(312, 264)).toBeCloseTo(18.182, 3)
+  })
+
+  it('AC-8: прошлое = 0 — null и при отрицательном текущем; −0 — тоже ноль', () => {
+    expect(changePercent(-100, 0)).toBeNull()
+    expect(changePercent(100, -0)).toBeNull()
+  })
+
+  it('AC-8: очень большие отрицательные значения', () => {
+    expect(changePercent(1e12, -1e12)).toBeCloseTo(200, 10)
   })
 })
 

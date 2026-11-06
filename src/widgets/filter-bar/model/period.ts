@@ -1,5 +1,5 @@
 import { PERIOD_PRESETS, type FiltersSearch, type PeriodPreset } from '../../../shared/api'
-import { formatDate, formatDayMonth, parseDay } from '../../../shared/lib'
+import { formatDayMonth, parseDay } from '../../../shared/lib'
 
 export const PERIOD_LABELS: Record<PeriodPreset, string> = {
   '7': '7 дней',
@@ -23,9 +23,6 @@ export function withCompare(search: FiltersSearch, compare: boolean): FiltersSea
   const { cmp: _cmp, ...rest } = search
   return compare ? rest : { ...rest, cmp: '0' }
 }
-
-/** 05.10.2026 – 03.11.2026 */
-export const formatRange = (from: string, to: string) => `${formatDate(parseDay(from))} – ${formatDate(parseDay(to))}`
 
 /** 05.10–03.11 — мобильная сводка */
 export const formatRangeShort = (from: string, to: string) =>

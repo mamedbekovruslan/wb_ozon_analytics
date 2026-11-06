@@ -1,0 +1,31 @@
+/* Бейдж изменения KPI (Dashboard.dc.html): 22 px, 12/600, радиус 4 */
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+  height: 22px;
+  padding: 0 6px 0 var(--sp-1);
+  border-radius: var(--r-xs);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.good {
+  color: var(--success);
+  background: var(--success-soft);
+}
+
+.bad {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+/* Без изменений — нет в макете, согласовано пользователем (spec 004, AC-9) */
+.neutral {
+  padding: 0 6px;
+  color: var(--neutral);
+  background: var(--neutral-soft);
+}

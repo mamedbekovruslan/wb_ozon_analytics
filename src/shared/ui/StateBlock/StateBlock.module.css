@@ -1,0 +1,58 @@
+/* Состояния «нет данных» и «ошибка» (Dashboard.dc.html, KPI): карточка, всё по центру */
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-8) var(--sp-6);
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-full);
+}
+
+.iconEmpty {
+  color: var(--text-3);
+  background: var(--surface-2);
+}
+
+.iconError {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.title {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-semibold);
+}
+
+.text {
+  max-width: 420px;
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  color: var(--text-2);
+}
+
+.action {
+  height: var(--control-h);
+  margin-top: var(--sp-2);
+  padding: 0 14px;
+  font-size: var(--fs-14);
+}
+
+/* Телефон: область касания 44 (DESIGN_SPEC § 2, «Контролы») */
+@media (max-width: 639px) {
+  .action {
+    height: var(--tap);
+  }
+}

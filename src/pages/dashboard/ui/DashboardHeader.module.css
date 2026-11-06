@@ -1,0 +1,65 @@
+/* Заголовок дашборда (Dashboard.dc.html): слева h1 и период, справа время обновления */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-6);
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-20);
+  line-height: var(--lh-20);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.015em;
+}
+
+.period {
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  color: var(--text-2);
+}
+
+.previous {
+  color: var(--text-3);
+}
+
+/* Пока /api/meta грузится, даты периода неизвестны */
+.periodSkeleton {
+  width: 260px;
+  max-width: 100%;
+  height: 12px;
+  margin: 3px 0;
+}
+
+.updated {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-3);
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--success);
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: var(--fs-24);
+    line-height: var(--lh-24);
+  }
+}

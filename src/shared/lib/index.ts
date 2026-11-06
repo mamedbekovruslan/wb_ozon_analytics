@@ -1,4 +1,5 @@
 export * from './format'
+export { evaluateChange, type Change, type ChangeTone } from './change'
 export { cx } from './cx'
 export { parseDay } from './day'
 export { useFiltersSearch, useSetFiltersSearch } from './filtersSearch'
