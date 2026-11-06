@@ -13,6 +13,8 @@ import {
   formatTooltipDate,
   formatStockDays,
   stockStatus,
+  formatDayMonth,
+  formatCategoriesCount,
 } from './format'
 
 /*
@@ -465,5 +467,73 @@ describe('stockStatus', () => {
   it('R-12: очень большой остаток и очень маленькая скорость — ok', () => {
     expect(stockStatus(1e9, 1)).toBe('ok')
     expect(stockStatus(1, 0.001)).toBe('ok') // 1000 дней
+  })
+})
+
+/*
+ * Spec 002 «Фильтры в URL»: сводка мобильной полосы фильтров (AC-20).
+ * Строка 1 — «30 дней · 05.10–03.11» (день.месяц), строка 2 — «… · 3 категории · …».
+ */
+
+describe('formatDayMonth', () => {
+  it('AC-20: формат дд.мм с ведущими нулями', () => {
+    expect(formatDayMonth(new Date(2026, 9, 5))).toBe('05.10')
+    expect(formatDayMonth(new Date(2026, 10, 3))).toBe('03.11')
+    expect(formatDayMonth(new Date(2026, 0, 1))).toBe('01.01')
+    expect(formatDayMonth(new Date(2026, 11, 31))).toBe('31.12')
+  })
+
+  it('AC-20: без года и без пробелов', () => {
+    const s = formatDayMonth(new Date(2026, 9, 5))
+    expect(s).not.toContain('2026')
+    expect(s).not.toMatch(/\s/)
+  })
+
+  it('AC-20: учитывается локальная дата, а не UTC (конец и начало суток)', () => {
+    expect(formatDayMonth(new Date(2026, 11, 31, 23, 59, 59))).toBe('31.12')
+    expect(formatDayMonth(new Date(2026, 0, 1, 0, 0, 0))).toBe('01.01')
+  })
+
+  it('AC-20: 29 февраля високосного года', () => {
+    expect(formatDayMonth(new Date(2024, 1, 29))).toBe('29.02')
+  })
+})
+
+describe('formatCategoriesCount', () => {
+  it.each([
+    [1, 'категория'],
+    [21, 'категория'],
+    [101, 'категория'],
+    [2, 'категории'],
+    [3, 'категории'],
+    [4, 'категории'],
+    [22, 'категории'],
+    [24, 'категории'],
+    [0, 'категорий'],
+    [5, 'категорий'],
+    [8, 'категорий'],
+    [11, 'категорий'],
+    [12, 'категорий'],
+    [14, 'категорий'],
+    [25, 'категорий'],
+    [111, 'категорий'],
+    [112, 'категорий'],
+  ])('AC-20: %i → «%s» после числа через неразрывный пробел', (n, word) => {
+    expect(formatCategoriesCount(n)).toBe(`${n}${NBSP}${word}`)
+  })
+
+  it('AC-20: примеры из spec — «1 категория», «3 категории», «5 категорий»', () => {
+    expect(formatCategoriesCount(1)).toBe(`1${NBSP}категория`)
+    expect(formatCategoriesCount(3)).toBe(`3${NBSP}категории`)
+    expect(formatCategoriesCount(5)).toBe(`5${NBSP}категорий`)
+  })
+
+  it('AC-20: большое число — склонение по последним цифрам', () => {
+    expect(formatCategoriesCount(1001).endsWith(`${NBSP}категория`)).toBe(true)
+    expect(formatCategoriesCount(1011).endsWith(`${NBSP}категорий`)).toBe(true)
+  })
+
+  it('R-13: в результате нет обычных пробелов', () => {
+    expect(formatCategoriesCount(3)).not.toMatch(/ /)
   })
 })

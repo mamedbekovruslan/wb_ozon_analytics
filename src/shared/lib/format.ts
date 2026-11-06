@@ -49,6 +49,19 @@ export const changePercent = (cur: number, prev: number) => (prev === 0 ? null :
 export const formatDate = (d: Date) =>
   `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
 
+/** Короткий диапазон в мобильной сводке фильтров: 05.10 */
+export const formatDayMonth = (d: Date) =>
+  `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`;
+
+/** 1 категория · 3 категории · 5 категорий */
+export const formatCategoriesCount = (n: number) => {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  const word =
+    mod10 === 1 && mod100 !== 11 ? 'категория' : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? 'категории' : 'категорий';
+  return `${formatInt(n)}${NBSP}${word}`;
+};
+
 /** Ось графика: 4 нояб. */
 export const formatAxisDate = (d: Date) => `${d.getDate()}${NBSP}${MONTHS_SHORT[d.getMonth()]}`;
 
