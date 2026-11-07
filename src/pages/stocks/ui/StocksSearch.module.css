@@ -1,0 +1,84 @@
+/* Ряд «поиск + счётчик» (Stock.dc.html): с переносом, счётчик прижат вправо */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.field {
+  display: flex;
+  flex: 1 1 320px;
+  align-items: center;
+  gap: var(--sp-2);
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--tap);
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--text-3);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--fs-14);
+}
+
+/* Кольцо фокуса — у всего поля (focus-within), а не у input внутри */
+.input:focus-visible {
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--text-3);
+}
+
+.found {
+  margin-left: auto;
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  color: var(--text-2);
+}
+
+.foundValue {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+
+.foundSkeleton {
+  width: 40px;
+  height: 12px;
+}
+
+@media (min-width: 640px) {
+  .field {
+    height: var(--control-h);
+  }
+}
+
+@media (min-width: 1200px) {
+  .field {
+    max-width: 420px;
+  }
+}

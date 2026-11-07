@@ -1,0 +1,180 @@
+/* Таблица остатков (Stock.dc.html, L.table): карточка, шапка 40, прокрутка внутри */
+.card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Колонки — общие для шапки и строк (L.cols) */
+.grid {
+  display: grid;
+  align-items: center;
+  column-gap: var(--sp-4);
+  box-sizing: border-box;
+  padding: 0 var(--sp-5);
+}
+
+.wide .grid {
+  grid-template-columns: minmax(0, 1fr) 80px 220px 88px 120px 180px 160px;
+}
+
+.narrow .grid {
+  grid-template-columns: minmax(0, 1fr) 150px 64px 60px 148px;
+}
+
+.head {
+  height: 40px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  color: var(--text-3);
+}
+
+.right {
+  text-align: right;
+}
+
+/* Активный столбец сортировки: текст --text и стрелка (DESIGN_SPEC § 4, «Таблица») */
+.sorted {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text);
+}
+
+.scroll {
+  max-height: 620px;
+  overflow-y: auto;
+}
+
+.narrow .scroll {
+  max-height: 700px;
+}
+
+.scroll:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+/* Полоса прокрутки (Stock.dc.html, .scroll) */
+.scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 2px solid var(--surface);
+  border-radius: var(--r-md);
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Полная высота списка; строки внутри — абсолютно, по своему смещению */
+.spacer {
+  position: relative;
+  width: 100%;
+}
+
+.row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 52px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.narrow .row {
+  min-height: 68px;
+}
+
+.row:hover {
+  background: var(--surface-2);
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.productText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.article {
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-3);
+}
+
+.warehouse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.warehouseName {
+  overflow: hidden;
+  color: var(--text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.stock {
+  font-weight: var(--fw-medium);
+}
+
+.speed {
+  color: var(--text-2);
+}
+
+.daysCell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.days {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  gap: 10px;
+}
+
+.daysValue {
+  min-width: 44px;
+}

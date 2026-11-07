@@ -1,4 +1,6 @@
 export { getStocks, type StocksParams } from './api/getStocks'
 export { LOW_STOCK_LIMIT, useLowStock } from './api/useLowStock'
+export { useStocks } from './api/useStocks'
 export { stocksResponseSchema, stockStatusSchema, type StockStatus, type StocksResponse } from './model/schemas'
-export { StockStatusBadge } from './ui/StockStatusBadge'
+export { STOCK_STATUS_LABEL } from './model/statusLabel'
+export { StockStatusBadge, StockStatusIcon } from './ui/StockStatusBadge'

@@ -1,0 +1,89 @@
+/* Скелетон таблицы / карточек остатков (Stock.dc.html, состояние loading); без шиммера */
+.card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.head {
+  height: 40px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  box-sizing: border-box;
+  min-height: 76px;
+  padding: 0 var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+}
+
+.lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.lineSlot {
+  display: block;
+}
+
+.line,
+.subline {
+  display: block;
+  height: 12px;
+}
+
+.line {
+  width: 100%;
+}
+
+.subline {
+  width: 30%;
+  height: 10px;
+}
+
+.value {
+  flex-shrink: 0;
+  width: 40px;
+  height: 12px;
+}
+
+.bar {
+  flex-shrink: 0;
+  width: 120px;
+  height: 6px;
+  border-radius: var(--r-full);
+}
+
+.badge {
+  flex-shrink: 0;
+  width: 96px;
+  height: 22px;
+}
+
+/* Высота строки — как у таблицы на этой ширине (L.skRowH) */
+@media (min-width: 640px) {
+  .row {
+    min-height: 68px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .row {
+    min-height: 52px;
+  }
+}

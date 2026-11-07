@@ -1,0 +1,153 @@
+/* Плитки статусов (Stock.dc.html, L.tile*): 4 в ряд, на телефоне 2 × 2 */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+/* Цвет статуса — локальные переменные поверх токенов */
+.critical {
+  --status-c: var(--danger);
+  --status-bg: var(--danger-soft);
+}
+
+.soon {
+  --status-c: var(--warning);
+  --status-bg: var(--warning-soft);
+}
+
+.ok {
+  --status-c: var(--success);
+  --status-bg: var(--success-soft);
+}
+
+.noSales {
+  --status-c: var(--neutral);
+  --status-bg: var(--neutral-soft);
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 60px;
+  padding: 10px var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.tile:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+/* Выбранная: рамка и кольцо цвета статуса — и при наведении тоже */
+.tile.selected,
+.tile.selected:hover {
+  border-color: var(--status-c);
+  box-shadow: 0 0 0 1px var(--status-c);
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-md);
+  background: var(--status-bg);
+  color: var(--status-c);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.count {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: var(--fw-semibold);
+}
+
+.countSkeleton {
+  width: 32px;
+  height: 18px;
+}
+
+.label {
+  overflow: hidden;
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  color: var(--text-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Подсказка порога — только на десктопе (L.tileHint) */
+.hint {
+  display: none;
+  margin-left: auto;
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-3);
+  }
+
+  .tile {
+    min-height: 64px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .tiles {
+    gap: var(--sp-4);
+  }
+
+  .tile {
+    min-height: 72px;
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .count {
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+  }
+
+  .countSkeleton {
+    height: 20px;
+  }
+
+  .hint {
+    display: inline;
+  }
+}

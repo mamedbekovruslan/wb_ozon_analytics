@@ -44,9 +44,20 @@ export function generateStocks(
       if (perDay === 0) {
         stock = random.chance(0.25) ? 0 : random.int(3, 60)
       } else {
+        // Товар продаётся, значит на складе почти всегда что-то есть: остаток 0 («закончился») —
+        // редкость. Раньше остаток округлялся из «скорость × дни», и у редко продаваемых товаров
+        // почти все «критичные» становились 0 шт. Дни и статус всё так же считает агрегатор.
         const r = random.next()
-        const days = r < 0.13 ? random.next() * 6.5 : r < 0.3 ? 7 + random.next() * 7 : 15 + random.next() * 45
-        stock = Math.round(perDay * days)
+        if (r < 0.13) {
+          // Критично: меньше 7 дней продаж, то есть остаток < 7 × скорость
+          const maxStock = Math.ceil(perDay * 7) - 1
+          if (random.chance(0.03)) stock = 0
+          // Товару с 1 выкупом за 14 дней и 1 шт хватит на 14 дней — честно «скоро закончится»
+          else stock = maxStock >= 1 ? random.int(1, maxStock) : 1
+        } else {
+          const days = r < 0.3 ? 7 + random.next() * 7 : 15 + random.next() * 45
+          stock = Math.max(1, Math.round(perDay * days))
+        }
       }
       const sku = Number(product.sku)
 

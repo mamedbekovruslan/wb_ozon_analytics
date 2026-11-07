@@ -1,11 +1,10 @@
 import { MarketplaceBadge } from '../../../../entities/marketplace'
-import type { TopProduct, TopSort } from '../../../../entities/product'
+import { ProductThumb, type TopProduct, type TopSort } from '../../../../entities/product'
 import type { CategoryId } from '../../../../shared/api'
 import { cx, formatInt, formatRub } from '../../../../shared/lib'
 import { ArrowDownIcon, ArrowUpIcon, SortIcon } from '../../../../shared/ui'
 import { TABLE_SORT_ORDER, TOP_SORTS, type TopSortState } from '../../model/topProducts'
 import { BuyoutValue } from './BuyoutValue'
-import { ProductThumb } from './ProductThumb'
 import styles from './TopProductsTable.module.css'
 
 type TopProductsTableProps = {

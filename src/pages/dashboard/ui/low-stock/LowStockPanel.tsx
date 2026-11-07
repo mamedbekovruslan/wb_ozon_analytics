@@ -1,17 +1,12 @@
-import { useNavigate } from '@tanstack/react-router'
-import { useId, type MouseEvent } from 'react'
+import { Link } from '@tanstack/react-router'
+import { useId } from 'react'
 import { useLowStock } from '../../../../entities/warehouse'
-import { stringifySearchQuery } from '../../../../shared/api'
 import { useFiltersSearch, useSetFiltersSearch } from '../../../../shared/lib'
 import { ArrowRightIcon, StateBlock } from '../../../../shared/ui'
 import { lowStockSubtitle, pickLowStockItems } from '../../model/lowStock'
 import { LowStockList } from './LowStockList'
 import styles from './LowStockPanel.module.css'
 import { LowStockSkeleton } from './LowStockSkeleton'
-
-/** Ссылка открывается в этой же вкладке без перезагрузки; с модификаторами — как обычная ссылка. */
-const isPlainClick = (event: MouseEvent) =>
-  event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
 
 /**
  * «Скоро закончится»: пять позиций «товар × склад» с наименьшим запасом (spec 007). Остатки —
@@ -22,12 +17,6 @@ export function LowStockPanel() {
   const search = useFiltersSearch()
   const stocks = useLowStock({ mp: search.mp ?? 'all', cat: search.cat ?? [] })
   const setSearch = useSetFiltersSearch()
-  const navigate = useNavigate()
-
-  // Фильтры общие для всех страниц: на «Остатки» уходят все, включая период (spec 007, AC-11).
-  // Маршрута /stocks ещё нет (фича 6b), поэтому типизированный Link не подходит — адрес
-  // собирается из уже проверенных фильтров тем же форматом, что у роутера
-  const stocksHref = `/stocks${stringifySearchQuery(search)}`
 
   let content
   let subtitle = lowStockSubtitle()
@@ -73,18 +62,11 @@ export function LowStockPanel() {
           </h2>
           <span className={styles.subtitle}>{subtitle}</span>
         </div>
-        <a
-          href={stocksHref}
-          className={styles.link}
-          onClick={(event) => {
-            if (!isPlainClick(event)) return
-            event.preventDefault()
-            void navigate({ href: stocksHref })
-          }}
-        >
+        {/* Фильтры общие для всех страниц: на «Остатки» уходят все, включая период (spec 007, AC-11) */}
+        <Link to="/stocks" search={search} className={styles.link}>
           Все остатки
           <ArrowRightIcon />
-        </a>
+        </Link>
       </div>
       {content}
     </section>
