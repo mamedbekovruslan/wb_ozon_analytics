@@ -14,3 +14,8 @@
   font-weight: var(--fw-semibold);
   white-space: nowrap;
 }
+
+/* Таблица и карточки «Остатков» (Stock.dc.html): 20, остальное то же */
+.md {
+  height: 20px;
+}

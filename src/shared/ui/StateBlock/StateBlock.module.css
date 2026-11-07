@@ -102,3 +102,42 @@
     height: var(--tap);
   }
 }
+
+/* Вместо таблицы страницы (Stock.dc.html, состояния empty / error): карточка, круг 48,
+   заголовок 16/24, текст 14/20; высота — как у таблицы на этой ширине */
+.page {
+  justify-content: center;
+  min-height: 400px;
+  box-sizing: border-box;
+  padding: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.page .icon {
+  width: 48px;
+  height: 48px;
+}
+
+.page .title {
+  font-size: var(--fs-16);
+  line-height: var(--lh-16);
+}
+
+.page .text {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+@media (min-width: 640px) {
+  .page {
+    min-height: 520px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page {
+    min-height: 480px;
+  }
+}

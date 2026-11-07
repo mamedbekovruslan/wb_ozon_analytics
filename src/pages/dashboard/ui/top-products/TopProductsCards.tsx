@@ -1,8 +1,7 @@
 import { MarketplaceBadge } from '../../../../entities/marketplace'
-import type { TopProduct } from '../../../../entities/product'
+import { ProductThumb, type TopProduct } from '../../../../entities/product'
 import { cx, formatInt, formatRub } from '../../../../shared/lib'
 import { BuyoutValue } from './BuyoutValue'
-import { ProductThumb } from './ProductThumb'
 import styles from './TopProductsCards.module.css'
 
 type TopProductsCardsProps = {

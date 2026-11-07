@@ -212,7 +212,7 @@ test.describe('AC-17: сценарии на дашборде (1440 и 375 px)', 
     await allStocksLink(page).click()
 
     await expect(page).toHaveURL(/\/stocks\?(.*&)?mp=wb(&|$)/)
-    // До фичи 6b — стандартная страница «не найдено»: блока остатков дашборда здесь нет
+    // Здесь страница «Остатки» (spec 008): блока остатков дашборда на ней нет
     await expect(low(page)).toHaveCount(0)
   })
 
@@ -336,8 +336,13 @@ test.describe('Карточка и шапка', () => {
       const subStyle = await styleOf(sub, ['font-size', 'color'])
       expect(subStyle['font-size']).toBe('13px')
       expect(subStyle.color).toBe(tokens['color --text-2'])
-      const subBox = await sub.boundingBox()
-      expect(Math.abs((subBox?.y ?? 0) - head.h2.bottom - 2)).toBeLessThanOrEqual(1)
+      // Заголовок и подзаголовок меряются одним снимком: если между двумя запросами догрузится
+      // график выше, блок съедет (скелетон графика на 375 ниже графика на 73 px, roadmap)
+      const gap = await sub.evaluate((el) => {
+        const h2 = el.closest('section')?.querySelector('h2')
+        return el.getBoundingClientRect().top - (h2?.getBoundingClientRect().bottom ?? Number.NaN)
+      })
+      expect(Math.abs(gap - 2)).toBeLessThanOrEqual(1)
 
       const a = await styleOf(allStocksLink(page), [
         'font-size',

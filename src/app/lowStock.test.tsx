@@ -647,7 +647,7 @@ describe('Ссылка «Все остатки»', () => {
     await waitFor(() => expect(new URL(link().getAttribute('href') ?? '', 'http://localhost').searchParams.get('mp')).toBe('wb'))
   })
 
-  it('AC-11: переход по ссылке — /stocks с теми же параметрами; дашборда на этом адресе нет (до фичи 6b)', async () => {
+  it('AC-11: переход по ссылке — /stocks с теми же параметрами; дашборда на этом адресе нет (там страница «Остатки», spec 008)', async () => {
     const { user, router } = renderApp('/dashboard?mp=wb&cat=shoes')
     await findList()
 

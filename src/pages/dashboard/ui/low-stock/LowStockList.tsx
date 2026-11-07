@@ -1,8 +1,8 @@
 import { MarketplaceBadge, SchemeBadge } from '../../../../entities/marketplace'
+import { ProductThumb } from '../../../../entities/product'
 import { StockStatusBadge } from '../../../../entities/warehouse'
 import { cx, formatPieces, formatSpeed, formatStockDays } from '../../../../shared/lib'
 import type { LowStockItem } from '../../model/lowStock'
-import { ProductThumb } from '../top-products/ProductThumb'
 import styles from './LowStockList.module.css'
 
 /** Строки «товар × склад» (Dashboard.dc.html, блок low-h). Строки не фокусируются — деталей пока нет. */

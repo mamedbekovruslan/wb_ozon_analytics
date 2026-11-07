@@ -5,6 +5,7 @@ export {
   ArrowDownIcon,
   ArrowRightIcon,
   ArrowUpIcon,
+  BoxIcon,
   CalendarIcon,
   CheckIcon,
   ChevronDownIcon,
@@ -12,6 +13,8 @@ export {
   CloseIcon,
   FilterIcon,
   ImageIcon,
+  NoSalesIcon,
+  SearchIcon,
   SortIcon,
   WarningIcon,
 } from './icons'

@@ -67,9 +67,9 @@ export function WarningIcon({ size = 20, strokeWidth = 1.4, className }: IconPro
 }
 
 /** Бейдж «Скоро закончится» (Dashboard.dc.html, блок low-h) */
-export function ClockIcon({ size = 12, className }: IconProps) {
+export function ClockIcon({ size = 12, strokeWidth = 1.8, className }: IconProps & { strokeWidth?: number }) {
   return (
-    <svg {...base} strokeWidth={1.8} width={size} height={size} className={className}>
+    <svg {...base} strokeWidth={strokeWidth} width={size} height={size} className={className}>
       <circle cx="8" cy="8" r="6" />
       <path d="M8 5v3l2 1.5" />
     </svg>
@@ -126,6 +126,36 @@ export function ImageIcon({ size = 16, className }: IconProps) {
       <rect x="2" y="3" width="12" height="10" rx="1.5" />
       <circle cx="6" cy="6.5" r="1.2" />
       <path d="M2.5 12l3.5-3.5 2.5 2.5 2-2 3 3" />
+    </svg>
+  )
+}
+
+/** Бейдж и плитка «Нет продаж» (Stock.dc.html): перечёркнутый круг */
+export function NoSalesIcon({ size = 12, strokeWidth = 1.8, className }: IconProps & { strokeWidth?: number }) {
+  return (
+    <svg {...base} strokeWidth={strokeWidth} width={size} height={size} className={className}>
+      <circle cx="8" cy="8" r="6" />
+      <path d="M4 12l8-8" />
+    </svg>
+  )
+}
+
+/** «На складах ничего нет» (Stock.dc.html, состояние empty) */
+export function BoxIcon({ size = 22, className }: IconProps) {
+  return (
+    <svg {...base} strokeWidth={1.3} width={size} height={size} className={className}>
+      <path d="M2.5 5L8 2l5.5 3v6L8 14l-5.5-3V5z" />
+      <path d="M2.5 5L8 8l5.5-3M8 8v6" />
+    </svg>
+  )
+}
+
+/** Поле поиска (Stock.dc.html) и «Ничего не найдено» (spec 008, AC-19) */
+export function SearchIcon({ size = 16, strokeWidth = 1.5, className }: IconProps & { strokeWidth?: number }) {
+  return (
+    <svg {...base} strokeWidth={strokeWidth} width={size} height={size} className={className}>
+      <circle cx="7" cy="7" r="4.5" />
+      <path d="M10.5 10.5L14 14" />
     </svg>
   )
 }

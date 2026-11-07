@@ -116,6 +116,9 @@ export const formatStockDays = (stock: number, perDay: number) =>
 /** Скорость продаж: 6,1/день */
 export const formatSpeed = (n: number) => `${oneDigit(n)}/день`;
 
+/** Одна цифра после запятой: 6,1 — колонка «Продажи в день», где единица в заголовке (spec 008) */
+export const formatDecimal1 = (n: number) => oneDigit(n);
+
 export type StockStatus = 'critical' | 'soon' | 'ok' | 'noSales';
 
 /**

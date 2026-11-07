@@ -1,0 +1,99 @@
+/* Карточки остатков на телефоне (Stock.dc.html, L.cards) */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--sp-3) 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.titles {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+/* Название — до двух строк с многоточием */
+.name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-2);
+}
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-2);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.figureLabel {
+  color: var(--text-3);
+}
+
+.figureValue {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+.stock {
+  font-weight: var(--fw-semibold);
+}
+
+.speed {
+  font-weight: var(--fw-medium);
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.more {
+  height: var(--tap);
+  padding: 0 14px;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+}

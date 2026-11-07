@@ -1,5 +1,6 @@
 import { createRootRoute, createRoute, createRouter, redirect, type RouterHistory } from '@tanstack/react-router'
 import { DashboardPage } from '../pages/dashboard'
+import { StocksPage } from '../pages/stocks'
 import { parseFiltersSearch, parseSearchQuery, stringifySearchQuery } from '../shared/api'
 import { RootLayout } from './RootLayout'
 
@@ -38,7 +39,13 @@ function createRouteTree() {
     component: DashboardPage,
   })
 
-  return rootRoute.addChildren([indexRoute, dashboardRoute])
+  const stocksRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/stocks',
+    component: StocksPage,
+  })
+
+  return rootRoute.addChildren([indexRoute, dashboardRoute, stocksRoute])
 }
 
 /** Фабрика нужна тестам: у каждого свой роутер и своя история (createMemoryHistory). */
