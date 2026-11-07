@@ -10,16 +10,36 @@
   padding: var(--sp-4) var(--sp-4) var(--sp-6);
 }
 
+/* [график | «Скоро закончится»] (L.row2): ниже 1200 — одна колонка, зазор как между блоками */
+.chartRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--sp-3);
+}
+
 @media (min-width: 640px) {
-  .page {
+  .page,
+  .chartRow {
     gap: var(--sp-4);
+  }
+
+  .page {
     padding: var(--sp-5) var(--sp-6) var(--sp-10);
   }
 }
 
 @media (min-width: 1200px) {
-  .page {
+  .page,
+  .chartRow {
     gap: var(--sp-6);
+  }
+
+  .page {
     padding: var(--sp-6) var(--sp-8) var(--sp-12);
+  }
+
+  .chartRow {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 }

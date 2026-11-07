@@ -28,11 +28,15 @@ export type StocksResponse = {
 
 const SPEED_WINDOW_DAYS = 14
 
-/** критично < 7 · скоро закончится 7–14 · норма > 14 · нет продаж (docs/domain.md). */
+/**
+ * По целым дням вниз, как их видит продавец («14 дн.»): критично < 7 · скоро 7–14 ·
+ * норма ≥ 15 · нет продаж (docs/domain.md, spec 007). Допуск — от ошибок плавающей точки.
+ */
 function statusOf(days: number | null): StockStatus {
   if (days === null) return 'noSales'
-  if (days < 7) return 'critical'
-  if (days <= 14) return 'soon'
+  const whole = Math.floor(days + 1e-9)
+  if (whole < 7) return 'critical'
+  if (whole <= 14) return 'soon'
   return 'ok'
 }
 

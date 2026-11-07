@@ -1,8 +1,12 @@
-/* Скелетон KPI-карточки (Dashboard.dc.html, state=loading), без шиммера */
+/* Скелетон KPI-карточки (Dashboard.dc.html, state=loading), без шиммера.
+   Полосы — как в макете, но карточка не ниже карточки с данными (KpiCard: подпись, значение,
+   строка 28, зазоры 6): в макете скелетон на 2–4 px ниже, и при загрузке всё под KPI
+   сдвигалось (spec 007, docs/design/deviations.md) */
 .card {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: calc(var(--lh-13) + 6px + var(--lh-20) + 6px + 28px);
   padding: var(--sp-3);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -41,6 +45,7 @@
 
 @media (min-width: 640px) {
   .card {
+    min-height: calc(var(--lh-13) + 6px + var(--lh-22) + 6px + 28px);
     padding: 14px;
   }
 
@@ -55,6 +60,7 @@
 
 @media (min-width: 1200px) {
   .card {
+    min-height: calc(var(--lh-13) + 6px + var(--lh-28) + 6px + 28px);
     padding: var(--sp-4);
   }
 

@@ -1,0 +1,64 @@
+/* Скелетон «Скоро закончится» (Dashboard.dc.html, low-h, loading) */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Высота — как у строки с данными (справа дни 20 + 4 + бейдж 20 = 44, выше превью 40),
+   иначе при загрузке всё ниже сдвигается на 20 px; в макете строка скелетона ниже на 4 px
+   (docs/design/deviations.md) */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 44px;
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--border);
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--skeleton);
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-2);
+}
+
+.bar {
+  border-radius: var(--r-xs);
+  background: var(--skeleton);
+}
+
+.name {
+  width: 80%;
+  height: 12px;
+}
+
+.meta {
+  width: 55%;
+  height: 10px;
+}
+
+.days {
+  width: 40px;
+  height: 14px;
+}
+
+.status {
+  width: 64px;
+  height: 16px;
+}

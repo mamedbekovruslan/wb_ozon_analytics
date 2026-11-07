@@ -349,7 +349,7 @@ const compareSwitch = (page: Page) =>
 // =====================================================================================
 
 test.describe('AC-23: сценарии на дашборде (1440 и 375 px)', () => {
-  test('AC-23, AC-1: график с 30 днями по умолчанию — под KPI, на всю ширину', async ({ page }) => {
+  test('AC-23, AC-1: график с 30 днями по умолчанию — под KPI; на ≥ 1200 рядом «Скоро закончится» (spec 007)', async ({ page, viewport }) => {
     await page.goto('/dashboard')
     await waitChart(page)
 
@@ -358,12 +358,20 @@ test.describe('AC-23: сценарии на дашборде (1440 и 375 px)', 
     expect((await readTable(page)).rows).toHaveLength(30)
     expect(columns(await readBars(page))).toHaveLength(30)
 
-    // На всю ширину страницы, как блок KPI, и под ним
+    // Под KPI, от его левого края. На ≥ 1200 — строка [график 2fr | «Скоро закончится» 1fr]
+    // с зазором 24 (spec 007, AC-1), ниже — на всю ширину, как KPI
     const kpi = await kpiRegion(page).boundingBox()
     const section = await chart(page).boundingBox()
     if (!kpi || !section) throw new Error('Нет KPI или графика')
-    expect(Math.abs(section.width - kpi.width)).toBeLessThanOrEqual(1)
     expect(Math.abs(section.x - kpi.x)).toBeLessThanOrEqual(1)
+    if ((viewport?.width ?? 0) >= 1200) {
+      const lowStock = await page.getByRole('region', { name: 'Скоро закончится' }).boundingBox()
+      if (!lowStock) throw new Error('Нет блока «Скоро закончится»')
+      expect(Math.abs(lowStock.x - (section.x + section.width) - 24)).toBeLessThanOrEqual(1)
+      expect(Math.abs(lowStock.x + lowStock.width - (kpi.x + kpi.width))).toBeLessThanOrEqual(1)
+    } else {
+      expect(Math.abs(section.width - kpi.width)).toBeLessThanOrEqual(1)
+    }
     expect(section.y).toBeGreaterThan(kpi.y + kpi.height - 1)
     await expect(chart(page).getByRole('heading', { level: 2, name: 'Продажи по дням' })).toBeVisible()
   })

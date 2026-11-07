@@ -18,6 +18,7 @@ import {
   formatPeriodShort,
   formatPieces,
   formatDayMonthLong,
+  formatSpeed,
 } from './format'
 
 /*
@@ -768,5 +769,110 @@ describe('formatDayMonthLong', () => {
     const s = formatDayMonthLong('2026-10-05', true)
     expect(s).not.toContain('г.')
     expect(s).not.toContain('.')
+  })
+})
+
+/*
+ * Spec 007 «Скоро закончится».
+ * AC-8: formatSpeed(n) — скорость продаж: одна цифра после запятой и «/день» без пробела.
+ * AC-9: статус запаса — по тем же целым дням, что и показ: d = floor(остаток / скорость);
+ *       критично d < 7 · скоро 7 ≤ d ≤ 14 · норма d ≥ 15 · нет продаж — скорость 0.
+ *       Прежние проверки stockStatus выше (R-12) остаются в силе.
+ */
+
+describe('formatSpeed', () => {
+  it('AC-8: примеры из spec — 6,1/день, 0,1/день, 12,0/день', () => {
+    expect(formatSpeed(6.1)).toBe('6,1/день')
+    expect(formatSpeed(0.0714)).toBe('0,1/день')
+    expect(formatSpeed(12)).toBe('12,0/день')
+  })
+
+  it('AC-8: целые — всегда с «,0»', () => {
+    expect(formatSpeed(1)).toBe('1,0/день')
+    expect(formatSpeed(10)).toBe('10,0/день')
+  })
+
+  it('AC-8: ноль — «0,0/день»', () => {
+    expect(formatSpeed(0)).toBe('0,0/день')
+  })
+
+  it('AC-8: округление до одной цифры', () => {
+    expect(formatSpeed(2.54)).toBe('2,5/день')
+    expect(formatSpeed(2.56)).toBe('2,6/день')
+    expect(formatSpeed(0.04)).toBe('0,0/день')
+    expect(formatSpeed(0.06)).toBe('0,1/день')
+    // 99,96 → 100,0, а не «99,10»
+    expect(formatSpeed(99.96)).toBe('100,0/день')
+  })
+
+  it('AC-8: скорость из окна 14 дней — 1 выкуп / 14 ≈ 0,0714 → «0,1/день»; 85 / 14 ≈ 6,07 → «6,1/день»', () => {
+    expect(formatSpeed(1 / 14)).toBe('0,1/день')
+    expect(formatSpeed(85 / 14)).toBe('6,1/день')
+  })
+
+  it('AC-8: десятичный разделитель — запятая, перед «/день» пробела нет', () => {
+    const s = formatSpeed(6.1)
+    expect(s).not.toContain('.')
+    expect(s).not.toMatch(/\s\/день$/)
+    expect(s.endsWith('/день')).toBe(true)
+  })
+
+  it('AC-8, R-13: большие значения — без экспоненты, без обычных пробелов и дефисов', () => {
+    const s = formatSpeed(1500)
+    expect(s.endsWith('500,0/день')).toBe(true)
+    expect(s).not.toMatch(/e/i)
+    expectTypography(s)
+  })
+})
+
+describe('stockStatus — по целым дням (spec 007)', () => {
+  it('AC-9: 14,5 дня (145 / 10) — «14 дн.» и soon, а не ok', () => {
+    expect(stockStatus(145, 10)).toBe('soon')
+    expect(formatStockDays(145, 10)).toBe(`14${NBSP}дн.`)
+  })
+
+  it('AC-9: 15 дней (150 / 10) — ok', () => {
+    expect(stockStatus(150, 10)).toBe('ok')
+  })
+
+  it('AC-9: 6,9 дня (69 / 10) — «6 дн.» и critical', () => {
+    expect(stockStatus(69, 10)).toBe('critical')
+    expect(formatStockDays(69, 10)).toBe(`6${NBSP}дн.`)
+  })
+
+  it('AC-9: дробные дни около границ 7 и 15 — по целой части', () => {
+    // 14,9 → 14 → soon; 15,0 → ok
+    expect(stockStatus(149, 10)).toBe('soon')
+    expect(stockStatus(14.99, 1)).toBe('soon')
+    // 6,99 → 6 → critical; 7,0 → soon; 7,5 → soon
+    expect(stockStatus(6.99, 1)).toBe('critical')
+    expect(stockStatus(7, 1)).toBe('soon')
+    expect(stockStatus(75, 10)).toBe('soon')
+  })
+
+  it('AC-9: прежние границы не меняются — 7 → soon, 14 → soon, 15 → ok, 0 продаж → noSales', () => {
+    expect(stockStatus(7, 1)).toBe('soon')
+    expect(stockStatus(14, 1)).toBe('soon')
+    expect(stockStatus(15, 1)).toBe('ok')
+    expect(stockStatus(10, 0)).toBe('noSales')
+  })
+
+  it('AC-9: число и бейдж не расходятся — для любых дней статус совпадает с показанными целыми днями', () => {
+    const byShownDays = (d: number) => (d < 7 ? 'critical' : d <= 14 ? 'soon' : 'ok')
+    for (const [stock, perDay] of [
+      [0, 3],
+      [20, 6.1],
+      [69, 10],
+      [70, 10],
+      [96, 7.9],
+      [145, 10],
+      [149, 10],
+      [150, 10],
+      [1000, 1 / 14],
+    ] as const) {
+      // «14 000 дн.» — разряды через неразрывный пробел: берём все цифры
+      const shown = Number(formatStockDays(stock, perDay).replace(/\D/g, ''))
+      expect(stockStatus(stock, perDay), `${stock} / ${perDay}`).toBe(byShownDays(shown))
+    }
   })
 })

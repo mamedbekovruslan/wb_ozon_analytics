@@ -104,16 +104,27 @@ export const formatDayMonthLong = (day: string, withYear = false) => {
 export const formatTooltipDate = (d: Date) =>
   `${WEEKDAYS_SHORT[d.getDay()]}, ${d.getDate()}${NBSP}${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`;
 
+// Целые дни запаса — одни и те же для показа и статуса (spec 007): иначе 14,5 дня
+// показывались бы как «14 дн.» с бейджем «Норма». Допуск — чтобы 14 / (14 / 14)
+// не превратилось из-за плавающей точки в 13,999… → «13 дн.».
+const wholeStockDays = (stock: number, perDay: number) => Math.floor(stock / perDay + 1e-9);
+
 /** Дни запаса: «3 дн.» или «—», если продаж нет */
 export const formatStockDays = (stock: number, perDay: number) =>
-  perDay > 0 ? `${Math.floor(stock / perDay)}${NBSP}дн.` : '—';
+  perDay > 0 ? `${formatInt(wholeStockDays(stock, perDay))}${NBSP}дн.` : '—';
+
+/** Скорость продаж: 6,1/день */
+export const formatSpeed = (n: number) => `${oneDigit(n)}/день`;
 
 export type StockStatus = 'critical' | 'soon' | 'ok' | 'noSales';
 
-/** критично < 7 · скоро закончится 7–14 · норма > 14 · нет продаж */
+/**
+ * По целым дням, как показ: критично < 7 · скоро закончится 7–14 · норма ≥ 15 · нет продаж.
+ * Отличие от исходника дизайнера (там — по точным дням), docs/design/deviations.md.
+ */
 export const stockStatus = (stock: number, perDay: number): StockStatus => {
   if (perDay <= 0) return 'noSales';
-  const days = stock / perDay;
+  const days = wholeStockDays(stock, perDay);
   if (days < 7) return 'critical';
   if (days <= 14) return 'soon';
   return 'ok';

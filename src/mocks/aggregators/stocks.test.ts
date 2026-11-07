@@ -168,3 +168,63 @@ describe('stocks', () => {
     expect(result.counts).toEqual({ critical: 0, soon: 0, ok: 0, noSales: 0 })
   })
 })
+
+/*
+ * Spec 007 «Скоро закончится», AC-9: статус — по целым дням, как показ «N дн.»:
+ * d = floor(остаток / скорость); критично d < 7 · скоро 7 ≤ d ≤ 14 · норма d ≥ 15.
+ * Порядок позиций — по точным дням, как раньше.
+ *
+ * Отдельный набор, чтобы не менять счётчики проверок выше:
+ *   F1: 29 шт, 28 выкупов в окне (по 2 в день) → 2/день  → 14,5 дня → floor 14 → soon (раньше было бы ok)
+ *   F2: 69 шт, 140 выкупов (по 10 в день)      → 10/день → 6,9 дня  → floor 6  → critical
+ *   F3: 28 шт, 28 выкупов                      → 2/день  → 14 дней   → soon
+ *   F4: 30 шт, 28 выкупов                      → 2/день  → 15 дней   → ok
+ *   F5: 209 шт, 14 выкупов                     → 1/день  → 209 дней  → ok
+ */
+describe('stocks — статус по целым дням (spec 007)', () => {
+  const repeat = (times: number) => WINDOW.flatMap((date) => Array.from({ length: times }, () => date))
+
+  const floorRows: StockRow[] = [
+    stockRow({ sku: 'F1', warehouse: 'Коледино', stock: 29 }),
+    stockRow({ sku: 'F2', warehouse: 'Казань', stock: 69, marketplace: 'ozon', scheme: 'FBS', category: 'electronics' }),
+    stockRow({ sku: 'F3', warehouse: 'Подольск', stock: 28 }),
+    stockRow({ sku: 'F4', warehouse: 'Электросталь', stock: 30 }),
+    stockRow({ sku: 'F5', warehouse: 'Коледино', stock: 209 }),
+  ]
+  const floorOrders: Order[] = [
+    ...buyouts('F1', 'Коледино', repeat(2)),
+    ...buyouts('F2', 'Казань', repeat(10)),
+    ...buyouts('F3', 'Подольск', repeat(2)),
+    ...buyouts('F4', 'Электросталь', repeat(2)),
+    ...buyouts('F5', 'Коледино', WINDOW),
+  ]
+  const run = () => stocks(floorRows, floorOrders, { today: TODAY, mp: 'all', cat: [] })
+  const byKey = () => new Map(run().items.map((i) => [key(i), i]))
+
+  it('AC-9: 14,5 дня — soon (число «14 дн.» и бейдж «Скоро закончится» не расходятся)', () => {
+    expect(byKey().get('F1/Коледино')).toMatchObject({ stock: 29, perDay: 2, status: 'soon' })
+  })
+
+  it('AC-9: 6,9 дня — critical', () => {
+    expect(byKey().get('F2/Казань')).toMatchObject({ stock: 69, perDay: 10, status: 'critical' })
+  })
+
+  it('AC-9: прежние границы — 14 дней → soon, 15 дней → ok', () => {
+    expect(byKey().get('F3/Подольск')).toMatchObject({ perDay: 2, status: 'soon' })
+    expect(byKey().get('F4/Электросталь')).toMatchObject({ perDay: 2, status: 'ok' })
+    expect(byKey().get('F5/Коледино')).toMatchObject({ perDay: 1, status: 'ok' })
+  })
+
+  it('AC-9: порядок — по точным дням: 6,9 → 14 → 14,5 → 15 → 209', () => {
+    expect(run().items.map(key)).toEqual(['F2/Казань', 'F3/Подольск', 'F1/Коледино', 'F4/Электросталь', 'F5/Коледино'])
+  })
+
+  it('AC-9: счётчики — по новым статусам', () => {
+    expect(run().counts).toEqual({ critical: 1, soon: 2, ok: 2, noSales: 0 })
+  })
+
+  it('AC-9, AC-3: limit со статусом по целым дням — critical / soon (включая 14,5 дня) идут раньше ok', () => {
+    const result = stocks(floorRows, floorOrders, { today: TODAY, mp: 'all', cat: [], limit: 3 })
+    expect(result.items.map((i) => i.status)).toEqual(['critical', 'soon', 'soon'])
+  })
+})

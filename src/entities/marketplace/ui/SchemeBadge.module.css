@@ -1,0 +1,16 @@
+/* Бейдж FBO / FBS (Dashboard.dc.html, блок low-h): 18, 11/600, рамка --border-strong */
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  box-sizing: border-box;
+  height: 18px;
+  padding: 0 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-xs);
+  color: var(--text-2);
+  font-size: var(--fs-11);
+  line-height: var(--lh-11);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
