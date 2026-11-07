@@ -1,0 +1,77 @@
+/* Размеры — из Dashboard.dc.html (B.top.load) */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+.strip {
+  height: 36px;
+  background: var(--surface-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  box-sizing: border-box;
+  height: 56px;
+  padding: 0 var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.thumb {
+  display: block;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+}
+
+.lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.line {
+  display: block;
+}
+
+.name {
+  width: 50%;
+  height: 12px;
+}
+
+.sub {
+  width: 30%;
+  height: 10px;
+}
+
+.values {
+  display: flex;
+  gap: var(--sp-10);
+}
+
+.value {
+  display: block;
+  height: 12px;
+}
+
+.w72 {
+  width: 72px;
+}
+
+.w40 {
+  width: 40px;
+}
+
+.w48 {
+  width: 48px;
+}
+
+@media (min-width: 1200px) {
+  .row {
+    padding: 0 var(--sp-5);
+  }
+}

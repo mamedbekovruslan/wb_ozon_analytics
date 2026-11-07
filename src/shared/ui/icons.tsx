@@ -90,6 +90,26 @@ export function CloseIcon({ size = 18, className }: IconProps) {
   )
 }
 
+/** Двойная стрелка «сортировка» (Dashboard.dc.html, «Топ-10»): в заголовке таблицы — 12 × 1,6 */
+export function SortIcon({ size = 16, strokeWidth = 1.5, className }: IconProps & { strokeWidth?: number }) {
+  return (
+    <svg {...base} strokeWidth={strokeWidth} width={size} height={size} className={className}>
+      <path d="M5 6l3-3 3 3M5 10l3 3 3-3" />
+    </svg>
+  )
+}
+
+/** Заглушка фото товара (Dashboard.dc.html, превью в «Топ-10») */
+export function ImageIcon({ size = 16, className }: IconProps) {
+  return (
+    <svg {...base} strokeWidth={1.3} width={size} height={size} className={className}>
+      <rect x="2" y="3" width="12" height="10" rx="1.5" />
+      <circle cx="6" cy="6.5" r="1.2" />
+      <path d="M2.5 12l3.5-3.5 2.5 2.5 2-2 3 3" />
+    </svg>
+  )
+}
+
 export function FilterIcon({ size = 16, className }: IconProps) {
   return (
     <svg {...base} width={size} height={size} className={className}>

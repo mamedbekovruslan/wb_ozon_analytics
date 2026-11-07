@@ -1,0 +1,23 @@
+/* Бейдж площадки (Dashboard.dc.html, «Топ-10»): высота 20, радиус 4, 12/600 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-xs);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.wb {
+  background: var(--wb-soft);
+  color: var(--wb-text);
+}
+
+.ozon {
+  background: var(--ozon-soft);
+  color: var(--ozon-text);
+}

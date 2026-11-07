@@ -19,3 +19,7 @@ export const topProductsResponseSchema = z.object({
 })
 
 export type TopProductsResponse = z.infer<typeof topProductsResponseSchema>
+export type TopProduct = TopProductsResponse['items'][number]
+
+/** Метрика, по которой сервер строит топ (параметр `sort` /api/top-products). */
+export type TopSort = 'revenue' | 'orders' | 'buyoutRate' | 'profit'

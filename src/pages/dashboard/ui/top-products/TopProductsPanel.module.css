@@ -1,0 +1,56 @@
+/* Карточка «Топ-10 товаров» (Dashboard.dc.html, секция top-h): без внутренних отступов —
+   их задают шапка и крайние ячейки таблицы */
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-16);
+  line-height: var(--lh-16);
+  font-weight: var(--fw-semibold);
+}
+
+.subtitle {
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  color: var(--text-2);
+}
+
+/* Телефон: перебор метрик одной кнопкой, высота 44 */
+.cycle {
+  gap: 6px;
+  height: var(--tap);
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+@media (min-width: 1200px) {
+  .header {
+    padding: var(--sp-5) var(--sp-5) var(--sp-3);
+  }
+}

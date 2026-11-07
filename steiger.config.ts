@@ -9,8 +9,8 @@ export default defineConfig([
   },
   {
     // Временно (решение пользователя 2026-11-05, spec 001): схемы ответов API
-    // лежат в entities по ADR-0010. sale уже используется (spec 004), product и
-    // warehouse — ещё нет. Вернуть 'error' после фич «Топ товаров» и «Остатки».
+    // лежат в entities по ADR-0010. sale (spec 004) и product (spec 006) уже
+    // используются, warehouse — ещё нет. Вернуть 'error' после фичи «Остатки».
     files: ['./src/entities/**'],
     rules: { 'fsd/insignificant-slice': 'warn' },
   },

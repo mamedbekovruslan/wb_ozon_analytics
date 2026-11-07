@@ -26,6 +26,19 @@
   padding: 0 var(--sp-4);
 }
 
+/* Под шапкой карточки, у которой нет своего padding (топ товаров, Dashboard.dc.html) */
+.flush {
+  justify-content: center;
+  min-height: 280px;
+  box-sizing: border-box;
+  padding: var(--sp-6);
+  border-top: 1px solid var(--border);
+}
+
+.flush .text {
+  max-width: 380px;
+}
+
 .icon {
   display: inline-flex;
   align-items: center;
