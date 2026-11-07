@@ -1,0 +1,25 @@
+/* Бейдж статуса запаса (Dashboard.dc.html, блок low-h): 20, 11/600, иконка 12 */
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--sp-1);
+  box-sizing: border-box;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-xs);
+  font-size: var(--fs-11);
+  line-height: var(--lh-11);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.critical {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.soon {
+  background: var(--warning-soft);
+  color: var(--warning);
+}

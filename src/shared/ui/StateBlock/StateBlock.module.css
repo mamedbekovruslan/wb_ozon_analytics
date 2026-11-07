@@ -39,6 +39,19 @@
   max-width: 380px;
 }
 
+/* Внутри карточки с padding («Скоро закончится», Dashboard.dc.html): занимает остаток высоты
+   карточки — она стоит в одной строке с графиком и тянется до его высоты */
+.fill {
+  flex: 1;
+  justify-content: center;
+  min-height: 240px;
+  border-top: 1px solid var(--border);
+}
+
+.fill .text {
+  max-width: 300px;
+}
+
 .icon {
   display: inline-flex;
   align-items: center;
@@ -51,6 +64,11 @@
 .iconEmpty {
   color: var(--text-3);
   background: var(--surface-2);
+}
+
+.iconSuccess {
+  color: var(--success);
+  background: var(--success-soft);
 }
 
 .iconError {

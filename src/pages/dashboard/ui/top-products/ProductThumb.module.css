@@ -10,6 +10,11 @@
   color: var(--text-3);
 }
 
+.medium {
+  width: 40px;
+  height: 40px;
+}
+
 .large {
   width: 44px;
   height: 44px;

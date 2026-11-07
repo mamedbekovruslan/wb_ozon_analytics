@@ -56,12 +56,31 @@ export function InboxIcon({ size = 20, className }: IconProps) {
   )
 }
 
-/** Ошибка (Dashboard.dc.html, состояние error) */
-export function WarningIcon({ size = 20, className }: IconProps) {
+/** Ошибка (Dashboard.dc.html, состояние error); 12 / 1.8 — бейдж «Критично» */
+export function WarningIcon({ size = 20, strokeWidth = 1.4, className }: IconProps & { strokeWidth?: number }) {
   return (
-    <svg {...base} strokeWidth={1.4} width={size} height={size} className={className}>
+    <svg {...base} strokeWidth={strokeWidth} width={size} height={size} className={className}>
       <path d="M8 2.5l6 11H2l6-11z" />
       <path d="M8 6.5v3M8 11.5v.01" />
+    </svg>
+  )
+}
+
+/** Бейдж «Скоро закончится» (Dashboard.dc.html, блок low-h) */
+export function ClockIcon({ size = 12, className }: IconProps) {
+  return (
+    <svg {...base} strokeWidth={1.8} width={size} height={size} className={className}>
+      <circle cx="8" cy="8" r="6" />
+      <path d="M8 5v3l2 1.5" />
+    </svg>
+  )
+}
+
+/** Ссылка «Все остатки» (Dashboard.dc.html, блок low-h) */
+export function ArrowRightIcon({ size = 14, className }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} className={className}>
+      <path d="M3 8h10M9 4l4 4-4 4" />
     </svg>
   )
 }
@@ -74,9 +93,10 @@ export function RefreshIcon({ size = 16, className }: IconProps) {
   )
 }
 
-export function CheckIcon({ size = 14, className }: IconProps) {
+/** 20 / 1.6 — «Ничего не заканчивается» (Dashboard.dc.html, блок low-h) */
+export function CheckIcon({ size = 14, strokeWidth = 1.8, className }: IconProps & { strokeWidth?: number }) {
   return (
-    <svg {...base} strokeWidth={1.8} width={size} height={size} className={className}>
+    <svg {...base} strokeWidth={strokeWidth} width={size} height={size} className={className}>
       <path d="M3.5 8.5l3 3 6-7" />
     </svg>
   )

@@ -265,7 +265,7 @@ test.describe('AC-21: сценарии на дашборде (1440 и 375 px)', 
 })
 
 test.describe('Раскладка дашборда', () => {
-  test('AC-1: зазор между графиком и топом — 24 на 1440, 16 на 768, 12 на 375', async ({ page, viewport }) => {
+  test('AC-1: зазор между строкой «график / скоро закончится» и топом — 24 на 1440, 16 на 768, 12 на 375', async ({ page, viewport }) => {
     const widths: [number, number][] = isPhone(viewport) ? [[375, 12]] : [[1440, 24], [768, 16]]
     for (const [width, gap] of widths) {
       await page.setViewportSize({ width, height: 900 })
@@ -273,10 +273,17 @@ test.describe('Раскладка дашборда', () => {
       await waitTop(page, width < 640)
       // Скелетон графика другой высоты: замеряем, когда график уже нарисован
       await expect(chart(page).getByRole('img', { name: /^Столбцы по дням/ })).toBeVisible({ timeout: DATA_TIMEOUT })
+      // Между графиком и топом — «Скоро закончится» (spec 007): рядом с графиком на ≥ 1200,
+      // под ним ниже. Зазор считаем от нижней из двух карточек
+      await expect(page.getByRole('region', { name: 'Скоро закончится' }).locator('[aria-busy="true"]')).toHaveCount(0, {
+        timeout: DATA_TIMEOUT,
+      })
       const graph = await chart(page).boundingBox()
+      const lowStock = await page.getByRole('region', { name: 'Скоро закончится' }).boundingBox()
       const section = await top(page).boundingBox()
-      if (!graph || !section) throw new Error('Нет графика или топа')
-      expect(Math.abs(section.y - (graph.y + graph.height) - gap), `${width} px`).toBeLessThanOrEqual(1)
+      if (!graph || !lowStock || !section) throw new Error('Нет графика, остатков или топа')
+      const above = Math.max(graph.y + graph.height, lowStock.y + lowStock.height)
+      expect(Math.abs(section.y - above - gap), `${width} px`).toBeLessThanOrEqual(1)
     }
   })
 

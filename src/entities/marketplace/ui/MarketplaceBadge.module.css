@@ -1,15 +1,26 @@
-/* Бейдж площадки (Dashboard.dc.html, «Топ-10»): высота 20, радиус 4, 12/600 */
+/* Бейдж площадки (Dashboard.dc.html): md — «Топ-10», высота 20, 12/600; sm — «Скоро закончится», 18, 11/600 */
 .badge {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   box-sizing: border-box;
-  height: 20px;
-  padding: 0 6px;
   border-radius: var(--r-xs);
-  font-size: var(--fs-12);
-  line-height: var(--lh-12);
   font-weight: var(--fw-semibold);
   white-space: nowrap;
+}
+
+.md {
+  height: 20px;
+  padding: 0 6px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+}
+
+.sm {
+  height: 18px;
+  padding: 0 5px;
+  font-size: var(--fs-11);
+  line-height: var(--lh-11);
 }
 
 .wb {

@@ -1,4 +1,6 @@
-/* KPI-карточка (Dashboard.dc.html): размеры по DESIGN_SPEC § 2 — телефон / планшет / десктоп */
+/* KPI-карточка (Dashboard.dc.html): размеры по DESIGN_SPEC § 2 — телефон / планшет / десктоп.
+   Зазор 6, высоты строк и min-height строки 28 повторены в min-height KpiSkeleton.module.css —
+   меняя их здесь, поправить и там, иначе при загрузке вернётся сдвиг (spec 007) */
 .card {
   display: flex;
   flex-direction: column;
