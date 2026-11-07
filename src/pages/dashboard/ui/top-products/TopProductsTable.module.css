@@ -1,0 +1,207 @@
+/* Таблица «Топ-10» (Dashboard.dc.html, L.table; DESIGN_SPEC § 4 «Таблица»).
+   p — отступ карточки: 16 на 640–1199, 20 на ≥ 1200 */
+.scroll {
+  --p: var(--sp-4);
+
+  overflow-x: auto;
+}
+
+/* Полоса прокрутки — как в макете (Dashboard.dc.html, `.scroll`); видна на 640–730 px */
+.scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 2px solid var(--surface);
+  border-radius: var(--r-md);
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* separate, а не collapse: в collapse линия строки делится между соседними строками
+   пополам, и шапка выходит 36,5 вместо 36 (spec 006, AC-18) */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.headRow {
+  background: var(--surface-2);
+}
+
+.th {
+  height: 36px;
+  padding: 0 var(--sp-3);
+  text-align: left;
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.rankHead {
+  width: 40px;
+  padding: 0 0 0 var(--p);
+}
+
+.mpHead {
+  width: 84px;
+}
+
+.sortHead {
+  padding: 0 var(--sp-2);
+  text-align: right;
+}
+
+/* Ширины колонок метрик — из макета (colDefs); у последней ещё отступ карточки */
+.revenue {
+  width: 128px;
+}
+
+.orders {
+  width: 92px;
+}
+
+.buyoutRate {
+  width: 104px;
+}
+
+.profit {
+  width: calc(128px + var(--p));
+  padding-right: var(--p);
+}
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  height: 28px;
+  margin-right: -6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--text-3);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+/* Призрачная кнопка (DESIGN_SPEC § 4) */
+.sortButton:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.sortButton:active {
+  background: var(--surface-3);
+}
+
+.active {
+  color: var(--text);
+}
+
+.idleArrow {
+  opacity: 0.55;
+}
+
+.row {
+  transition: background-color var(--dur) var(--ease);
+}
+
+/* Линия над строкой — на ячейках (в separate у строки рамки нет); входит в высоту 56 */
+.row > td {
+  box-sizing: border-box;
+  border-top: 1px solid var(--border);
+}
+
+.row:hover {
+  background: var(--surface-2);
+}
+
+.rank {
+  height: 56px;
+  padding: 0 0 0 var(--p);
+  color: var(--text-3);
+}
+
+.product {
+  padding: var(--sp-2) var(--sp-3);
+}
+
+.productInner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.productText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sub {
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-3);
+}
+
+.mp {
+  padding: 0 var(--sp-3);
+}
+
+.value {
+  padding: 0 var(--sp-2);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.last {
+  padding-right: var(--p);
+}
+
+.strong {
+  font-weight: var(--fw-medium);
+}
+
+/* Планшет: таблица не уже 680, лишнее — прокрутка по X внутри блока */
+@media (min-width: 640px) and (max-width: 1199px) {
+  .table {
+    min-width: 680px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .scroll {
+    --p: var(--sp-5);
+  }
+
+  .name {
+    max-width: 520px;
+  }
+}

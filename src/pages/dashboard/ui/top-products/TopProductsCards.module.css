@@ -1,0 +1,85 @@
+/* Карточки «Топ-10» на телефоне (Dashboard.dc.html, L.cards) */
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Название — до двух строк */
+.name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.sub {
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  color: var(--text-3);
+}
+
+.badge {
+  flex-shrink: 0;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px var(--sp-3);
+  margin: 0;
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.term {
+  color: var(--text-3);
+}
+
+.value {
+  margin: 0;
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.main {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-semibold);
+}
